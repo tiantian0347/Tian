@@ -2,6 +2,7 @@
 *.aux
 *.out
 *.log
+*.pdf
 *.blg
 *.toc
 *.bbl
