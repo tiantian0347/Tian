@@ -1,0 +1,124 @@
+% !Mode:: "TeX:UTF-8"
+%------------------------------------------------------
+%导入所需的包
+\usepackage{tabu}
+%\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb} %放在前面不然会和xe的package冲突。
+\usepackage{graphicx} 
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{multicol}
+\usepackage{shapepar}
+\usepackage{subfigure}
+\usepackage{epsfig}
+\usepackage{float}
+\usepackage{pdfpages}%插入pdf
+
+\usepackage{algorithm} % 算法
+\usepackage{algorithmic}
+\floatname{algorithm}{算法}
+\renewcommand{\algorithmicrequire}{ \textbf{输入:}} %Use Input in the format of Algorithm
+\renewcommand{\algorithmicensure}{ \textbf{输出:}} %UseOutput in the format of Algorithm
+
+\usepackage{extarrows}
+\usepackage{chemarrow}%箭头或等号上下方可以写文字
+
+\usepackage{indentfirst}
+\usepackage[colorlinks,linkcolor=black,anchorcolor=black,citecolor=black]{hyperref}
+\usepackage[top=24mm,bottom=24mm,left=35mm,right=28mm]{geometry}             % 简单灵活的页面设置界面
+
+\usepackage{xltxtra,fontspec,xunicode}
+\usepackage[slantfont,boldfont]{xeCJK} % 允许斜体和粗体
+
+\usepackage{listings}   % 源代码列表
+
+\usepackage{titlesec}
+\usepackage{titletoc}
+\usepackage{xCJKnumb}
+%-------------------------------------------
+%把Chapter 1 更改成 第一章
+\titleformat{\chapter}{\centering\huge}{第\,\xCJKnumber{\thechapter}\,章}{1em} {}
+%\titleformat{\chapter}{\centering\Huge\bfseries}{第\,\xCJKnumber{\thechapter}\,章}{1em} {}
+%\titleformat{\chapter}{\centering\Huge\bfseries}{第\,\thechapter{}\,章}{1em} {}
+%\renewcommand\chaptername{第\xCJKnumber{\arabic{chapter}}章}
+
+%\titleformat{\chapter}{\centering\huge}{第\thechapter{}章}{1em}{\textbf}
+%\titleformat{\section}{\centering\sihao}{\thesection}{1em}{\textbf}
+%\titleformat{\subsection}{\xiaosi}{\thesubsection}{1em}{\textbf}
+%\titleformat{\subsubsection}{\xiaosi}{\thesubsubsection}{1em}{\textbf}
+
+%------------------------------------------------------
+%设置中文字体
+\setCJKmainfont[BoldFont=Adobe Heiti Std,ItalicFont=Adobe Kaiti Std]{Adobe Song Std}
+\setCJKsansfont{Adobe Kaiti Std}
+\setCJKmonofont{Adobe Fangsong Std}
+ 
+\setCJKfamilyfont{zhsong}{Adobe Song Std} %设定别名
+\setCJKfamilyfont{zhhei}{Adobe Heiti Std}
+\setCJKfamilyfont{zhfs}{Adobe Fangsong Std}
+\setCJKfamilyfont{zhkai}{Adobe Kaiti Std}
+ 
+\newcommand*{\songti}{\CJKfamily{zhsong}} % 宋体
+\newcommand*{\heiti}{\CJKfamily{zhhei}}   % 黑体
+\newcommand*{\kaishu}{\CJKfamily{zhkai}}  % 楷书
+\newcommand*{\fangsong}{\CJKfamily{zhfs}} % 仿宋
+%---------------------------------------------
+%设置字体大小
+\newcommand{\chuhao}{\fontsize{42pt}{\baselineskip}\selectfont}
+\newcommand{\xiaochuhao}{\fontsize{36pt}{\baselineskip}\selectfont}
+\newcommand{\yihao}{\fontsize{28pt}{\baselineskip}\selectfont}
+\newcommand{\xiaoyihao}{\fontsize{22pt}{\baselineskip}\selectfont}
+\newcommand{\erhao}{\fontsize{21pt}{\baselineskip}\selectfont}
+\newcommand{\xiaoerhao}{\fontsize{18pt}{\baselineskip}\selectfont}
+\newcommand{\sanhao}{\fontsize{15.75pt}{\baselineskip}\selectfont}
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}
+
+\newcommand{\rmnum}[1]{\romannumeral #1} %小写罗马数字
+\newcommand{\Rmnum}[1]{\uppercase\expandafter{\romannumeral #1}} %大写罗马数字
+%-------------------------
+\renewcommand\contentsname{目\hspace{1em}录}
+\renewcommand\listfigurename{图\hspace{1em}目\hspace{1em}录}
+\renewcommand\listtablename{表\hspace{1em}目\hspace{1em}录}
+\newcommand\listequationname{公式索引}
+\newcommand\equationname{公式}
+\renewcommand\bibname{参考文献}
+\renewcommand\indexname{索引}
+\renewcommand\figurename{图}
+\renewcommand\tablename{表}
+\renewcommand\appendixname{附录}
+%---------------
+%定理, 定义 等环境的设置
+\newtheorem{assumption}{\textbf{假设}}[section]
+\newtheorem{definition}{\textbf{定义}}[section]
+\newtheorem{proposition}{\textbf{命题}}[section]
+\newtheorem{lemma}{\textbf{引理}}[section]
+\newtheorem{theorem}{\textbf{定理}}[section]
+\newtheorem{axiom}{\textbf{公理}}[section]
+\newtheorem{corollary}{\textbf{推论}}[section]
+\newtheorem{exercise}{\textbf{练习}}[section]
+\newtheorem{example}{\textbf{例}}[section]
+\newtheorem{remark}{\textbf{注}}[section]
+\newtheorem{problem}{\textbf{问题}}[section]
+\newtheorem{conjecture}{\textbf{猜想}}[section]
+
+%%%-------------------------------------------------------------%
+\setlength{\parindent}{2em}
+
+%%---使xelatex在进行中文断行时处理的更美观些
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt
+
+%------------------------------------------------------------%
+\pagestyle{empty}                                % 设置页眉、页脚均为空
+\xiaosihao                                       % 小四号字体
+\setlength{\baselineskip}{20pt plus2pt minus1pt} % 调整自然行距
+
+%----设置前置目录---------------------------------------------------------%
+\titlecontents{chapter}[0em]{}{\makebox[4.1em][l]{第\xCJKnumber{\thecontentslabel}章}}{}{\titlerule*[0.7pc]{.}\contentspage}

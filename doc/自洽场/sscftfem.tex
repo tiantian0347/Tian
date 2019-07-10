@@ -1,0 +1,1763 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%      %
+% version             %
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\documentclass[aps,floatfix,12pt]{revtex4-1}
+%%\documentclass[twocolumn,aps,floatfix]{revtex4}
+%
+%\usepackage{graphicx,epsfig,subfig,dcolumn,bm,mathrsfs,amsmath,amssymb}
+%\usepackage{color}
+%\bibliographystyle{apsrev}
+
+
+\documentclass[final,1p,times]{elsarticle}
+%\documentclass[final,3p,times]{elsarticle}
+%% \documentclass[final,1p,times,twocolumn]{elsarticle}
+
+\journal{Journal of Computational Physics}
+
+\usepackage{mathrsfs,amsmath,amssymb,bm}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{caption}
+\usepackage{overpic}
+\usepackage{epsfig}
+\usepackage{xcolor}
+\usepackage{indentfirst}
+\usepackage{fancyhdr}
+\usepackage{comment}
+\usepackage{makecell, rotating}
+\usepackage{algorithm} 
+\usepackage{algorithmic} 
+\usepackage{float}
+\usepackage{fullpage} 
+
+\usepackage{xkeyval}
+\usepackage{todonotes}
+\presetkeys{todonotes}{inline}{} 
+\usepackage[draft]{changes}
+%\usepackage{lipsum}% <- For dummy text
+\definechangesauthor[name={Huayi Wei}, color=red]{why}
+
+\newcommand{\bbR}{\mathbb{R}}
+\newcommand{\bbZ}{\mathbb{Z}}
+\newcommand{\bbQ}{\mathbb{Q}}
+\newcommand{\bh}{\mathbf{h}}
+\newcommand{\bx}{\mathbf{x}}
+\newcommand{\by}{\mathbf{y}}
+\newcommand{\br}{\mathbf{r}}
+\newcommand{\bt}{\mathbf{t}}
+\newcommand{\bs}{\mathbf{s}}
+\newcommand{\bu}{\mathbf{u}}
+\newcommand{\bk}{\mathbf{k}}
+\newcommand{\bM}{\mathbf{M}}
+\newcommand{\bP}{\mathbf{P}}
+\newcommand{\bQ}{\mathbf{Q}}
+\newcommand{\calS}{\mathcal{S}}
+\newcommand{\hF}{\hat{F}}
+\newcommand{\bq}{\mathbf{q}}
+\newcommand{\hw}{\hat{w}}
+\newcommand{\hphi}{\hat{\phi}}
+\newcommand{\hxi}{\hat{\xi}}
+\newcommand{\hJ}{\hat{J}}
+%\def\bx{{\bm x}}
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lemma}[thm]{Lemma}
+\newtheorem{proposition}[thm]{Proposition}
+\newtheorem{corollary}[thm]{Corollary}
+\newtheorem{defy}[thm]{Definition}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{sample}[thm]{Example}
+\newtheorem{assumption}[thm]{Assumption}
+\newtheorem{prop}[thm]{Properties}
+
+%\renewcommand{\baselinestretch}{1.5}
+
+\begin{document}
+
+\title{
+A finite element method of the self-consistent field theory
+on a general curved surface}
+
+\author{Huayi Wei}
+\author{Ming Xu}
+\author{Kai Jiang\corref{cor}}
+\address{
+ School of Mathematics and Computational Science, Xiangtan
+ University, Xiangtan, Hunan, P.R. China, 411105,
+ \\
+Hunan Key Laboratory for Computation and Simulation in Science and Engineering
+ }
+ \cortext[cor]{Corresponding author. Email: kaijiang@xtu.edu.cn.}
+
+\date{\today}
+
+\begin{abstract}
+    In this article, we develop a linear surface finite element
+	method for the study of self-assembled phases of block
+	copolymers on a general curved surface based on the
+	self-consistent field theory. Meanwhile, we propose an
+    adaptive approach to optimize the size of the general curved surface
+    which can capture the compatible surface for a given self-assembled
+    pattern.  To demonstrate the power of the approach, we investigate the
+    self-assembled patterns of diblock copolymers on several distinct curved
+    surfaces, including five closed surfaces and an open surface.  Numerical results
+    illustrate the efficiency of our method.  The obtained ordered structures
+    are consistent with the previous results on standard surfaces, such as
+    sphere and torus. Furthermore, the proposed numerical framework has the
+    capability of studying the phase behaviors on arbitrary surfaces precisely. 
+\end{abstract}
+
+
+\maketitle
+
+\section{Introduction}
+\label{sec:intrd}
+
+Geometry plays a key role in many scientific
+fields\,\cite{nakahara2003topology}, including Hamiltonian mechanics with
+constraints, general relativity, quantum mechanics, quantum field theory, the
+arrangement of electrons on a sphere (Thomson problem), defect motion in a curved
+surface, polymer field theory, generic reaction-diffusion model occurring in
+chemistry and biology.  Recent years, the microphase separation of block
+copolymer under various types of geometrical confinements both in the bulk
+phase and on surfaces has been attracted tremendous attention.  Many novel
+patterns of block copolymer emerge from rearrangements of the traditional
+ordered phases when adapting to these restrictions\,\cite{wu2004composite,
+xiang2005, yu2006prl, charlotte2011interplay}.  The self-assembly of block
+copolymers under geometrical constraint provides an efficient means on the
+nanometer scale for such applications as the construction of high-capacity data
+storage devices, waveguides, quantum dot arrays, dielectric mirrors, nanoporous
+membranes, and nanowires, interference
+lithography\,\cite{charlotte2011interplay, segalman2005patterning}.  However,
+the curvature effects on the self-assembled pattern formation of block
+copolymers confined to a curved surface are still far from being fully
+understood, although several theoretical works have been devoted to this
+problem\,\cite{chantawansri2007, li2014self, li2006self}.  The main obstacle
+may be that it still lacks a general theoretical framework which can properly
+describe the microphase separation of block copolymers on a general curved
+surface.
+
+
+%The
+%curvature of manifold always show itself in
+%two sides. In one side, the motion in the
+%manifold can be regarded to be the motion in
+%high dimensional flat space with a constraint
+
+
+%Theoretically, the field of lattices constrained on surfaces of
+%constant curvature has been covered and explored extensively. The
+%main focus remains not only on spherical geometry, with the
+%advantage of experimental relevance and well-described
+%parameters\,\cite{}, but also on more abstract surfaces of constant
+%negative curvature\,\cite{nelson1983liquids}. The problem of
+%identifying the ground state at zero temperature has proven to be
+%very challenging for large numbers of particles on a sphere and
+%is still under investigation. The major complication, from an
+%analytical as well as from a simulation standpoint, is the vast
+%number of states with very small differences in energy.
+
+Theoretically, self-consistent field theory
+(SCFT)\,\cite{fredrickson2006equilibrium} proposes a successful framework in
+the study of the self-assembling of block copolymers.  It has predicted a
+variety of ordered bulk phases that have been observed in experiments, e.g.,
+lamella, hexagonal cylinder, sphere and gyroid order phases of diblock
+copolymers\,\cite{matsen1994stable}, and many intricate ordered phases of
+triblock copolymers\,\cite{jiang2015self}.  SCFT is a very complicated
+variational problem, possessing many unsatisfactory features, such as
+saddle-point optimization, nonlinearity, multi-solutions, and multi-parameters.
+Analytically solving this issue goes beyond current technologies. An alternating
+approach is the numerical technique.  However, it is still a highly challenging
+task to extend SCFT from flat spaces to curved surfaces, mostly due to the
+inappropriate numerical technique adopted in solving the relevant SCFT
+equations.
+
+Numerically solving the SCFT equations requires three parts to study, including
+initial values\,\cite{xu2013strategy, jiang2010spectral, jiang2013discovery},
+discretization schemes (mainly for the PDE), and
+nonlinear iteration methods for seeking the saddle points of the fields.
+A key issue of numerically solving SCFT is to discretize the partial
+differential equations (PDEs) involved in this model. In flat spaces, there many numerical
+approaches have been developed to solve this model  equation.  In general, two
+classes of discretization schemes have been presented to discrete the SCFT
+equations in the past 30 years.  The first type is the projective-space
+discretization method which discretizes equations in a special subspace based
+on specific problems.  According to a given pattern and its symmetric group in
+microphase-separated block copolymers, the SCFT equations can be expanded in
+terms of a set of symmetric basis functions. One of the typical representatives
+was the projective Fourier method proposed by Masten and Schick in
+1994\,\cite{matsen1994stable}.  The second type is the whole-space
+discretization method whose approximated space is the whole space. This method
+can be carried out both in real space\,\cite{drolet1999combinatorial} and in
+Fourier-space\,\cite{guo2008discovering}.  It has also been demonstrated that
+the whole-space discretization methods are able to capture new
+patterns\,\cite{drolet1999combinatorial, guo2008discovering}.  In recent years,
+the pseudospectral method has been introduced to solve the PDE in
+SCFT\,\cite{rasmussen2002improved, cochran2006stability}.  It fully takes
+advantage of the best performance of real space and Fourier-space and reduces
+the computational complexity to $O(M\log M)$, with the number of degrees $M$,
+based on the Fast Fourier Transformation (FFT). 
+%Besides space discretization method, 
+%second-order operator-splitting method, Crank-Nicokson scheme, and
+%linear multi-step approach have been used in the time
+%discretization direction. 
+
+From flat spaces to curved surfaces, the Laplace operator in the PDE becomes
+the Beltrami-Laplacian operator which is the heat kernel on the Riemann
+manifold.  The objective of developed numerical methods is how to discretize
+the differential operator on a curved surface.  There are always two viewpoints
+to demonstrate the curved surface. The first one is to regard the curved
+surface in high dimensional flat space with a constraint and this constraint is
+realized through the embedding of this curved surface into high dimensional
+flat space. In another viewpoint, the curved surface is presented by the inner
+coordinates of the manifold.  From the first viewpoint, the mask method, which
+uses a large enough domain in high dimensional flat space to cover the curved
+surface, can be chosen to treat the curved surface issue. These methods
+developed in the flat space can be used to solve the curved surface
+problem\,\cite{li2014mean}. Then the results on the curved surface can be
+obtained by restricting the bulk result on the manifold. From another
+viewpoint, one shall directly discretize the function on a curved surface. For
+the special curved surfaces, such as spherical surface, we can expand the
+function defined on the surface by the eigenfunctions of the Beltrami-Laplacian
+operator which are the spherical harmonic functions\,\cite{chantawansri2007,
+vorselaars2011self}.  However, for a general curved surface, it is impossible
+to find out the eigenfunctions to expand the function on the general manifold.
+It causes inconvenience in solving SCFT equations on the general curved
+surfaces.  In 2014, Li el al.\,\cite{li2014self} mimicked the process of finite
+difference method and developed an extended spherical ADI finite
+difference\,\cite{li2006self} to solve SCFT on the general curved surfaces. 
+
+%For a given curved surface, their method generates a
+%dense enough mesh which is a polyhedron to approximate the
+%manifold. Then the ADI finite difference is applied on the
+%polyhedron to solve SCFT. 
+
+
+%A few numerical methods have been
+%developed to solve SCFT equations, and mainly concentrated on
+%special surfaces, such as spherical surface. 
+%In 2006, Li et al.\,\cite{li2006self} designed
+%an ADI finite difference scheme and studied
+%the microphase patterns of diblock and triblock copolymers on a
+%sphere. Later, Chantawansri et
+%al.\,\cite{chantawansri2007} solved the diffusion equation on a
+%sphere using the pseudo-spectral method with a spherical harmonic
+%basis and systematically studied
+%the influences of sphere size on the assembled patterns of
+%diblock copolymers. Some other numerical schemes have
+%also been developed to deal with complex geometries. For
+%instance, Kim et al.\,\cite{kim2008interaction} have studied the
+%steric interaction between two polymer-grafted particles using SCFT
+%with a multiple-coordinate numerical scheme. In order to
+%investigate the behaviors of block copolymers grafted to a
+%sphere, Vorselaars et al.\cite{vorselaars2011self} developed a
+%hybrid numerical
+%scheme that combined a spherical-harmonics expansion for
+%the angular coordinates with a modified real-space Crank-Nicolson
+%method for the radial direction to solve the SCFT equations. 
+%For a general curved-surface SCFT, Li et al.\,\cite{li2014self}
+%have developed an extended spherical ADI finite difference
+%method, and study the phase behaviors of diblock copolymers on a
+%quasi-flat surface and general curved surfaces. 
+%However there still lack enough efficient numerical methods to
+%study the self-assembled behaviors on a general curved-surface
+%especially with rigorous theoretical guarantee, such as numerical
+%precision, convergent property and so on. 
+
+
+Fortunately, these methods using local basis functions can be designed to treat
+the general curved surface problem.  It is well-known that as an effective
+numerical method for solving PDE, the finite element method plays an important
+role in modern scientific and engineering computing.  Based on variational
+principle, surface finite element method subdivides the definition domain into
+small and simple regions, such as triangle, quadrilateral, tetrahedron,  or
+hexahedron, etc., and then simple algebraic equations on each small region can
+be created. At last these simple equations are assembled into a larger
+algebraic system to model the PDE problem.  The advantage of finite element
+method is that it can settle complex geometry domains and complex boundaries.
+Therefore surface finite element method is a good choice to solving PDEs on a
+general curved surface.  The surface finite element methods for PDEs defined on
+manifolds have been studied many in the literature; for example see \cite{Dziuk1988,
+    Dziuk;Elliott2007, wei2010, Dziuk1991, Dziuk2007, Demlow2009,
+Dziuk;Elliott2013}, and reference therein.  The approach was firstly proposed
+by Dziuk to solve the Laplace-Beltrami equation on arbitrary surfaces using
+linear finite element\,\cite{Dziuk1988}.  Dziuk and Elliott
+\cite{Dziuk;Elliott2007} applied the surface linear finite element to parabolic
+equations, and gave an example of error bounds in the case of
+semi-discretization in space for a fourth order linear problem.  Our previous
+work \cite{wei2010} generalized the superconvergence results and several
+gradient recovery approaches of linear finite element methods from flat spaces
+to general curved surfaces for the Laplace-Beltrami equation with mildly
+structured triangular meshes.  In this work, we will continue to develop the
+surface finite element method to study the microphase separation of block
+copolymer on a general curved surface based on the SCFT.
+
+
+The size of the curved surface also affects self-assembling patterns.
+For example, the self-assembled periodic structures are affected
+by the computational domain in flat
+space\,\cite{matsen1994stable}.  On the spherical surface, the
+radius can affect the number of microdomains of cylindrical phase
+as well as the energy values, and phase transition of lamellar
+phases.  Hence, our developed method will contain an automatic
+mechanism to optimize the size of the general curved surface.  
+
+
+%In this work, we will develop a finite element approach to
+%
+
+%investigate the self-assembly behavior of block copolymers on a
+%general curved surface using SCFT. The proposed numerical scheme
+%has a rigorous theoretical guarantee, such as convergence,
+%precision. Specifically, the proposed finite element method is an
+%extension of our previous work for the Laplace-Beltrami operator
+%on general curved surfaces\,\cite{wei2010}. At the same time, we
+%have noted that the size of the general curved surface will
+%affect the assembled phase. 
+%Hence, our developed method will 
+%contain an automatic mechanism to optimize the size
+%of the general curved surface.
+The remaining portion is arranged as follows. In Sec.\,\ref{sec:pre}, we
+introduce the preliminary knowledge of surface finite element method and
+curved surfaces to be used in this paper.  In Sec.\,\ref{sec:scft} we derive the
+SCFT on the general curved surface. The numerical algorithm for SCFT coupled
+with the surface linear finite element is given in Sec.\,\ref{sec:method}
+detailedly.  The efficiency of our method and the self-assembled structures of
+diblock copolymers on several curved surfaces are presented in
+Sec.\,\ref{sec:rslt}. In the Sec.\,\ref{sec:conclusion}, we will draw the
+conclusion and outline the further work.
+
+\section{Preliminaries}\label{sec:pre}
+
+In this section, we will introduce some basic knowledge about
+surface finite element method. More details can be found in
+\,\cite{Dziuk;Elliott2013}. Meanwhile, the curved surfaces to be used 
+in the following calculations and the approach of how to generate
+optimal meshes to discrete these surfaces will be presented.
+
+\subsection{Surface finite element method}
+
+Let $\calS$ be a two-dimensional, compact, and $\mathcal C^2$-hypersurface in $\mathbb
+R^3$.  Here we assume there exists a smooth level set function $d(\bx)$
+that can describe the surface $\calS$. 
+\begin{equation*}
+    \calS = \{\bx\in U ~|~ d(\bx) = 0\},
+\end{equation*}
+where $U$ is open subset of $\mathbb R^3$ in which $\nabla d(\bx) \not=0$, and
+$d\in \mathcal C^2(U)$. We define the unit normal vector on
+$\calS$ by 
+\begin{equation*}
+    \boldsymbol n = \frac{\nabla d(\bx)}{|\nabla d(\bx)|},
+\end{equation*}
+which means that the orientation of $\calS$ is fixed through normal
+vector $\boldsymbol n$.
+
+For $v(\bx)\in \mathcal C^1(\calS)$, since $\calS$ is $\mathcal C^2$, we can extent $v$ to $\mathcal C^1(U)$
+and still denote the extension by $v$. The tangential gradient of
+$v$ on $\calS$ can be written as 
+\begin{equation*}
+    \nabla_S v = \nabla v - (\nabla v\cdot\boldsymbol n)\boldsymbol n =
+    \boldsymbol P(\nabla v),
+\end{equation*}
+where $\boldsymbol P(\bx) = (I - \boldsymbol n\boldsymbol n^t)(\bx)$ is the projection operator
+to the tangent plane at a point $\bx\in \calS$. Notice that we use the extension of
+$v$ to define the surface gradient. However, it can be shown that $\nabla_S v$ depends only
+on the value of $v$ on $\calS$ but not on the
+extension\,\cite{Demlow2009}. Namely, $\nabla_S$ is an intrinsic
+operator. 
+
+Similarly, for a vector field $\boldsymbol v \in (\mathcal
+C^1(\calS))^3$, we can also extend it
+to $(\mathcal C^1(U))^3$ and define the tangential divergence operator of
+$\boldsymbol v$ on $\calS$ as
+\begin{equation*}
+    \nabla_S\cdot \boldsymbol v(\bx) = \nabla\cdot\boldsymbol v - \boldsymbol
+    n^t\nabla \boldsymbol
+    v\nabla\boldsymbol n,
+\end{equation*}
+
+The Laplace-Beltrami operator on $\calS$ reads as follows:
+\begin{equation*}
+    \Delta_\calS v = \nabla_\calS\cdot(\nabla_\calS v) = \Delta v - (\nabla v\cdot\mathbf
+    n)(\nabla\cdot\mathbf n) - \mathbf n^t\nabla^2 v \mathbf n,
+\end{equation*}
+provided $v(\bx) \in \mathcal C^2(\calS)$ and $\nabla^2 v$ is the Hessian matrix of $v$ (suitably
+extended as a $C^2(U)$ matrix function). The Sobolev
+spaces on surface $\calS$ can be defined us:
+\begin{equation*}
+    H^1(\calS) = \{v\in L^2(\calS)\, |\, \nabla_S v \in
+    (L^2(\calS))^3 \}.
+\end{equation*}
+
+Let $\calS$ be approximated by a triangular mesh $\calS_h$ with node set $\mathcal
+N_h = \{\bx_i\}_{i=1}^{N}$ and triangle set $\mathcal T_h = \{\tau_h\}$.  We
+assume that these triangles are shape-regular and quasi-uniform of a
+diameter $h$ and their vertices lie on $\calS$. For any $\tau_h\in \mathcal T_h$,
+let $\boldsymbol n_h$ be the unit outward normal vector of $S_h$ on $\tau_h$.
+Let $V_h$ be the continuous piecewise linear finite element space on $S_h$,
+with linear Lagrangian basis functions $\{\varphi_i(\bx)\}_{i=1}^N$ defined
+on $S_h$. $\varphi_i(\bx)$ is the piecewise linear function on each
+triangle face $\tau_h$
+\begin{equation}\label{eq:varphi}
+    \varphi_i(\bx_j) = 
+    \begin{cases}
+        1,&\text{ if } i=j,\\
+        0,&\text{ if } i\not=j
+    \end{cases} 
+\end{equation}
+For $v_h\in C(S_h)$ and $v_h|_{\tau_h}\in C^1(\tau_h)$, we have 
+\begin{equation*}
+    \nabla_{S_h} v_h|_{\tau_h} := \nabla v_h - (\nabla v_h\cdot\boldsymbol
+    n_h)\boldsymbol n_h = (\boldsymbol I - \boldsymbol n_h \boldsymbol
+    n_h^t)\nabla v_h = \boldsymbol P_h\nabla v_h.
+\end{equation*}
+
+
+\subsection{Surface representation and mesh generation}
+
+In general, there are three ways to represent a continuous surface in $\mathbb R^3$:
+explicit, implicit and parametric. 
+In this subsection, we will discuss how to generate good quality
+finite element meshes on surfaces with different representations.
+A high-quality mesh on a curved surface has these properties:
+the triangle elements are all almost equilateral and more mesh
+nodes located at the place with big curvature\,\cite{wei2010}.
+It will result in better numerical accuracy in solving PDEs. 
+
+For a parabolic surface defined by the explicit function $f(x, y) = x^2 +
+y^2$ on a plain domain,  we first generate a good quality triangle mesh on the plain domain, and
+then lift the mesh nodes onto the parabolic surface by setting $z
+= x^2 +y^2$, as shown in Fig.\,\ref{fig:mesh-Parabolic}. 
+
+\begin{figure}[H]
+    \setlength{\captionmargin}{2pt}
+    \centering
+    \subfigure[]{\includegraphics[scale=0.35]{figures/mesh/circlemesh.pdf}}
+    \hspace{1cm}
+    \subfigure[]{\includegraphics[scale=0.45]{figures/mesh/parabolic.pdf}}
+    \caption{The triangle mesh on the unit circle domain (a) and lift
+    into the parabolic surface (b).}
+    \label{fig:mesh-Parabolic}
+\end{figure}
+
+Torus surface can be defined parametrically by
+\begin{align*}
+    x(\theta, \phi) &= (R + r\cos\theta)\cos\phi,\\
+    y(\theta, \phi) &= (R + r\cos\theta)\sin\phi,\\
+    z(\theta, \phi) &= r\sin\theta,
+\end{align*}
+where $\theta$ and $\phi$ are the angles which make the full circles, so that
+their values start and end at the same point, $R$ is the major radius which is
+the distance from the center of the tube to the center of the torus, $r$ is the
+minor radius which is the radius of the tube. The ratio $R$ divided by $r$ is
+known as the "aspect ratio". With above parameter representation,  the triangle
+mesh on torus surface can be generated by mapping a triangle mesh on the square
+domain $[0, 2\pi]^2$ onto the torus surface, see Fig.\,\ref{fig:mesh-torus}. 
+\begin{figure}[H]
+    \setlength{\captionmargin}{2pt}
+    \centering
+    \includegraphics[scale=0.45]{figures/mesh/torus1.pdf}
+    \caption{The triangle mesh on torus surface.}
+    \label{fig:mesh-torus}
+\end{figure}
+
+Any point on the unit sphere
+satisfies the following implicit equation
+$ \sqrt{x^2 + y^2 + z^2} - 1 = 0$.
+A good triangle mesh on spherical surface can be easily
+generated by uniformly refining an icosahedron and projecting the new mesh
+nodes which are the old mesh edge center onto the sphere surface. 
+The refinement procedure is illustrated in
+Fig.\,\ref{fig:mesh-sphere}. 
+
+\begin{figure}[H]
+    \setlength{\captionmargin}{2pt}
+    \centering
+    \subfigure[Icosahedron.]{\includegraphics[scale=0.35]{figures/mesh/sphere-init.pdf}}
+    \hspace{0.5cm}
+    \subfigure[Refine 1]{\includegraphics[scale=0.40]{figures/mesh/sphere-1.pdf}}
+    \hspace{0.5cm}
+    \subfigure[Refine 2]{\includegraphics[scale=0.38]{figures/mesh/sphere-2.pdf}}
+    \hspace{0.5cm}
+    \subfigure[Refine 3]{\includegraphics[scale=0.38]{figures/mesh/sphere-3.pdf}}
+    \caption{The icosahedron and the uniformly refined mesh on unit sphere.}
+    \label{fig:mesh-sphere}
+\end{figure}
+
+Three more complex surfaces, including the double torus, heart, and
+orthocircle, will be used in the simulations. Their
+implicit expressions are given as follows:
+\begin{description}
+    \item[Double torus surface] 
+        \begin{align}
+            x^2(x^2-1)[x^2(x^2-1) + 2y^2] + y^4+ z^2 -0.04 =0.
+            \label{fig:mesh:doubletorus}
+        \end{align}
+    \item[Heart surface] 
+        \begin{align}
+            (x-z^2)^2 +y^2+z^2-1=0.
+            \label{fig:mesh:heart}
+        \end{align}
+    \item[Orthocircle surface]
+        \begin{align}
+            [(x^2+y^2-1)^2+z^2][(y^2+z^2-1)^2+x^2][(z^2+x^2-1)^2+y^2]-0.075^2[1+3(x^2+y^2+z^2)]=0.
+            \label{fig:mesh:orthocircle}
+        \end{align}
+\end{description}
+
+It is difficult to generated triangle surface mesh by
+the method used for the sphere or torus surface. Here we use the 3D Surface Mesh
+Generation package in CGAL \cite{rieau2018} to generate the initial triangle
+mesh, but its quality is not good enough. So we further optimized these
+initial mesh by the method based on the Centroidal Voronoi Tessellation (CVT)
+technique \cite{wei2012}, see Fig.\,\ref{fig:mesh-CGAL}. 
+
+\begin{figure}[H]
+    \setlength{\captionmargin}{2pt}
+    \centering
+    \subfigure[The optimized double torus mesh.]{\includegraphics[scale=0.5]{figures/mesh/doubletorus.pdf}}
+    \hspace{1cm}    
+    \subfigure[The optimized heart mesh.]{\includegraphics[scale=0.48]{figures/mesh/heart.pdf}}
+    \hspace{1cm}
+    \subfigure[The optimized orthocircle mesh.]{\includegraphics[scale=0.35]{figures/mesh/orthocircle.pdf}}
+    \caption{The optimized meshes on general surfaces.}
+    \label{fig:mesh-CGAL}
+\end{figure}
+
+\section{SCFT on the general curved surface}
+\label{sec:scft}
+
+Our implementation of SCFT on a general curved surface is built on a
+standard field theory model for an incompressible AB diblock copolymer melt.
+We consider $n$ AB diblock copolymers with the polymerization of $N$
+confined on a curved surface with a total surface area $|\calS|$.
+The volume fraction of the $A$ block is $f$ and that of the $B$ block is $1-f$.
+The two blocks disfavor with each other characterized by the
+Flory-Huggins parameter $\chi$. 
+We assume that the statistical segment length and segment volume
+of the two polymers are equal, i.e., $b_A=b_B=b$ and $v_A=v_B=v_0$.
+A characteristic length of the copolymer chain can be defined
+by the unperturbed radius of gyration, which is used as the unit
+of length so that all spatial lengths are presented in units of
+$R_g=b\sqrt{N/6}$. With the incompressible melt assumption, the
+average segment density is uniform in space and given by
+$v_0=1/\rho_0=V/(n N)$, $\rho_0$ is the number density. Here we use a
+continuous Gaussian chain to model the block
+copolymer\,\cite{fredrickson2006equilibrium,matsen2002standard}.
+By the use of statistical mechanics, 
+Hubbard-Stratonovich transformation and infinite dimensional
+Fourier transformation, one can derive the
+field-based model to describe the phase behavior of the block
+copolymer system. However, directly solving the field-based model
+is nontrivial due to the very complicated nature of the
+functional integral exhibited in the partition
+function\,\cite{fredrickson2006equilibrium}. 
+In order to simplify the field model we often use an analytic
+approximation technique called the mean-field (saddle-point)
+approximation which ignores field fluctuations and assumes that
+the functional integral is dominated by a single field configuration.
+This approximation method become accurate when the dimensionless
+chain concentration $C=\rho_0 R_g^3/N$ approaches infinity, and
+in the case of high molecular weight block copolymer melts, where
+$C$ can be very large. From the viewpoint of mathematics, the
+asymptotic method approximate the functional integral (the
+partition function) with a large parameter $C$ by the integrand
+function on the critical point (actually the saddle point).
+Then one can obtain the SCFT equations.
+Specifically, within the mean-field approximation, the effective
+Hamiltonian of this system is
+\begin{align}
+  H[w_+, w_-] = &
+  \frac{1}{|S|}\int d x\, \left\{ 
+  -w_+(x) + \frac{w_-^2(x)}{\chi N} 
+  \right\} -\log Q[w_+(x), w_-(\bx)]..
+  \label{eq:hamiltonian}
+\end{align}
+In the above equation, 
+%$\chi$ is the Flory-Huggins parameter to
+%describe the interaction between segments $A$ and $B$. 
+$w_+(\bx)$ and $w_-(\bx)$ are the fluctuating pressure and exchange
+chemical potential fields, respectively. The pressure field
+enforces the local incompressibility, while the exchange chemical
+potential is conjugate to the density operators.
+$Q$ is the single chain partition 
+functional subjected to external fields $w_+$ and $w_-$.
+$d\bx$ is the area element of the surface.
+First-order variations of the free energy functional with respect
+to the fields lead to the following SCFT equations,
+\begin{align}
+	& \frac{\delta H}{\delta w_+(\bx)} = \phi_A(\bx) + \phi_B(\bx) - 1 = 0,
+	\label{eq:scftwplus}
+	\\
+	& \frac{\delta H}{\delta w_-(\bx)} = 
+   \frac{2 w_-(\bx)}{\chi N} - [\phi_A(\bx) - \phi_B(\bx)] = 0.
+	\label{eq:scftwminus}
+\end{align}
+$\phi_A(\bx)$ and $\phi_B(\bx)$ are $A$ and $B$ monomer densities. 
+Then by the use of the continuous Gaussian chain model,
+we can complete the SCFT system.
+\begin{align}
+  & Q = \frac{1}{|\calS|}\int d\bx\,q(\bx,1) = \frac{1}{|\calS|}\int
+    d\bx\,q(\bx,s)q^\dag(\bx,1-s), ~~~ \forall s \in [0,1]
+  \\
+  & \phi_A(\bx) =
+  \frac{1}{Q}\int_0^f ds\,q(\bx,s)q^{\dag}(\bx,1-s),
+  \label{eq:scft:phiA}
+  \\
+  & \phi_B(\bx) =
+  \frac{1}{Q}\int_f^1 ds\,q(\bx,s)q^{\dag}(\bx,1-s).
+  \label{eq:scft:phiB}
+\end{align}
+In the system, $q(\bx,s)$, the forward propagator, represents the probability
+weight that the chain of contour length $s$ has its end at surface position
+$\bx$, where the variable $s$ is used to parameterize each copolymer chain. $s
+= 0$ represents the tail of the A block and $s = f$ is the junction between the
+A and B blocks.  From the flexible Gaussian chain model, the forward propagator
+$q(\bx,s)$ satisfies the modified diffusion equation (MDE)
+\begin{equation}
+  \label{eq:MDE}
+	\begin{aligned}
+  \frac{\partial }{\partial s}q(\bx,s) &=
+	[R_g^2 \Delta_{\calS} - w(\bx,s)] q(\bx,s), 
+	\\
+  q(\bx,0) &= 1,
+  \\
+	w(\bx,s) &= \left\{   
+	\begin{array}{rl}
+		w_+(\bx)-w_-(\bx), &  0\leq s \leq f,
+		\\
+		w_+(\bx) +w_-(\bx), &  f\leq s \leq 1,
+	\end{array}
+\right.
+	\end{aligned}
+\end{equation}
+The backward propagator $q^{\dag}(\bx,s)$, which represents the probability 
+weight from $s=1$ to $s=0$, satisfies similar MDE  
+\begin{equation}
+  \label{eq:MDEplus}
+	\begin{aligned}
+  \frac{\partial }{\partial s}q^\dag(\bx,s) &=
+	[R_g^2 \Delta_{\calS} - w^\dag(\bx,s)] q(\bx,s), 
+	\\
+  q^\dag(\bx,0) &= 1,
+  \\
+	w^\dag(\bx,s) &= \left\{   
+	\begin{array}{rl}
+		w_+(\bx)+w_-(\bx), &  0\leq s \leq 1-f,
+		\\
+		w_+(\bx) -w_-(\bx), &  1-f\leq s \leq 1.
+	\end{array}
+\right.
+	\end{aligned}
+\end{equation}
+
+
+\section{Methodology}
+\label{sec:method}
+
+
+%\subsection{Iteration Procedure}
+%\label{subsec:iteration}
+%
+
+The equilibrium point of the SCFT equations corresponds to the ordered phase,
+as well as the saddle point from the viewpoint of mathematics.  Finding 
+saddle points of the SCFT requires iteration methods.  The previous study has
+been shown that the effective Hamiltonian \eqref{eq:hamiltonian} can reach its
+local minima along the exchange chemical field $w_-$ and maxima along the
+pressure field $w_+$\,\cite{jiang2015analytic, fredrickson2002field}. It still
+lacks rigorous theoretic guarantee, however, the numerical behavior has
+demonstrated its effectiveness. Based on this observation, we can use an
+alternating direction scheme to obtain the saddle points.  Specifically, we
+introduce a fictitious time variable $t$, and at each time step, the
+saddle-point search is formally given by 
+\begin{align}
+	\frac{\partial }{\partial t}w_+(\bx,t) &= \frac{\delta
+	H[w_+, w_-]}{\delta w_+(\bx, t)},
+	\label{eq:eulerwplus}
+	\\
+	\frac{\partial }{\partial t}w_-(\bx,t) &= -\frac{\delta
+	H[w_+, w_-]}{\delta w_-(\bx, t)}.
+	\label{eq:eulerwminus}
+\end{align}
+Clearly, Eqs.\,\eqref{eq:scftwplus} and \eqref{eq:scftwminus} are
+satisfied when Eqs.\,\eqref{eq:eulerwplus} and
+\eqref{eq:eulerwminus} are stationary.
+
+Within the standard framework of SCFT, we can use the following 
+iteration scheme to find the saddle point (FSP) of $w_\pm$:
+\begin{description}
+	\item[Step 1] Given initial estimations of fields $w_\pm(\bx, 0)$.
+    \item[Step 2] Compute forward and backward propagator operators
+		$q(\bx,s)$ and $q^\dag(\bx,s)$ on a general curved
+		surface (see Sec.\,\ref{subsec:mde}).
+	\item[Step 3] Obtain $Q$, $\phi_A(\bx)$ and $\phi_B(\bx)$ by
+		integral equations (see Sec.\,\ref{subsec:otherdetail}), and calculate
+        the Hamiltonian $H$.
+	\item[Step 4] Update fields $w_+(\bx,t)$ and $w_-(\bx,t)$ by 
+		Eqs.\,\eqref{eq:eulerwplus} and \eqref{eq:eulerwminus}
+		using some iterative methods (see Sec.\,\ref{subsec:otherdetail}). 
+	\item[Step 5] Repeat steps 2-4 until a convergence criterion
+		is met.
+\end{description}
+
+In the polymeric systems, each self-assembled microphase possesses its
+characteristic scale due to the statistical length of the polymer chain.  In
+the flat space, the size and shape of the computational domain can
+affect the energy value of self-assembled structures\,\cite{matsen1994stable,
+jiang2013discovery} and the properties of the polymer materials, such as the
+mechanical property\,\cite{barrat2005introducing, tyler2003stress}.  As in the
+flat cases, the ordered pattern formed on the curved surface has its
+characteristic scale. In contrast, the size of the curved surface also affects the
+self-assembled patterns.  For example, on the sphere surface, the radius of
+sphere affects the self-assembled phases of diblock copolymers and their energy
+values\,\cite{chantawansri2007}.  However, it still lack a systematical
+method to select an optimal size for a self-assembled structure on a
+general curved surface. Here, we develop a theoretic tool to efficiently handle
+this issue, i.e., an adaptive approach of optimizing the size of a general
+curved surface for a given ordered structure.
+
+In the special case of SCFT, the effective Hamiltonian shall be viewed as a
+function of the size of the curved surface, as well as a functional of the
+field functions.  In the practical implementation, we parameterize the surface
+mesh $\mathcal{S}$ by 
+\begin{align}
+	\mathcal{S}_\Gamma=\{\Gamma\cdot\bx: \bx\in\mathcal{S}_0 \},
+	\label{}
+\end{align}
+where $\calS_0$ is the initial surface mesh, $\Gamma>0$ is a scale factor.
+%For example, the parameter set $\Gamma$ of a spherical surface is
+%the spherical radius. 
+%For ellipsoid surface, $\Gamma$ contain three principal semi-axes.
+%Then the effective Hamiltonian \eqref{eq:hamiltonian} can be
+%viewed as a functional of $H[w_+,w_-,\Gamma]$. 
+%Let $\Gamma=\{\gamma_1,\dots,\gamma_k\}$ be the parameter set of
+%description of the size of a given curved surface. 
+The scale factor shall be optimized coupled with 
+the procedure of FSP. From the aspect of mathematics, the
+completed optimization problem of solving SCFT is 
+\begin{align}
+	\min_{\Gamma}\max_{w_+}\min_{w_-} H[w_+(\bx),
+    w_-(\bx), \Gamma]. 
+	\label{eq:scftOpt}
+\end{align}
+Therefore, the integrated SCFT iteration procedure, including seeking
+the saddle point of SCFT equations and adaptively optimizing
+the scale factor of the curved surface, contains the following steps:
+\begin{description}
+  \item[Step 1] Give proper parameters $\chi$, $f$, a curved
+      surface $\calS$, and reasonable initial distributions of $w_{\pm}$.
+  \item[Step 2] Fix $\mathcal{S}$, find the
+	  saddle-point of SCFT equation by FSP procedure
+	  and obtain the effective Hamiltonian.
+  \item[Step 3] Fix $w_\pm$, optimize the size of $\mathcal{S}$ by the method described in
+	  Sec.\,\ref{subsec:adjustBox}, calculate effective
+	  Hamiltonian.
+  \item[Step 4] Repeat steps 2-3 until the effective
+	  Hamiltonian discrepancy is lower that a convergence
+	  criterion.
+\end{description}
+
+\subsection{Surface finite element method for MDE}
+\label{subsec:mde}
+
+
+In the iteration scheme outlined above, the most costly step is solving the 
+MDEs of \eqref{eq:MDE} and \eqref{eq:MDEplus}.  For a special
+surface, such as the sphere surface, the global basis of spherical harmonics
+can be used to expand the order parameters. For a general curved surface,
+however, the global basis might not exist. Therefore, the methods based on a
+local basis shall be developed to solve the curved surface SCFT, such as the
+finite volume or element method. Here, we focus our attention on the
+development of the finite element method. We discretize the Laplace-Beltrami
+operator in \eqref{eq:MDE} and \eqref{eq:MDEplus} by the surface linear finite
+element method.  
+
+Here we just present the finite element discretization of \eqref{eq:MDE}, and
+for the equation \eqref{eq:MDEplus} of backward propagator $q^{\dag}$, one can
+obtain the discretization scheme similarly. Firstly, we rewrite \eqref{eq:MDE} into the variational
+formulation: find $q$ in $H^1(\calS)$, which satisfies
+\begin{equation}\label{eq:FEM}
+    \left(\frac{\partial}{\partial s} q, v\right)_\calS = -(\nabla_\calS q,
+    \nabla_\calS v)_\calS - (wq, v)_\calS, ~~\text{ for all } v\in H^1(\calS),
+\end{equation}
+where $(\cdot,\cdot)_S$ represents the $L^2$ inner product on
+$\calS$. 
+
+Replacing the infinite dimensional space $H^1(\calS)$ by the finite dimension space
+$\mathcal V_h$, we obtain the linear finite element discretization of
+\eqref{eq:FEM}: find $q_h=\sum_{i=1}^N q_i(s)\varphi_i(\bx)$ in
+$\mathcal V_h$, which satisfies
+\begin{equation}\label{eq:FEM1}
+    \left(\frac{\partial}{\partial s} q_h, v_h\right)_{\calS_h} =
+    -(\nabla_{\calS_h}
+    q_h, \nabla_{\calS_h} v_h)_{\calS_h} - (w_hq_h, v_h)_{\calS_h},
+    ~~\text{ for all } v_h\in \mathcal V_h, 
+\end{equation}
+where $(\cdot, \cdot)_{S_h}$ represents the $L^2$ inner product on $S_h$ and
+$w_h(\bx, s)=\sum_{i=1}^N w(\bx_i, s)\varphi_i(\bx)$ is the linear interpolation of
+$w(\bx, s)$.  Replacing $v_h$ by $\varphi_j$, $j=1, 2,
+\cdots, N$, we can have the matrix form of \eqref{eq:FEM1}, 
+
+\begin{equation}
+    M\frac{\partial}{\partial s}\mathbf q(s) = - (A + F) \mathbf q(s), 
+\end{equation}
+where 
+\begin{equation*}
+    \mathbf q(s) = \left(q_1(s), q_2(s), \cdots, q_N(s)\right)^T, 
+\end{equation*} 
+and 
+\begin{equation*}
+    M_{i,j} = (\varphi_i, \varphi_j), A_{i, j} = (\nabla_\calS\varphi_i,
+    \nabla_\calS\varphi_j), F_{i, j} = (w_h\varphi_i, \varphi_j).
+\end{equation*}
+Next in the $s$-direction, we use the Crank-Nicolson scheme,
+\begin{equation}\label{eq:FEMs}
+    M \frac{\mathbf q^{n+1} - \mathbf q^n}{d s} = - \frac{1}{2}(A + F)\left[\mathbf
+    q^{n+1} + \mathbf q^{n}\right],
+\end{equation}
+where $d s$ is the time step size. Combining with the above two steps, we obtain the fully discretization
+format
+\begin{equation}\label{eq:FEMs}
+    \left[M + \frac{ds}{2} (A+F)\right] \mathbf q^{n+1} = -
+	\frac{ds}{2}(A + F)\mathbf{q}^{n}.
+\end{equation}
+When the linear algebraic system \eqref{eq:FEMs} is relatively
+small, we solve it with the direct method. Otherwise the algebraic
+multigrid method is adapted\,\cite{chenlong}.
+
+\subsection{Adaptively optimizing the curved surface}
+\label{subsec:adjustBox}
+
+When fixed fields $w_\pm(\bx)=w_\pm^f(\bx)$, the optimization
+problem of \eqref{eq:scftOpt} becomes 
+\begin{align}
+    \min_{\Gamma}H[w_+^f(\bx), w_-^f(\bx), \Gamma].
+	\label{eq:scftoptival}
+\end{align}
+Any appropriate optimization method can be chosen to solve this
+issue, such as the simplest steepest descend method, i.e.,
+$d\Gamma/dt = -dH/d\Gamma$.
+However, due to the complexity of SCFT, it is hardly written
+down the derivative of the
+SCFT's Hamiltonian with respect to the scale factor of a general
+curved surface $d H/d \Gamma$ analytically.
+Alternatively, we turn to the numerical approach to approximate
+the analytic expression. We can calculate the
+derivative of $H$ with respect to $\Gamma$ by the finite
+difference method. 
+To improve the effectiveness of algorithm, in practical
+implementation, we adapt the nonlinear conjugate-gradient
+(CG) method to minimize objective
+function\,\eqref{eq:scftoptival},\cite{nocedal2006numerical}, i.e.,
+\begin{align}
+	\Gamma^{k+1} = \Gamma^{k} + \alpha^k d^k,
+  \label{eq:adjustR}
+\end{align}
+where $d^k$ is the conjugate gradient direction in the $k$-step.
+$\alpha_k$ is the step size obtained by the linear search
+approach. Meanwhile, the restart technology has been used in
+nonlinear CG method to avoid the oscillation and improve the
+convergent rate.
+
+\subsection{Other computational details}
+\label{subsec:otherdetail}
+
+\subsubsection{Iterative method}
+\label{subsubsec:euler}
+
+%\textcolor{red}{The following iterative method might be wrong. It
+%may be considered the manifold constraint (Ref. optimization on
+%Stiefel manifolds).}
+
+The iterative methods to update the fields 
+are dependent on the mathematical structure of SCFT. 
+An important fact is that the effective
+Hamiltonian \eqref{eq:hamiltonian} can reach its local minima
+along the exchange chemical field $w_-(\bx)$, and reach the maxima
+along the pressure field
+$w_+(\bx)$\,\cite{fredrickson2006equilibrium}. 
+A simple and efficient method, i.e., the explicit Euler method, can be
+chosen to update the fields $w_\pm(\bx)$. Specifically, this
+approach is expressed as 
+\begin{equation}
+	\begin{aligned}
+		w_+^{k+1}(\bx) &= w_+^k(\bx) + \lambda_+
+		[\phi_A^k(\bx)+\phi_B^k(\bx)-1 ] 
+		\\
+		w_-^{k+1}(\bx) &= w_-^k(\bx) - \lambda_-
+   \left[\frac{2 w_-^k(\bx)}{\chi N} - [\phi_A(\bx) - \phi_B(\bx)]
+   \right].
+	\end{aligned}
+	\label{}
+\end{equation}
+
+\subsubsection{Integral formula along $s$-direction }
+\label{subsubsec:sintegral}
+
+A modified numerical integration formula for closed interval is
+chosen to evaluate the integrated equations
+\eqref{eq:scft:phiA}-\eqref{eq:scft:phiB} that can guarantee
+fourth-order precision in $s$-direction whether the number of
+discretization points is even or odd\,\cite{press1992numerical}.
+\begin{align}
+	\int_{0}^{n_s} dt\,f(s) = \Delta s \left\{
+	-\frac{5}{8}(f_0+f_{n_s}) 
+	+\frac{1}{6}(f_1+f_{n_s -1}) 
+	-\frac{1}{24}(f_2+f_{n_s-2}) 
+	+\sum_{j=0}^{n_s} f_{j} 
+	\right\}.
+\end{align}
+
+\subsubsection{Surface integral $\int d\bx$ }
+
+Given a linear finite element function $v_h = \sum_{i=1}^N v_i\varphi_i(\bx)$ on
+$\calS_h$. Notice that $\varphi_i(\bx)$ is a linear function about $\bx$ on each
+triangle faces, and from \eqref{eq:varphi}, we can compute the integration of $v_h$ on
+$\calS_h$ as follows: 
+
+\begin{equation*}
+    \int_{\calS_h} v_h \mathrm d \bx = \sum_{\tau_h\in\mathcal T_h} \int_{\tau_h}
+    v_i\varphi_i(\bx) + v_j\varphi_j(\bx) + v_k\varphi_k(\bx) \mathrm d \bx = \sum_{\tau_h\in\mathcal T_h} \frac{v_i + v_j +
+    v_k}{3}|\tau_h|, 
+\end{equation*}
+where $v_i$, $v_j$ and $v_k$ are the function values on the three vertices
+of triangle face $\tau_h = (\bx_i, \bx_j, \bx_k)$, $|\tau_h|$ is the area of
+$\tau_h$.
+
+\section{Numerical Results}
+\label{sec:rslt}
+
+In this section, we will use five closed curved surfaces including sphere,
+torus, double torus, heart, orthocircle, and an open parabolic surface to
+demonstrate the efficiency of our numerical method.  To ensure the accuracy, we
+set the substep of contour length $s$ to $0.005$ in the following computation.
+The convergence criterion of FSP is 
+\begin{align}
+	\max\left\{
+	\left\|\frac{\delta H}{\delta w_+} \right\|_{\ell^\infty},
+	\left\|\frac{\delta H}{\delta w_-} \right\|_{\ell^\infty} 
+	\right\} \leq 10^{-6},
+	\label{}
+\end{align}
+and SCFT is the change of effective Hamiltonian smaller than $10^{-6}$.
+
+\subsection{Efficiency of the numerical method}
+
+Since there is no analytical solution of SCFT on a general curved surface, we
+have to verify the convergence of the numerical solution of our method by
+running the simulations on a series of subdivision meshes. Here we take the
+12-microdomain spots structure on the shpere with model parameters $\chi
+N=30.0$, $f=0.20$, $\Gamma=2.9$ as an example to show the convergence of our
+method,  see Tab.\,\ref{tab:refinemesh}. 
+
+\begin{table}[H]
+\caption{
+The calculated information of SCFT simulations on a series of subdivision meshes.}
+  \label{tab:refinemesh}
+  \centering
+\begin{tabular}{|c|c|c|c|c|c|}
+ \hline
+ \# of Node  & \# of Elem. & $\Gamma$ & $\Gamma$-diff. & Hamiltonian &
+ Ham. diff. \\
+ \hline
+162  & 320   & -  & - & -&  -  \\ 
+ \hline
+ 642   & 1280  & 3.7071  & 8.071e-1 & -3.172693  & - \\
+ \hline
+2562  & 5120  & 3.5786  & 1.285e-1 & -3.160542 &  1.215e-2\\
+ \hline
+10242 & 20480 & 3.5656  & 1.129e-2 & -3.165431 & 4.889e-3\\
+ \hline
+40962 & 81920 & 3.5632  & 2.399e-3 & -3.166846 & 1.415e-3 \\
+ \hline
+\end{tabular}
+\end{table}
+
+In the series of simulations, the initial fields on each node $(x, y, z)$ is $
+w_{-} = \chi N\sin(5\theta)$, $w_{+} = 0 $, where $\theta = \arctan(y/x) \in
+[0, 2\pi]$.  The initial surface is a unit sphere with scale factor
+$\Gamma=2.9$.  We uniformly refine the initial mesh and the number of nodes and
+triangular elements can be found in the first and second columns of
+Tab.\,\ref{tab:refinemesh}. From the table, one can find that, along with the
+refinement of the mesh,  the Hamiltonian value is indeed convergent, and more
+significantly, the scale factor is adaptively optimized and
+convergent. The finally convergent morphology can be found in Fig\,\ref{fig:sphere} (a). 
+
+For better observation, as an example, we detail the SCFT iteration information
+of the simulation with $10242$ nodes and $20480$ elements in Tab.\,
+\ref{tab:refinemesh}.   The results are demonstrated in
+Tab.\,\ref{tab:fixedmesh}.  The effective Hamiltonian and the discrepancy of
+Hamiltonian respective to iterations are given in Fig.\,\ref{fig:sphere-5}.
+It costs $15$ SCFT iterations, and $831$ FSP iterations. The scale
+factor $\Gamma$  is optimized from $2.9$ to $3.5656$.  Correspondingly, the
+discrepancy of the effective Hamiltonian values is $5.9\times 10^{-2}$ (from
+$-3.106$ to $-3.165$). The change amount of effective Hamiltonian is enough to
+determine the thermodynamic stability, as well as the phase boundary in the
+phase diagram, of self-assembled structures in block
+copolymers\,\cite{chantawansri2007, fredrickson2006equilibrium,
+matsen1994stable, jiang2013discovery}.  The results are consistent with the
+previous theoretical results\,\cite{chantawansri2007}.  However, it should be
+noted that, in Ref.\,\cite{chantawansri2007}, the authors
+obtained the accurate effective Hamiltonian values through
+manually changing the scale factor $\Gamma$ for each time. Here, we 
+can optimal $\Gamma$ automatically. 
+
+
+\begin{table}[H]
+  \caption{
+  The iteration details of the SCFT simulation to compute the
+  12-microdomain phase on the sphere surface used 
+  10242 nodes and 20480 elements, see Tab.\,\ref{tab:refinemesh}).
+  }
+  \label{tab:fixedmesh}
+  \centering
+  \begin{tabular}{|c|c|c|c|c|c|}
+    \hline
+	Iter. of SCFT & Iters. of FSP & $\Gamma$  &
+	$\Gamma$-Diff. & Hamiltonian & Ham. Diff.  \\
+    \hline
+	1 & 169 & 2.90 & - & -3.10648180 & -
+	\\ \hline
+	2 & 361 & 3.372922 & 4.729e-1 & -3.16079157  & 5.431e-2
+	\\ \hline
+	3 & 73 & 3.656954 & 2.843e-1  & -3.16437826  & 3.587e-3
+	\\ \hline
+	4 & 50 & 3.530368 & 1.266e-1  & -3.16530810  & 9.298e-4
+	\\ \hline
+	5 & 46 & 3.580692 & 5.032e-2  & -3.16538583  & 7.773e-5
+	\\ \hline
+	6 & 44 & 3.559392 & 2.130e-2  & -3.16543307  & 4.723e-5
+	\\ \hline
+	7 & 14 & 3.568215 & 8.823e-3  & -3.16529309  & 1.399e-4
+	\\ \hline
+	8 & 17 & 3.564173 & 4.043e-3  & -3.16546705  & 1.739e-4 
+	\\ \hline
+	9 & 15 & 3.566281 & 2.018e-3  & -3.16540431  & 6.273e-5
+	\\ \hline
+    10 & 15 & 3.565232 &1.049e-3  & -3.16543986  & 3.554e-5 
+	\\ \hline
+    11 & 13 & 3.565744 &5.120e-4  &  -3.16542586 & 1.399e-5
+	\\ \hline
+	12 & 8 & 3.565524 & 2.212e-4  & -3.16542759  & 1.737e-6 
+	\\ \hline
+    13 & 2 & 3.565564 & 4.027e-5  &  -3.16543001 & 2.422e-6 
+	\\ \hline
+    14 & 2 & 3.565581 & 1.061e-6  & -3.16543102  & 1.008e-6
+    \\\hline
+    15 & 2 & 3.565591 & 1.000e-6  & -3.16543136  & 3.377e-7
+    \\ \hline    
+  \end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\setlength{\captionmargin}{2pt}
+\centering
+    \subfigure[]{\includegraphics[scale=0.55]{figures/mesh/ham1-2.pdf}}
+    \hspace{0.0cm}
+\subfigure[]{\includegraphics[scale=0.55]{figures/mesh/ham1-1.pdf}}
+\    
+\caption{
+        The effective Hamiltonian (a) and the discrepancy of Hamiltonian (b)
+        respective to iterations of the simulation to  compute 12-microdomain
+        phase on the sphere surface with 10242 nodes and with 20480 elements,
+        see Tab.\,\ref{tab:refinemesh}. 
+}
+		\label{fig:sphere-5}
+\end{figure}
+
+
+\subsection{Patterns on several curved surfaces}
+\label{subsec:pattern}
+
+In this subsection, we will apply our numerical method to several different
+curved surfaces, including sphere, torus, double torus, heart, orthocircle
+and parabolic surfaces.  Since the SCFT is a high nonlinear system and has
+multi-solutions, the initial values play a key role in determining the final
+morphologies and accelerating convergent speed.  Starting from random initial
+conditions usually does not generate the low energy patterns. In order to
+obtain these stable solutions, we often seed some structured profile of
+fields in the simulation.
+
+\subsubsection{Sphere}
+\label{subsubsec:sphere}
+
+We first show the results of SCFT simulations on the sphere surface.  To capture
+these self-assembling precisely, we use enough discretization nodes in these
+simulations, as given in the last rows in Tab.\,\ref{tab:sphere:radius}.  The
+simulation results for the equilibrium ordered structures are represented in
+Fig.\,\ref{fig:sphere}.  The initial scale factor $\Gamma$ and optimal 
+$\Gamma_{opt}$ for each self-assembled pattern are given in
+Tab.\,\ref{tab:sphere:radius}.  
+
+For the asymmetric composition of AB diblock copolymers with $f=0.20$, spotted
+patterns are energetically favorable.  To ensure the accuracy, $10242$ nodes
+and $20480$ elements have been used to calculate these asymmetric cases.  In
+contrast to the case in 2D flat space where only hexagonal pattern is globally
+stable, various spotted patterns appear on the sphere surface. As shown in
+Fig.\,\ref{fig:sphere} (a), a 12-microdomain spotted phase whose spots locate
+at vertices of a regular icosahedron. The initial fields of this structure have
+been given in the above subsection.  Then we enlarge the scale factor $\Gamma$
+to $11.65$ and use random initial fields.  A pattern with 116-microdomain
+spots, as shown in Fig.\,\ref{fig:sphere} (b), appears in the simulation.  It
+has hexagonal lattice structure along with a small number of pentagonal
+patterns.  Besides Fig.\,\ref{fig:sphere} (a) and (b), many spotted phases with
+different number of microdomains have been also discovered in our
+simulations. Obviously, the number of microdomains of a spotted phase is
+dependent on the size of the sphere.  Tab.\,\ref{tab:sphere:spotNum} gives the
+optimal scale factor of sphere and its corresponding number of microdomains
+when $\chi N=25.0$ and $f=0.20$. From this table, one can find that, for
+spotted patterns, the number of microdomains is linearly dependent on the
+sphere surface area.
+
+
+\begin{figure}[H]
+\setlength{\captionmargin}{2pt}
+\centering
+    \subfigure[]{\includegraphics[scale=0.27]{figures/mesh/sphere5.pdf}}
+    \hspace{0.5cm}
+\subfigure[]{\includegraphics[scale=0.30]{figures/mesh/sphere1-2.pdf}}
+\\
+\subfigure[]{\includegraphics[scale=0.30]{figures/mesh/sphere2-1.pdf}}
+    \hspace{0.5cm}
+\subfigure[]{\includegraphics[scale=0.30]{figures/mesh/sphere2-2.pdf}}
+    \hspace{0.5cm}
+\subfigure[]{\includegraphics[scale=0.30]{figures/mesh/sphere2-3.pdf}}
+\caption{\label{fig:sphere}
+The self-assembled patterns on sphere surface obtained through surface linear finite element SCFT simulations.
+The initial and optimized scale factors can be found in
+Tab.\,\ref{tab:sphere:radius}.
+Yellow colors correspond to large A-segment fractions.
+(a) 12-microdomain 5-fold symmetric spotted phase on
+the sphere when $\chi N=30.0$, $f=0.20$. 
+(b). 116-mircodomain spotted pattern where $\chi N=25.0$, $f=0.20$.
+(c)-(e) are three striped configurations density
+composition profiles when $\chi N=15.0$, $f=0.50$.
+(c). A ring-form phase.
+(d). A single spiral ribbon.
+(e). A semi-ring striped phase.
+}
+\end{figure}
+
+\begin{table}[H]
+	\caption{The initial scale factor $\Gamma$ and optimal $\Gamma_{opt}$ of
+    the sphere surface.}
+  \label{tab:sphere:radius}
+  \centering
+\begin{tabular}{|c|c|c|c|c|c|}
+ \hline
+ & Fig.\,\ref{fig:sphere} (a) & Fig.\,\ref{fig:sphere} (b) & Fig.\,\ref{fig:sphere} (c) & Fig.\,\ref{fig:sphere} (d) & Fig.\,\ref{fig:sphere} (e)
+ \\ \hline
+$\Gamma$ & 2.9 & 11.65 & 8 & 7.273 & 8
+ \\ \hline
+ $\Gamma_{opt}$ & 3.565591 & 10.529 & 7.273 & 5.468 & 6.408 
+ \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\caption{The relationship between the number of microdomains of a
+spotted pattern and the optimal scale factors of sphere when $\chi N=25.0$ and
+$f=0.20$. }
+  \label{tab:sphere:spotNum}
+  \centering
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+ \hline
+ $\Gamma_{opt}$ & $3.430$ & $4.593$ & $5.136$ & $5.253$ & $7.411$ & $8.384$ & $9.271$ & $9.841$ & $10.53$
+ \\ \hline
+ \# of Spots & $12$ & $22$ & $28$ & $29$ & $56$ & $72$ & $89$ & $101$ & $116$
+ \\ \hline
+\end{tabular}
+\end{table}
+
+For the symmetric diblock copolymers, i.e., $f=0.50$, a two-component
+alternating flat lamellar phase is energetically favorable. On the sphere
+surface, however, various striped patterns can be formed dependent on the
+initial fields and the sphere size.  From Fig.\,\ref{fig:sphere} (c-e),
+classical striped patterns form including ring and spiral phases.  In these
+cases, $2560$ nodes and $5120$ elements have been used to calculate these
+asymmetric cases.  Among these patterns, Fig.\,\ref{fig:sphere} (c) is composed
+of ordinary ring-form ribbons with point defects at only two opposite site on
+the sphere surface.  The pattern in Fig.\,\ref{fig:sphere} (d) is a single
+spiral ribbon crawling on the sphere surface with two defects.  The initial
+fields for both classical striped phase  Fig.\,\ref{fig:sphere} (c) and a
+single spiral ribbon Fig.\,\ref{fig:sphere} (d)  is $w_{-} = \chi
+N\sin(8\theta+8\phi), w_{+} = 0$, where $\theta=\arctan(y/x)$,
+$\phi=\arctan(z/y) \in [0, 2\pi]$, but with different initial scale factor
+$\Gamma$ given in Tab.\,\ref{tab:sphere:radius}. It is obvious that the scale
+factor dominates the morphologies of striped phases.  Fig.\,\ref{fig:sphere}
+(e) is a semi-ring striped phase whose initial fields is chosen randomly.
+More abundant spiral patterns on sphere surface have been found in
+Ref.\,\cite{li2006self} with a large range of $\Gamma$. The stability of
+striped patterns when $\chi N =12.5$ and $f=0.50$ has been presented by
+Chantawansri et. al\,\cite{chantawansri2007} when $\Gamma=3.1 \sim 4.9$.
+However, due to the complexity of these striped patterns, the more systematical
+studies are still lacking. 
+
+\subsubsection{Torus}
+\label{subsubsec:torus}
+
+We next show the results of SCFT simulations on the torus surface. For every
+simulation, we fix the rate of the major and minor radius of the torus
+surface $\gamma=R/r$ and set the initial scale factors $\Gamma_0$ as 1.  The
+initial $R_0$, $r_0$ and optimal scale factor $\Gamma_{opt}$ for each ordered
+pattern are presented in Tab.\,\ref{tab:radius:torus}.  The converged
+self-assembled structures are given in Fig.\,\ref{fig:torus}. 
+
+\begin{table}[H]
+\caption{
+    The initial $R_0$, $r_0$ and optimal scale factors $\Gamma_{opt}$ for 
+different simulations on the torus surface. }
+  \label{tab:radius:torus}
+  \centering
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+ \hline
+ & Fig.\,\ref{fig:torus} (a) & Fig.\,\ref{fig:torus} (b)
+    & Fig.\,\ref{fig:torus} (c)& Fig.\,\ref{fig:torus}(d) &
+    Fig.\,\ref{fig:torus}(e) &   Fig.\,\ref{fig:torus}(f) &
+	Fig.\,\ref{fig:torus}(g) 
+    \\ \hline
+    $\gamma$ & 8 & 2 & 1.389 &2 &2 & 2 & 2
+    \\ \hline
+    $R_0$     & 8  & 4 & 3.333 & 4 & 4 & 4 & 4
+    \\ \hline
+    $r_0$     & 1  & 2 & 2.4 & 2 & 2 & 2 & 2  
+	\\ \hline
+	$\Gamma_{opt}$ & 1.066 & 1.044 & 1.045 & 0.969 & 1.023 & 1.119 & 1.223
+    \\ \hline 
+\end{tabular}
+\end{table}
+
+
+For asymmetric AB diblock copolymers, the spotted patterns will appear, as
+shown in Fig\,\ref{fig:torus} (a)-(c) where $\chi N = 25.0$ and $f=0.20$.
+51200 nodes and 102400 elements are used in these calculations.  Using random
+initial condition, the spotted phases with different radii can be found in
+Fig.\,\ref{fig:torus} (a) and (b).  To test the influence of initial condition
+for spotted phases, we use two ways to choose initial condition.  For
+Fig.\,\ref{fig:torus} (c),  the first initial
+condition is the deterministic configuration $w_{-} = 0.5(\chi
+N\cos(3\theta)\cos(3\phi)+\cos(6\phi)), w_{+} = 0$, and the second is
+also the random initial condition.  The same spotted patterns surprisingly
+appear after calculating. It indicates that the morphologies of spotted phases
+of asymmetric diblock copolymers on torus may be mainly dominated by the geometry
+of the surface, i.e., radii $R$ and $r$ of torus, and $f$, $\chi N$.
+
+
+For the symmetric diblock copolymer system, i.e., $f=0.50$, the equilibrium
+striped phases are shown in Fig.\,\ref{fig:torus} (d)-(g) where $\chi N =
+16.0$.  $64000$ nodes and $128000$ elements are used in these calculations.  It
+is different from spotted patterns, the morphologies of striped phase are
+dependent on the initial condition, which is chosen as 
+\begin{align*}
+    w_- =\chi N\sin(n_\phi \phi + n_\theta \theta), ~~~ w_+ = 0,
+\end{align*}
+where $\phi, \theta\in[0,2\pi]$ are the parameter coordinates of
+torus surface.  If we choose the initial condition with $n_\phi=0$, but with
+different $n_\theta$, the unconnected stripes are obtained, as
+shown in Fig.\,\ref{fig:torus} (d) ($n_\theta = 8$).
+If the initial condition is chosen such that $n_\phi \neq 0$, we
+can find the equilibrium connected striped patterns with periods
+$n_\theta = n_\phi = 6, 7, 8$, as illustrated in the
+Fig.\,\ref{fig:torus} (e)-(g). The results are consistent with
+previous calculations\,\cite{li2014mean}.
+
+
+\begin{figure}[H]
+\setlength{\captionmargin}{2pt}
+\centering
+\subfigure[]{\includegraphics[scale=0.26]{figures/mesh/torus-1.pdf}}
+    \hspace{0.5cm}
+\subfigure[]{\includegraphics[scale=0.26]{figures/mesh/torus-2.pdf}}
+    \hspace{0.5cm}
+\subfigure[]{\includegraphics[scale=0.26]{figures/mesh/torus-4.pdf}}
+\\
+\subfigure[]{\includegraphics[scale=0.26]{figures/mesh/torus5.pdf}}
+    \hspace{0.5cm}
+\subfigure[]{\includegraphics[scale=0.26]{figures/mesh/torus6.pdf}}
+    \hspace{0.5cm}
+\subfigure[]{\includegraphics[scale=0.26]{figures/mesh/torus7.pdf}}
+    \hspace{0.5cm}
+\subfigure[]{\includegraphics[scale=0.26]{figures/mesh/torus8.pdf}}
+\caption{The self-assembled patterns on torus are
+obtained through surface finite element SCFT calculations.
+Yellow colors correspond to large A-segment fractions.
+(a)-(c) are spotted patterns where $\chi N= 25.0$, $f=0.20$.
+(d)-(g) are stripes phase where $\chi N=16.0$, $f=0.50$.
+The information of the torus can be 
+found in Tab.\,\ref{tab:radius:torus}.  }
+\label{fig:torus}
+\end{figure}
+
+
+\subsubsection{Three general closed surfaces}
+\label{subsubsec:generalsurface}
+
+To further demonstrate the power of our proposed method, we will run 
+the SCFT simulations on the double torus, heart, and orthocircle surfaces in
+this subsection. The parameter setting is $\chi N=25.0$ for asymmetric diblock
+copolymer system $f=0.20$, and $\chi N = 15.0$ for symmetric case $f=0.50$. As
+can be seen from Fig.\,\ref{fig:othersurface}, we have obtained spotted and
+striped phases of diblock copolymers on these  closed surfaces. The initial
+$\Gamma$ and optimal scale factor $\Gamma_{opt}$ of the three closed surfaces
+are given in Tab.\,\ref{tab:general:radius}.  The expressions of initial
+surface $\calS_0$ are given by
+Eqns.\,\eqref{fig:mesh:doubletorus}-\eqref{fig:mesh:orthocircle}.  Obviously,
+the scale factors of these three surfaces have been successfully optimized
+dependent on the specific ordered structures during the iteration procedure.
+For spotted structures (Fig.\,\ref{fig:othersurface}(a)-(c)), the initial
+condition of field functions is chosen randomly.  For symmetric systems, the
+striped phases depend on the initial values. On double torus and orthocircle
+surfaces, the morphologies of Fig.\,\ref{fig:othersurface} (d) and (f) are
+obtained by setting the initial value of $w_+$ and $w_-$ on each mesh node with
+coordinates $(x, y, z)$
+\begin{align*}
+    w_{-} = \chi N\sin(8x), ~~~ w_{+}  = 0.
+\end{align*} 
+
+On heart surface, we use the initial value of Fig.\,\ref{fig:othersurface} (e) of 
+\begin{align*}
+    w_{-} = \chi N\sin(8\theta), ~~~w_{+} = 0,
+\end{align*}
+where $\theta = \arctan(y/x)$, $\phi = \arctan(z/y)$, and $\theta, \phi \in [0,
+2\pi]$, to obtain the striped structure, as shown in
+Fig.\,\ref{fig:othersurface}.  The number of nodes (elements) used on double
+torus, heart and orthocircle surfaces are $20642$ ($41288$), $172482$
+($344960$), and $21964$ ($43952$), respectively.
+
+
+\begin{figure}[H]
+\setlength{\captionmargin}{2pt}
+\centering
+\subfigure[]{\includegraphics[scale=0.30]{figures/mesh/doubletorus-1.pdf}}
+    \hspace{0.5cm}
+\subfigure[]{\includegraphics[scale=0.30]{figures/mesh/heart-1.pdf}}
+\hspace{0.5cm}
+\subfigure[]{\includegraphics[scale=0.30]{figures/mesh/orthocircle-1.pdf}}
+\\
+\subfigure[]{\includegraphics[scale=0.30]{figures/mesh/doubletorus-2.pdf}}
+\hspace{0.5cm}
+\subfigure[]{\includegraphics[scale=0.30]{figures/mesh/heart-3.pdf}}
+\hspace{0.5cm}
+\subfigure[]{\includegraphics[scale=0.30]{figures/mesh/orthocircle-2.pdf}}
+\caption{
+    The spotted and striped structures of diblock copolymers on double torus,
+    heart, and orthocircle surfaces. Yellow colors still correspond to large
+    A-segment fractions.  For spotted phases, the parameter setting is $\chi
+    N=25.0$ and $f=0.20$, while for striped patterns, $\chi N=15.0$ and
+    $f=0.50$.
+}
+\label{fig:othersurface}
+\end{figure}
+
+
+\begin{table}[H]
+	\caption{The initial $\Gamma$ and optimal scale factors $\Gamma_{opt}$ of 
+	double torus, heart and orthocircle surfaces used in the
+	surface simulation for diblock copolymers.}
+  \label{tab:general:radius}
+  \centering
+\begin{tabular}{|c|c|c|c|c|c|c|}
+ \hline
+ & \multicolumn{2}{c}{Double torus} \vline & \multicolumn{2}{c}{Heart}
+  \vline &\multicolumn{2}{c}{Orthocircle} \vline
+ \\ \hline
+    & Fig.\,\ref{fig:othersurface} (a) & Fig.\,\ref{fig:othersurface} (d) &
+    Fig.\,\ref{fig:othersurface} (b) & Fig.\,\ref{fig:othersurface} (e) &
+    Fig.\,\ref{fig:othersurface} (c) & Fig.\,\ref{fig:othersurface} (f)
+ \\ \hline
+    $\Gamma$ & 12 & 12 & 5 & 5 & 5 & 5 
+    \\ \hline
+    $\Gamma_{opt}$ &  12.308  & 14.161 & 5.022  & 5.403   & 5.143 & 4.939
+ \\ \hline
+\end{tabular}
+\end{table}
+
+
+For asymmetric diblock copolymers, the authors in Ref.\,\cite{li2014self} have
+found that the elongated spots usually locate at the saddle points of the
+surface.  In our simulations, this phenomenon does not appear.  The discrepancy
+may be attributed to the discretization precision and the interaction strength.
+In Ref.\,\cite{li2014self}, only $1912$ nodes are used in spotted phase
+simulations.  However, our calculation uses, at least, $21560$ nodes (10782
+elements) to discretize the surface which is enough to ensure the
+discretization precision. The second reason may be the interaction strength.
+The interaction parameter used here is $\chi N=25.0$ which is stronger than
+that in Ref,\,\cite{li2014self} where $\chi N =13.0$.  The large interaction
+parameter means strong segregation which contributes to microscopic phase
+separation.  
+
+
+
+\subsubsection{Parabolic surface }
+\label{subsubsec:parabolic}
+
+In this paper, the last geometry used to study the self-assembled of diblock
+copolymers is a parabolic surface which is open.  An appropriate
+boundary condition is required in solving the MDEs of
+\eqref{eq:MDE} and \eqref{eq:MDEplus}. Here, we used the homogeneous Neumann
+boundary condition.  The initial values of $w_+$ and $w_-$ on coordinates $(x,
+y, z)$ are given by $w_- = \chi N \sin(k z)$, $w_+=0$ both for asymmetric and
+symmetric systems.  $8515$ nodes and $16720$ elements are used in the
+following simulations. When $k=5$, we obtain the spotted ($\chi N=25.0$,
+$f=0.20$) and striped ($\chi N=15.0$, $f=0.50$) phases, as shown in the
+Fig.\,\ref{fig:parabolic}.  The initial parabolic surface $\calS_0$ is $x^2+y^2
+= 1$.  The initial scale factor $\Gamma$ and optimal $\Gamma_{opt}$ are given
+in Tab.\,\ref{tab:parabolic}. 
+
+\begin{table}[!htpb]
+    \caption {The initial scale factor $\Gamma$ and optimal $\Gamma_{opt}$,
+    in computing the ordered pattern of diblock copolymers on the
+	parabolic surfae.}
+  \label{tab:parabolic}
+  \centering
+\begin{tabular}{|c|c|c|}
+ \hline
+    & Fig.\,\ref{fig:parabolic} (a) & Fig.\,\ref{fig:parabolic} (b) 
+ \\ \hline
+    $\Gamma$ & 10 & 10 
+    \\ \hline
+    $\Gamma_{opt}$ & 10.310 & 10.558
+    \\ \hline
+\end{tabular}
+\end{table}
+
+
+\begin{figure}[H]
+\setlength{\captionmargin}{2pt}
+\centering
+\subfigure[]{\includegraphics[scale=0.35]{figures/mesh/parabolic1.pdf}}
+    \hspace{0.5cm}
+\subfigure[]{\includegraphics[scale=0.35]{figures/mesh/parabolic2.pdf}}
+\caption{\label{fig:parabolic}
+The ordered patterns of diblock copolymers on
+parabolic surface are obtained through surface finite elemt SCFT
+simulations. 
+Yellow colors correspond to large A-segment fractions.
+(a) Spotted phase when $\chi N = 25.0$, $f = 0.20$.
+(b) Striped pattern when $\chi N = 15.0$, $f = 0.50$.
+}
+\end{figure}
+
+\section{Conclusion and Outlook}
+\label{sec:conclusion}
+
+In this paper, we proposed a surface finite element method to study the
+self-assembly behaviors of block copolymers based on a SCFT on general curved
+surfaces. To demonstrate the ability of the computational
+algorithm, we applied it to diblock copolymer systems on several distinct
+curved surfaces, including 5 closed surfaces, i.e., sphere, torus, double
+torus, heart, and orthocircle, and an open surface of parabolic surface.
+Numerical results illustrate that our method can successfully obtain the
+ordered structures of block copolymers on these general curved surfaces. At the
+same time, the size of a curved surface indeed has been optimized during the
+calculations which can capture the characteristic size of a given
+self-assembled structure, and give a high accuracy value of effective
+Hamiltonian.  
+
+Block copolymers provide a perfect platform to study the self-assembly
+behaviors to themselves and related physical, chemical and biology systems.  To
+study the phase behaviors of block copolymers precisely, it still requires a
+high precision numerical method.  Here we developed a surface linear finite
+element method in an uniform refinement way to discretize the SCFT equation on
+a general curved surfaces.  To ensure enough precision, we have to use many
+nodes and elements to describe the ordered structures. It costs much
+CPU time.  In the future, we will further develop this computational approach
+in many directions. The high order finite element method, non-uniform mesh, and
+adaptive technique will be choose to improve the precision and reduce the CPU
+time cost. Another interesting problem is to extend this computational
+framework to more real-life polymeric systems, for example rigid polymers. 
+
+
+\section*{Acknowledgements} This work is supported by National Science
+Foundation of China (11771368, 91430213, 91530321). H. Wei is partially
+supported by  Hunan Provincial Civil-Military Integration Industrial
+Development Project. K.~Jiang is partially supported by the research grand from
+Hunan Science Foundation of China (2018JJ2376), and Youth Project Hunan
+Provincial Education Department of China (Grant No. 16B257).
+
+
+\appendix
+
+
+
+\begin{thebibliography}{100}
+
+\bibitem{nakahara2003topology}
+M. Nakahara, 
+\newblock{Geometry, Topology and Physics}.
+Taylor, Francis, 2 edition (2003).
+
+\bibitem{wu2004composite}
+Y. Y. Wu,  G. S. Cheng, K. Katsov, S. W. Sides, J. F. Wang, J. Tang, G. H. Fredrickson, M. Moskovits, and G. D. Stucky,
+Composite mesostructures by nano-confinement,
+{Nat. Mater.}
+3 (11) (2004) 816-822.
+
+\bibitem{xiang2005}
+H. Q. Xiang, K. Shin, T. Kim, S. Moon, T. J. McCarthy,T. P. Russell, 
+The influence of confinement and curvature on the morphology of block copolymers,
+J. Polym. Sci. Part B 43 (2005) 3377-3383.
+
+\bibitem{yu2006prl}
+B. Yu, P. C. Sun, T. H. Chen, Q. H. Jin, D. T. Ding, B. H. Li,
+A.-C. Shi, Confinement-induced novel morphologies of block copolymers, Phys. Rev. Lett. 96 (2006) 138306.
+
+\bibitem{charlotte2011interplay}
+{C. R. Stewart-Sloan and E. L. Thomas},
+Interplay of symmetries of block polymers and confining geometries,
+{Eur. Polym. J}.
+47 (4) (2011) 630-646.
+
+\bibitem{segalman2005patterning}
+R. A. Segalman,
+Patterning with block copolymer thin films,
+{Mater. Sci. Eng., R}
+46 (6) (2005) 191-226.
+
+\bibitem{chantawansri2007}
+T. L. Chantwansri, A. W. Bosse, A. Hexemer, H. D. Ceniceros, C. J.
+Garcia-Cervera, E. J. Kramer, G. H. Fredrikson,
+Self-consistent field theory simulations of block copolymer assembly on a sphere,
+{Phys. Rev. E} 75 (3 Pt 1) (2007) 031802.
+
+
+\bibitem{li2014self}
+J. F. Li, J. Fan, H.D. Zhang, F. Qiu, P. Tang, Y.L. Yang,
+Self-consistent field theory of block copolymers on a general curved surface,
+{Eur. Phys. J. E} 37 (3) (2014) 9973.
+
+\bibitem{li2006self}
+J. F. Li, J. Fan, H.D. Zhang, F. Qiu, P. Tang, Y. L. Yang,
+Self-assembled pattern formation of block copolymers on the
+surface of the sphere using self-consistent field theory,
+{Eur. Phys. J. E} 20 (4) (2006) 449-457.
+
+\bibitem{fredrickson2006equilibrium}
+G. H. Fredrickson,
+{The equilibrium theory of inhomogeneous polymers},
+Oxford University Press: New York, (2006).
+
+\bibitem{matsen1994stable}
+M. W. Matsen, M. Schick,
+Stable and unstable phases of a diblock copolymer melt,
+{Phys. Rev. Lett.}
+72 (16) (1994) 2660-2663.
+
+
+\bibitem{jiang2015self}
+K. Jiang, J. Zhang, Q. Liang,
+Self-assembly of asymmetrically interacting ABC star triblock copolymer melts,
+{J. Phys. Chem. B} 119 (45) (2015) 14551-14562.
+
+\bibitem{xu2013strategy}
+W. Xu, K. Jiang, P. Zhang, A. C. Shi,
+A strategy to explore stable and metastable ordered phases of block copolymers,
+{J. Phys. Chem. B} 117 (17) (2013) 5296-5305.
+
+\bibitem{jiang2010spectral}
+K. Jiang, Y. Huang, P. Zhang,
+Spectral method for exploring patterns of diblock copolymers,
+{J. Comput. Phys.} 229 (20) (2010) 7796-7805.
+
+\bibitem{jiang2013discovery}
+K. Jiang, C. Wang, Y. Huang, P. Zhang,
+Discovery of new metastable patterns in diblock copolymers,
+{Commun. Comput. Phys.} 14 (2) (2013) 443-460.
+
+\bibitem{drolet1999combinatorial}
+F. Drolet, G. H. Fredrickson,
+Combinatorial screening of complex block copolymer assembly
+with self-consistent field theory, 
+{Phys. Rev. Lett.}
+83 (21) (1999) 4317-4320.
+
+\bibitem{guo2008discovering}
+Z. Guo, G. Zhang, F. Qiu, H. Zhang, Y. Yang, A. C. Shi,
+Discovering ordered phases of block copolymers:
+new results from a generic fourier-space approach,
+{Phys. Rev. Lett.}
+101 (2) (2008) 28301.
+
+
+\bibitem{rasmussen2002improved}
+K. {\O}. Rasmussen, G. Kalosakas,
+Improved numerical algorithm for exploring block copolymer mesophases,
+{J. Phys.: Condens. Matter}
+40 (16) (2002) 1777-1783.
+
+\bibitem{cochran2006stability}
+E. W. Cochran, C.J. Garcia-Cervera, G. H. Fredrickson,
+Stability of the gyroid phase in diblock copolymers at strong segregation,
+{Macromolecules} 39 (7) (2006) 2449-2451.
+
+\bibitem{li2014mean}
+D. M. Li, K. W. Liang, T. Gruhn,
+{Mean field theory of diblock copolymer on curved manifolds}, 
+{Macromolecular Symposia} 346 (1) (2014) 22-31.
+
+\bibitem{vorselaars2011self}
+B. Vorselaars, J. U. Kim, T.L. Chantawansri, G.H.
+Fredrickson, M.W. Matsen, 
+Self-consistent field theory for diblock copolymers grafted to a sphere,
+{Soft Matter} 7 (11) (2011) 5128-5137.
+
+\bibitem{Dziuk1988}
+{G. Dziuk},
+{Finite elements for the Laplace-Beltrami operator on arbitrary surfaces},
+{In:  S. Hildebrandt, R. Leis (eds) partial differential equations
+and calculus of variations, Lecture Notes in Mathematics, vol 1357. Springer,
+Berlin, Heidelbergv}
+(1988) 142-155.
+
+\bibitem{Dziuk;Elliott2007}
+G. Dziuk and C.M. Elliott, 
+Finite elements on evolving surfaces, 
+{SIMA J. Numer.  Anal.}
+27 (2) (2007) 262-292.
+
+
+\bibitem{wei2010}
+H. Wei, L. Chen, Y. Huang,
+Superconvergence and gradient recovery of linear finite
+elements for the Laplace-Beltrami operator on general surfaces,
+{SIAM J. Numer. Anal.}
+48 (2010) 1920-1943.
+
+\bibitem{Dziuk1991}
+G. Dziuk, An algorithm for evolutionary surfaces, 
+{Numer. Math.} 
+58 (1991) 603-611.
+
+
+\bibitem{Dziuk2007}
+G. Dziuk, C. M. Elliott,
+Surface finite elements for parabolic equations,
+{J. Comput. Math.}
+25 (4) (2007) 385-407.
+
+\bibitem{Demlow2009}
+{A. Demlow}, 
+{Higher-order finite element methods and pointwise error estimates
+for elliptic problems on surfaces},
+{SIAM J. Numer. Anal.} 47 (2) (2009) 805-827. 
+
+\bibitem{Dziuk;Elliott2013}
+{G. Dziuk,  C. M. Elliott},
+{Finite element methods for surface PDEs},
+{Acta Numerica} 
+22 (2017) 289-396. 
+
+\bibitem{rieau2018}
+{L. Rineau, M. Yvinec}, 
+{3D surface mesh generation}, 
+{In CGAL user and reference manual}, {CGAL editorial board, 4.11.1 edition} (2018). 
+
+\bibitem{wei2012}
+{H. Wei},
+{Finite element superconvergence and mesh generation and optimization in
+interface and Laplace-Beltrami problem (Chinese)}, {China: Xiangtan University} (2012).
+
+\bibitem{matsen2002standard}
+M. W. Matsen,
+The standard gaussian model for block copolymer melts,
+{J. Phys.: Condens. Matter} 14 (2002) R21-R47.
+
+
+\bibitem{jiang2015analytic}
+K. Jiang, W. Xu, P. Zhang,
+Analytic structure of the SCFT energy functional of multicomponent block
+copolymers,
+\newblock {Commun. Comput. Phys.} 17 (5) (2015) 1360-1387.
+
+\bibitem{fredrickson2002field}
+G. H. Fredrickson, V. Ganesan, F. Drolet,
+{Field-theoretic computer simulation methods for polymers and complex fluids},
+{Macromolecules} 35 (1) (2002) 16-39.
+
+\bibitem{barrat2005introducing}
+J. L. Barrat, G. H. Fredrickson, S. W. Sides,
+{Introducing variable cell shape methods in field theory simulations of polymers},
+{J. Phys. Chem. B} 109 (14) (2005) 6694-6700.
+
+\bibitem{tyler2003stress}
+{C. A. Tyler, D. C. Morse},
+{Stress in self-consistent-field theory}, {Macromolecules} 36 (21) (2003) 8184-8188.
+
+\bibitem{chenlong}
+{L. Chen},
+{Introduce to multigrid methods},
+www.math.uci.edu/~chenlong/lectures.
+
+
+\bibitem{nocedal2006numerical}
+J. Nocedal, S. J. Wright, 
+{Numerical optimization},
+Springer Science (2006).
+
+\bibitem{press1992numerical}
+See the formula (4.1.14) on p.\,160
+in {Numerical recipes: the art of scientific computing}, 3rd edition,
+W. H. Press, A. S. Teukolsky, W. T. Vetterling, B. P. Flannery, Ed. Cambridge
+University Press, New York (2007).
+
+%\bibitem{thompson2004improved}
+%R. B. Thompson, K. {\O}. Rasmussen, T. Lookman,
+%Improved convergence in block copolymer self-consistent field theory by
+%anderson mixing,
+%{J. Chem. Phys.} 120 (31) (2004) 31-34.
+
+%\bibitem{thompson2004improved}
+%R. B. Thompson, K. {\O}. Rasmussen, T. Lookman,
+%Improved convergence in block copolymer self-consistent field theory by
+%anderson mixing,
+%{J. Chem. Phys.} 120 (31) (2004) 31-34.
+%
+%\bibitem{anderson1965iterative}
+%D. G. Anderson,
+%Iterative procedures for nonlinear integral equations,
+%{J. ACM} 12 (4) (1965) 547-560.
+%
+%\bibitem{kim2008interaction}
+%J. U. Kim, M. W. Matsen,
+%Interaction between polymer-grafted particles,
+%{Macromolecules} 41 (12) (2008) 4435-4443.
+%
+%
+%\bibitem{nelson1983liquids}
+%D. R. Nelson,
+%{Liquids and glasses in spaces of incommensurate curvature},
+%{Phys. Rev. Lett.} 50 (13) (1983) 982-985.
+%
+%\bibitem{demlow2007}
+%{A. Demlow, G. Dziuk}, 
+%{An adaptive finite element method for the Laplace-Beltrami operator on implicitly defined surfaces}, 
+%{SIAM J. Numer. Anal.} 45 (1) (2007) 421-442.
+%
+%\bibitem{Olshanskii;Reusken2014}
+%{M. A. Olshanskii, A. Reusken},
+%{Error analysis of a space-time finite element method for solving PDEs on
+%evolving surfaces}, 
+%{SIAM J. Numer. Anal.} 
+%52 (4) (2014) 2092-2120.
+%
+
+%
+%
+%\bibitem{ceniceros2004numerical}
+%H. D. Ceniceros, G. H. Fredrickson,
+%Numerical solution of polymer self-consistent field theory,
+%{Multiscale Model. Simul.}
+%2 (3) (2004) 452-474.
+%
+
+
+\end{thebibliography}
+\end{document}
+
+
+\endinput

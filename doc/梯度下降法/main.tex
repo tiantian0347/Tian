@@ -1,0 +1,193 @@
+% !Mode:: "TeX:UTF-8"
+\documentclass[12pt,a4paper]{article}
+\input{../LaTeX/模板/en_preamble.tex}
+\input{../LaTeX/模板/xecjk_preamble.tex}
+
+
+\title{梯度下降法学习总结}
+
+
+\author{姓名：田  甜}
+\date{\chntoday}
+
+\begin{document}
+\maketitle
+\newpage
+\section{梯度下降法的基本定理}
+\subsection{定义}
+梯度下降法是一种一阶优化算法，有时也可称为“最速下降法”。使用梯度下降法找到函数的局部最小值，必须向函数上当前点的对应梯度的反方向的规定不唱的方向进行迭代搜索。相反的，如果想找到函数的局部最大值，应该向函数当前点的梯度的正方向进行迭代搜索；此时我们称之为梯度上升法。
+
+\subsection{描述}
+若实值函数$F(\mathbf x)$在点$\mathbf a$处可微有定义，那么函数$F(\mathbf x)$在点$\mathbf a$沿着梯度相反的方向$-\nabla F(\mathbf a)$下降最快。因此，若
+\begin{equation}
+\mathbf b=\mathbf a-\gamma\nabla F(\mathbf a)
+\end{equation}
+
+对于$\gamma>0$为一个足够小数值时成立，那么$F(\mathbf a)\ge F(\mathbf b)$。
+
+此时，我们从$F$的局部极小值的初始估计值$\mathbf x_0$出发，同时考虑序列$\mathbf x_0,\mathbf x_1,...$使得对任$n\ge 0$
+\begin{equation}
+	\mathbf x_{n+1}=\mathbf x_n-\gamma_n\nabla F(\mathbf x_n)
+\end{equation}
+
+因此，我们得到
+$$F(\mathbf x_0)\ge F(\mathbf x_1)\ge F(\mathbf x_3)\ge ...$$
+
+所以希望序列收敛到所需的局部最小值。允许步长的值在每次迭代时更改。
+\begin{equation}
+	\gamma_n=\cfrac{\mid (\mathbf x_n-\mathbf x_{n-1})^T[\nabla F(\mathbf x_n)-\nabla F(\mathbf x_{n-1})]\mid }{\| \nabla F(\mathbf x_n)-\nabla F(\mathbf x_{n-i}) \|^2}
+\end{equation}
+
+可以保证收敛到局部最小值。当函数为凸函数时，所有局部最小值也是全局最小值，因此在这种情况下，梯度下降可以收敛到全局解。
+
+该过程下图中说明。假设$F$定义在平面上，并且函数图像是一个碗形。蓝色的曲线是等高线，即函数$F$为常数的集合构成的曲线。红色的箭头指向该点梯度的反方向。沿着梯度下降方向，将最终到达碗底，即函数$F$值最小的点。
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.5]{./figures/figure_1.png}
+\end{figure}
+
+\section{示例}
+\subsection{Rosenbrock}
+首先我们给出函数：
+\begin{equation}
+	f(x,y)=(1-x)^2+100(y-x^2)^2
+\end{equation}
+
+该函数最小值在$(x,y)=(1,1)$处，$f(x,y)=0$。但该函数有一个狭小的弧形山谷，其中包含最小值。山谷的底部十分平坦，因此优化的过程十分缓慢。
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.5]{./figures/figure_2.png}
+\end{figure}
+
+
+\subsection{案例总结}
+梯度下降法的缺点包括：
+
+1.靠近极小值时速度减慢，收敛速度比许多其他方法速度较慢；
+
+2.直线搜索时会产生一些问题；
+
+3.可能会呈“之字型”下降。
+
+\section{应用}
+\subsection{线性方程}
+梯度下降可用于求解线性方程组，其被重新表示为二次最小化问题，例如，使用线性最小二乘法。
+\begin{equation}
+	A\mathbf x-\mathbf b=0
+\end{equation}
+
+在线性最小二乘意义上，定义为最小化函数
+\begin{equation}
+	F(\mathbf x)=\|A\mathbf x-\mathbf b\|^2
+\end{equation}
+
+在传统的线性最小二乘法中，使用欧几里德范数，在这种情况下
+\begin{equation}
+	\nabla F(\mathbf x)=2A^T(A\mathbf x-\mathbf b)
+\end{equation}
+
+在这种情况下，可以分析地执行线搜索最小化，在每次迭代中找到局部最优步长，并且已知局部最优的显式公式。
+
+对于求解线性方程，该算法很少使用，共轭梯度法是最流行的替代方法之一。梯度下降的收敛速度取决于$A^TA$的最大特征值与最小特征值之比，而共轭梯度的收敛速度对于特征值，可以从预处理中受益。
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=3]{./figures/figure-3.png}
+\end{figure}
+\subsection{非线性方程组}
+对于
+\begin{equation}
+\begin{cases}
+	3x_1-cos(x_2x_3)-\frac{3}{2}=0\\
+	4x_1^2-625x_2^2+2x_2-1=0\\
+	exp(-x_1x_2)+20x_3+\cfrac{10\pi-3}{3}=0
+\end{cases}
+\end{equation}
+
+令
+\begin{equation}
+	G(\mathbf x)=\left[
+\begin{array}{c}
+          3 x_{1}-cos \left(x_{2} x_{3}\right)-\frac{3}{2}\\
+          4 x_{1}^{2}-625 x_{2}^{2}+2 x_{2}-1 \\
+         exp(-x_{1} x_{2})+20 x_{3}+\frac{10 \pi-3}{3}
+\end{array}\right]
+\end{equation}
+
+此时，我们定义目标函数
+\begin{equation}
+	\begin{aligned}
+	F(\mathbf x)&=\frac{1}{2} G^{T}(\mathbf x)G(\mathbf x)\\
+		&=\frac{1}{2} [(3x_1-cos(x_2x_3)-\frac{3}{2})^2+4x_1^2-625x_2^2+2x_2-1)^2+(exp(-x_1x_2)+20x_3+\cfrac{10\pi-3}{3})^2]
+	\end{aligned}
+\end{equation}
+
+令
+$$\mathbf{x}^{(0)}=\mathbf{0}=\left[\begin{array}{l}{0} \\ {0} \\ {0}\end{array}\right]$$
+得到
+\begin{equation}
+	\mathbf x^{(1)}=\mathbf 0-\gamma_0 \nabla F(\mathbf 0)=\mathbf 0-\gamma_{0} J_G(\mathbf 0)^{T} G(\mathbf 0)
+\end{equation}
+
+由此我们得到雅可比行列式$J_G$:
+\begin{equation}
+	J_G(\mathbf x)=
+	\left[\begin{array}{ccc} 3 & sin(x_2 x_3) x_{3} & sin(x_2 x_3) x_2 \\ 
+		8 x_1 & -1250 x_2+2 & 0 \\ 
+		-x_2exp(-x_1 x_2) & -x_1 exp (-x_1 x_2)& 20
+\end{array}\right]
+\end{equation}
+计算
+$$J_{G}(\mathbf{0})=\left[\begin{array}{ccc}{3} & {0} & {0} \\ {0} & {2} & {0} \\ {0} & {0} & {20}\end{array}\right], \qquad G(\mathbf{0})=\left[\begin{array}{c}{-2.5} \\ {-1} \\ {10.472}\end{array}\right]$$
+因此
+$$\mathbf{x}^{(1)}=\mathbf{0}-\gamma_{0}\left[\begin{array}{c}{-7.5} \\ {-2} \\ {209.44}\end{array}\right]$$
+及
+$$F(\mathbf 0)=0.5\left((-2.5)^{2}+(-1)^{2}+(10.472)^{2}\right)=58.456$$
+
+现在必须找到合适的$\gamma_0$，使得
+$$F\left(\mathbf{x}^{(1)}\right) \leq F\left(\mathbf{x}^{(0)}\right)=F(\mathbf{0})$$
+这可以通过各种线性搜索算法来完成。也可以简单的猜测$\gamma_0=0.001$给出了
+$$\mathbf{x}^{(1)}=\left[\begin{array}{c}{0.0075} \\ {0.002} \\ {-0.20944}\end{array}\right]$$
+以此值评估目标函数，得出
+$$F\left(\mathbf{x}^{(1)}\right)=0.5((-2.47)^2+(-1.00)^2+(6.28)^2)=23.306$$
+
+从$F(\mathbf 0)=580456$减少到$\mathbf{x}^{(1)}=23.306$目标函数的大幅减少。每一次计算都会降低其函数值，直到找到近似的值。
+\section{评价}
+梯度下降在任何维度的空间中进行，即使在无限维的空间中也是如此。在无限维空间中，搜索空间通常是一个函数空间，并且计算要最小化的函数的Fréchet导数以确定下降方向。
+如果给定函数的不同方向上的曲率非常不同，则梯度下降可以进行许多次迭代来计算具有所需精度的局部最小值。对于这样的函数，采用改变空间的几何形状以形成像同心圆一样的函数水平集的预处理方法使其来逐步收敛收敛。然而，构造和应用预处理可能在计算上是麻烦的。
+
+梯度下降可以与线性搜索组合，在每次迭代时找到局部最优步长$\gamma$。执行行搜索可能非常耗时。相反，使用固定的较小$\gamma$会产生较差的收敛。
+
+基于牛顿方法和使用共轭梯度技术反向Hessian的方法可以是更好的替代方法。通常，这种方法在较少的迭代中收敛，但每次迭代的成本更高。以BFGS方法为例，其包括在每个步骤上计算矩阵，通过该矩阵将梯度向量乘以进入“更好”的方向，结合更复杂的线搜索算法，以找到$\gamma$的“最佳”值。对于计算机内存问题占主导地位的极大问题，应使用L-BFGS等有限记忆方法代替BFGS或最陡下降.
+
+梯度下降可视为应用欧拉方法将常微分方程$x'(t)=-\nabla f(x(t))$的解作为梯度流。
+\section{计算实例}
+以Python代码为例，应用梯度下降算法来查找具有导数$f'(x)=4x^3-9x^2$的函数$f(x)x^4-3x^3+2$的最小值.
+
+求解$4x^3-9x^2=0$并在解决方案中评估二阶导数表明该函数的平台点为0，全局最小值为$x=\frac{9}{4}$。
+
+$x$的初始值取6，步长0.01，期望精度0.00001，最大迭代次数设置为10000。
+
+最终得到极小值点为2.2499646074278457。
+\section{拓展}
+通过在约束集上包括投影，可以扩展梯度下降以处理约束。只有在计算机上有效计算投影时，此方法才可行。在适当的假设下，该方法收敛。该方法是单调包含的前后向算法的一个特定情况（包括凸规划和变分不等式）。
+
+\subsection{快速梯度方法}
+梯度下降的另一个延伸是由于Yurii Nesterov从1983年开始，并且随后被推广。他提供了一种简单的算法修改方法，可以更快地收敛凸问题。对于无约束平滑问题，该方法称为快速梯度法（FGM）或加速梯度法（AGM）。具体来说，如果可微函数$F$是凸的,并且$\nabla F$ 是Lipschitz，并且不假设$F$是强凸的，那么通过梯度下降法在每个步骤$k$生成的目标值的误差将受到$\mathcal O\left({\frac {1}{k}}\right)$的限制。使用Nesterov加速技术，误差在$\mathcal O\left({\tfrac {1}{k^{2}}}\right)$处降低.已知对于一阶优化方法，成本函数减小的速率$\mathcal O\left({k^{-2}}\right)$是最优的。 $\mathcal O \left({k^{-2}}\right)$降低成本函数对于一阶优化方法是最优的。然而，有机会通过减少常数因子来改进算法。优化梯度法（OGM）将该常数减少了两倍，是大规模问题的最优一阶方法。
+
+对于约束或非平滑问题，Nesterov的FGM称为快速近端梯度法（FPGM），即近端梯度法的加速度。
+\subsection{动量法}
+另一个扩展，即降低陷入局部最小值的风险，以及在此过程可能会严重曲折的情况下大大加速收敛，是动量方法，它使用动量项类比“ 牛顿粒子在保守力场中穿过粘性介质的质量“。 该方法通常用作用于训练人工神经网络的反向传播算法的扩展。
+\section{类比}
+梯度下降背后的基本直觉可以通过假设情景来说明。一个人被困在山中，并试图下来（即试图找到最小值）。有大雾使能见度极低。因此，下山的路径是不可见的，所以他必须使用当地信息来找到最小值。他可以使用梯度下降的方法，该方法包括观察当前位置的山丘的陡度，然后沿着最陡下降的方向（即下坡）前进。如果他试图找到山顶（即最大值），那么他将沿着最陡上升（即上坡）的方向前进。使用这种方法，他最终会找到下山的路。然而，假设通过简单的观察，山的陡峭程度并不是立即显而易见的，而是需要一种精密的仪器来测量，此时人们碰巧拥有这种仪器。使用仪器测量山坡的陡度需要相当长的时间，因此如果他想在日落前下山，他应该尽量减少对仪器的使用。那么困难在于选择他应该测量山坡陡度的频率，以免偏离轨道。
+
+在这个类比中，人代表算法，沿山的路径代表算法将探索的参数设置序列。山的陡度表示该点处的误差表面的斜率。用于测量陡度的仪器是微分（误差曲面的斜率可以通过取该点处的平方误差函数的导数来计算）。他选择行进的方向与该点处的误差表面的梯度一致。他在进行另一次测量之前旅行的时间量是算法的学习率。
+
+
+
+
+
+
+
+
+\end{document}
