@@ -3,73 +3,110 @@
 \input{../LaTeX/模板/en_preamble.tex}
 \input{../LaTeX/模板/xecjk_preamble.tex}
 
-\title{}
-\author{作者}
-\date{\chntoday}
 \begin{document}
-\maketitle
-\newpage
-\subsection{Python调试}
-pdb是Python自带的一个包，为Python程序提供了一种交互的源代码调试功能，主要特性包括设置断点、单步调试、进入函数调试、查看当前代码、查看栈片段、动态改变变量的值等。pdb提供了一些常用的调试命令，见下表。
+\textcolor{blue}{第三步：}\quad 令$Q_{3}=\operatorname{diag}\left(I_{3 \times 3}, H_{3}\right)$，其中$H_3$是对应于向量$A_2(4:5,3)$的Householder矩阵，则有$$
+Q_{3} A_{2}=\left[\begin{array}{ccccc}{*} & {*} &{*} &{*} & {*} \\ {*} & {*} &{*} &{*} & {*} \\ {0} & {*} &{*} & {*} &{*} \\ {0} & {0} & {*} &{*} & {*} \\ {0} & {0} & {0} & {*} &{*}\end{array}\right]
+\textbf{和} A_{3} \triangleq Q_{3} A_{2} Q_{3}^{\top}=\left[\begin{array}{ccccc}{*} & {*} &{*} &{*} & {*} \\ {*} & {*} &{*} &{*} & {*} \\ {0} & {*} &{*} &{*} & {*} \\  {0} & {0} & {*} &{*} & {*} \\ {0} & {0} & {0} &{*} & {*}\end{array}\right]
+$$
+这时，我们就将$A$转化成一个上Hessenberg矩阵，即$QAQ^T=A_3$，其中$Q=Q_3Q_2Q_1$是正交矩阵，$A_3$是上Hessenberg矩阵。
 
-$\nabla f(x)$
-$$\nabla f(x)$$
-\begin{equation}
-    \int_0^1f(x)\mathrm{d}x
-\end{equation}
+上Hessenberg化算法\\
+\textcolor{blue}{算法 5.1}\quad 上Hessenberg化算法(Upper Hessenberg Reduction)
+\begin{enumerate}[1:]
+	\item set $Q=I$
+	\item for $k=1$ to $n-2$ do
+	\item \quad compute Hessenberg matrix $H_k$ with respect to $A(k+1:n,k)$
+	\item \quad $\begin{aligned} A(k+1& : n, k : n )=H_{k} \cdot A(k+1 : n, k : n) \\ &=A(k+1 : n, k : n)-\beta_{k} v_{k}\left(v_{k}^{\top} A(k+1 : n, k : n)\right) \end{aligned}$
+	\item \quad $\begin{aligned} A(1 : n, &k+1 : n)=A(1 : n, k+1 : n) \cdot H_{k}^{\top}\\
+	&=A(1 : n, k+1 : n)-\beta_{k} A(1 : n, k+1 : n) v_{k} v_{k}^{\top} \end{aligned}$
+	\item \quad $\begin{aligned} Q(k+1& : n, k : n )=H_{k} \cdot Q(k+1 : n, k : n) \\ &=Q(k+1 : n, k : n)-\beta_{k} v_{k}\left(v_{k}^{\top} Q(k+1 : n, k : n)\right) \end{aligned}$
+	\item end for
+\end{enumerate}
 
-\begin{equation*}
-\begin{aligned}
-f(x)&=x^2+y^2\\
-&=s^2+w^2
-\end{aligned}
-\end{equation*}
+\textcolor{blue}{说明：}
+\begin{itemize}
+	\item 在实际计算时，我们不需要显式地形成Householder矩阵$H_k$。
+	\item 上述算法的运算量大约为$\frac{14}{3} n^{3}+\mathcal{O}\left(n^{2}\right)$。如果不需要计算特征向量，则正交矩阵$Q$也不用计算，此时运算量大约为$\frac{10}{3} n^{3}+\mathcal{O}\left(n^{2}\right)$。
+	\item 上Hessenberg矩阵的一个很重要的性质就是在QR迭代中保持形状不变。
+\end{itemize}
 
+\textcolor{blue}{定理}\quad 设$A \in \mathbb{R}^{n \times n}$是非奇异上Hessenberg矩阵，其QR分解为$A=QR$，则$\tilde{A} \triangleq R Q$也是上Hessenberg矩阵。
 
+若$A$是奇异的，也可以通过选取适当的$Q$，使得上述结论成立。
 
+由此可知，如果$A$是上Hessenberg矩阵，则QR迭代中的每一个$A_k$都是上Hessenberg矩阵矩阵。这样在进行QR分解时，运算量可大大降低。
 
+Hessenberg矩阵另一重要性质：在QR迭代中保持下次对角线元素非零。
 
+\textcolor{blue}{定理}\quad 设$A \in \mathbb{R}^{n \times n}$是上Hessenberg矩阵且下次对角线元素均非零，即$a_{i+1, i} \neq 0, i=1,2, \ldots, n-1$。设其QR分解为$A=QR$，则$\tilde{A} \triangleq R Q$的下次对角线元素也都非零。
 
+若$A$村咋子某个下次对角线元素为零，则$A$一定可约。因此，我们只需考虑下次对角线均非零的情形。
 
+\textcolor{blue}{推论}\quad $\tilde{A} \triangleq R Q$则在带位移的QR迭代中，所有的$A_k$的下次对角线元素均非零。
+\subsubsection{隐式QR迭代}
+在QR迭代中，我们要先做QR分解$A_k=Q_kR_k$，然后计算$A_{k+1}k=Q_kR_k$.但事实上，我们可以直接计算出$A_{k+1}$。这就是\textcolor{blue}{隐式QR迭代}。
 
+不失一般性，我们假定$A$是不可约的上Hessenberg矩阵。
 
+隐式QR迭代的理论基础就是下面的\textcolor{blue}{隐式Q定理}。
 
+\textcolor{blue}{定理(ImplicitQTheorem)}\quad 设$H=Q^{\top} A Q \in \mathbb{R}^{n \times n}$是一个不可约上Hessenberg矩阵，其中$Q \in \mathbb{R}^{n \times n}$是正交矩阵，则$Q$的第$2$至第$n$列均由$Q$的第一列所唯一确定（可相差一个符号）。
 
+由于$Q_k$的其他列都由$Q_k$的第一列唯一确定（至多相差一个符号），所以我们只要找到一个正交矩阵$\tilde{Q}_{k}$使得其第一列与$\tilde{Q}_{k}$的第一列相等，且$\tilde{Q}_{k}^{\top} A_{k} \tilde{Q}_{k}$为上Hessenberg矩阵，则由隐式$Q$定理可知$\tilde{Q}_{k}=W Q_{k}$，其中$W=\operatorname{diag}(1, \pm 1, \ldots, \pm 1)$，于是$$
+\tilde{Q}_{k}^{\top} A_{k} \tilde{Q}_{k}=W^{\top} Q_{k}^{\top} A_{k} Q_{k} W=W^{\top} A_{k+1} W
+$$。
+又$W^{\top} A_{k+1} W$与$A_{k+1}$相似，且对角线元素相等，而其他元素也至多相差一个符号，所以不会影响$A_{k+1}$的收敛性，即下三角元素收敛到$0$，对角线元素收敛到$A$的特征值。
 
+在QR迭代算法中，如果我们直接令$A_{k+1}=\tilde{Q}_{k}^{\top} A_{k} \tilde{Q}_{k}$，则其收敛性与原QR迭代算法没有任何区别！这就是隐式QR迭代的基本思想。
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+由于$A$是上Hessenberg矩阵，因此在实际计算中，我们只需Givens变换。
 
 
 
 
 
-\cite{tam19912d}
-\bibliography{../LaTeX/模板/ref}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \end{document}

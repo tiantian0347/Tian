@@ -1,0 +1,82 @@
+% !Mode:: "TeX:UTF-8"
+\documentclass[12pt,a4paper]{article}
+\input{../LaTeX/模板/en_preamble.tex}
+\input{../LaTeX/模板/xecjk_preamble.tex}
+
+\title{显式欧拉方法}
+\author{作者：田甜}
+\date{\chntoday}
+\begin{document}
+\maketitle
+\newpage
+\section{显式欧拉方法}
+欧拉方法，是一种一阶数值方法，用以对给定初值的常微分方程（即初值問題）求解。它是一种解决数值常微分方程的最基本的一类显型方法。
+
+思想：采用离散变量法，即把一个连续型问题转化成一个离散型问题，即采用步进的方式求出方程在一些离散点上的近似值。
+
+\begin{equation}
+\left\{\begin{array}{l}{y^{\prime}=g(x, y)} \\ {y\left(x_{0}\right)=y_{0}}\end{array}\right.
+\end{equation}
+推导过程：
+\begin{enumerate}[(1)]
+	\item 消除导数项，用差商近似代替导数，将变量离散化。任取一点，设为$x_i$，则有：\begin{equation}
+	y^{\prime}\left(x_{i}\right)=g\left(x_{i}, y\left(x_{i}\right)\right)
+	\end{equation}
+	\item 用差商公式$y^{\prime}\left(x_{i}\right)=\frac{y\left(x_{i+1}\right)-y\left(x_{i}\right)}{x_{i+1}-x_{i}}$替代导数项，假设步长为$h$，得：\begin{equation}
+	y\left(x_{i+1}\right) \approx y\left(x_{i}\right)+g\left(x_{i}, y\left(x_{i}\right)\right)
+	\end{equation}
+	\item 用$y_i$表示$y(x_i)$得近似值，代入上式，得：\begin{equation}
+	y_{i+1}=y_{i}+h g\left(x_{i}, y_{i}\right) \quad(i=0,1,2, \ldots)
+	\end{equation}
+\end{enumerate}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
