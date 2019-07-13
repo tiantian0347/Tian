@@ -2,6 +2,7 @@
 \documentclass[12pt,a4paper]{article}
 \input{../LaTeX/模板/en_preamble.tex}
 \input{../LaTeX/模板/xecjk_preamble.tex}
+\input{../LaTeX/模板/listings.tex}
 
 \title{显式欧拉方法}
 \author{作者：田甜}
@@ -17,7 +18,7 @@
 \begin{equation}
 \left\{\begin{array}{l}{y^{\prime}=g(x, y)} \\ {y\left(x_{0}\right)=y_{0}}\end{array}\right.
 \end{equation}
-推导过程：
+\textcolor{blue}{推导过程：}
 \begin{enumerate}[(1)]
 	\item 消除导数项，用差商近似代替导数，将变量离散化。任取一点，设为$x_i$，则有：\begin{equation}
 	y^{\prime}\left(x_{i}\right)=g\left(x_{i}, y\left(x_{i}\right)\right)
@@ -29,8 +30,36 @@
 	y_{i+1}=y_{i}+h g\left(x_{i}, y_{i}\right) \quad(i=0,1,2, \ldots)
 	\end{equation}
 \end{enumerate}
+\textcolor{blue}{例：}\begin{equation}
+\left\{\begin{array}{l}{y^{\prime}=y} \\ {y\left(x_{0}\right)=y_{0}}\end{array}\right.\end{equation}
+\textcolor{blue}{Python代码}
+\lstset{language=Python}
+\begin{lstlisting}
+import numpy as np
+import matplotlib.pyplot as plt
+a=0
+b=1
+ya=1
+step=200
+y=np.zeros([step+1])
+x=np.linspace(a,b,step+1)
+y[0]=ya
+u=np.exp(x)
+for i in range(0,step):
+  y[i+1]=y[i]+((b-a)/step)*y[i]
+  print(y[i])
+plt.xlabel("x")
+plt.ylabel("error")
+plt.plot(x,y-u) 
+plt.show()
+\end{lstlisting}
+计算可得误差图：
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{./figures/Figure_1.png}
+\end{figure}
 
-
+根据上图我们可以发现，误差较小，模型有效。
 
 
 

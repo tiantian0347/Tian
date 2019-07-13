@@ -1,0 +1,101 @@
+% !Mode:: "TeX:UTF-8"
+\documentclass[12pt,a4paper]{article}
+\input{../LaTeX/模板/en_preamble.tex}
+\input{../LaTeX/模板/xecjk_preamble.tex}
+
+\title{重心坐标函数}
+\author{姓名：田甜}
+\date{\chntoday}
+\begin{document}
+\maketitle
+\newpage
+\section{一维重心坐标函数}
+在一维情况下，我们选取两个点$A:x_0,B:x_1(x_0 \neq x_1)$设他们满足方程\begin{equation}
+f_i(x_j)=\begin{cases}1 \quad i=j
+\\ 0\quad i\neq j\end{cases}\qquad i,j=0,1
+\label{eqaution1}
+\end{equation}
+此时我们假设\begin{equation}
+f_i(x)=a_ix+b_i
+\label{eqaution2}
+\end{equation}
+求解得$$\begin{cases}
+\begin{aligned}a_0&=\cfrac{1}{x_0-x_1}\\  b_0&=-\cfrac{x_1}{x_0-x_1}\end{aligned}
+\end{cases}
+\begin{cases}\begin{aligned}a_1&=\cfrac{1}{x_1-x_0}\\  b_1&=-\cfrac{x_0}{x_1-x_0}\end{aligned}\end{cases}$$
+此时就得到了两个基函数，且它们的梯度分别为$$\nabla f_0=a_0,\quad \nabla f_1=a_1$$
+\section{二维重心坐标函数}
+在二维情况下，我们选取三个点$A:(x_0,y_0),B(x_1,y_1),C(x_2,y_2)(A,B,C$不共线)。设它们满足方程\begin{equation}
+f_i(x_j,y_j)=\begin{cases}1 \quad i=j
+\\ 0\quad i\neq j\end{cases}\qquad i,j=0,1,2
+\end{equation}
+我们假设\begin{equation}
+f_i(x,y)=a_ix+b_iy+c_i
+\end{equation}
+求解可得$$\begin{cases}\begin{aligned}a_0&=\cfrac{y_2-y_1}{(y_0-y_1)(x_1-x_2)-(y_1-y_2)(x_0-x_1)}\\ b_0&=\cfrac{x_1-x_2}{(y_0-y_1)(x_1-x_2)-(y_1-y_2)(x_0-x_1)}\\
+c_0&=\cfrac{x_2y_1-x_1y_2}{(y_0-y_1)(x_1-x_2)-(y_1-y_2)(x_0-x_1)}
+\end{aligned}\end{cases}$$
+$$\begin{cases}\begin{aligned}a_1&=\cfrac{y_2-y_0}{(y_1-y_2)(x_0-x_2)-(y_0-y_2)(x_1-x_2)}\\ b_0&=\cfrac{x_0-x_2}{(y_1-y_2)(x_0-x_2)-(y_0-y_2)(x_1-x_2)}\\
+c_0&=\cfrac{x_0y_2-x_2y_0}{(y_1-y_2)(x_0-x_2)-(y_0-y_2)(x_1-x_2)}
+\end{aligned}\end{cases}$$
+$$\begin{cases}\begin{aligned}a_1&=\cfrac{y_1-y_0}{(y_2-y_1)(x_0-x_1)-(y_0-y_1)(x_2-x_1)}\\ b_0&=\cfrac{x_0-x_1}{(y_2-y_1)(x_0-x_1)-(y_0-y_1)(x_2-x_1)}\\
+c_0&=\cfrac{x_0y_1-x_1y_0}{(y_2-y_1)(x_0-x_1)-(y_0-y_1)(x_2-x_1)}
+\end{aligned}\end{cases}$$
+此时就得到了三个基函数，且它们的梯度分别为$$\nabla f_0=(a_0,b_0),\quad \nabla f_1=(a_1,b_1),\quad \nabla f_2=(a_2,b_2)$$
+\section{三维重心坐标函数}
+在二维情况下，我们选取三个点$A:(x_0,y_0，z_0),B(x_1,y_1,z_1),C(x_2,y_2,z_2),D(x_3,y_3,z_3)(A,B,C,D$不共面)。设它们满足方程\begin{equation}
+f_i(x_j,y_j,z_j)=\begin{cases}1 \quad i=j
+\\ 0\quad i\neq j\end{cases}\qquad i,j=0,1,2,3
+\end{equation}
+我们假设\begin{equation}
+f_i(x,y)=a_ix+b_iy+c_iz+d_i
+\end{equation}
+此时就得到了三个基函数，且它们的梯度分别为$$\nabla f_0=(a_0,b_0),\quad \nabla f_1=(a_1,b_1),\quad \nabla f_2=(a_2,b_2)$$
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

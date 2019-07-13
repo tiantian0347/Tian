@@ -727,7 +727,8 @@ Courant-Fischer极小极大定理
 实对称矩阵的特征值与Rayleigh商之间的一个基本性质是Courant-Fischer极小极大定理。
 
 \textcolor{blue}{定理(Courant-Fischer)}\quad 设$A \in \mathbb{R}^{n \times n}$是对称矩阵，其特征值为$\lambda_{1} \geq \lambda_{2} \geq \cdots \geq \lambda_{n}$，则有$$
-\lambda_{k}=\max _{\mathrm{U} \in \mathbb{S}_{k}^{n}} \min _{x \in \mathbb{U}, x \neq 0} \frac{x^{\top} A x}{x^{\top} x} =\min _{\mathrm{V} \in \mathbb{S}_{n-k+1}^{n}} \max _{x \in \mathbb{V}, x \neq 0} \frac{x^{\top} A x}{x^{\top} x}
+\lambda_{k}=\max _{\mathrm{U} \in \mathbb{S}_{k}^{n}} \min _{x \in \mathbb{U}, x \neq 0} \frac{x^{\top} A x}{x^{\top} x}
+ =\min _{\mathrm{V} \in \mathbb{S}_{n-k+1}^{n}} \max _{x \in \mathbb{V}, x \neq 0} \frac{x^{\top} A x}{x^{\top} x}
 $$
 其中$S_{i}^{n}$表示$\mathbb{R}^{n}$中所欲$i$维子空间构成的集合，当$$
 \mathbb{U}=\operatorname{span}\left\{q_{1}, \ldots, q_{k}\right\}, \quad \mathbb{V}=\operatorname{span}\left\{q_{k}, \ldots, q_{n}\right\}, \quad x=q_{k}
@@ -746,7 +747,7 @@ $$
 由极大极小定理，我们可以得到下面的特征值分隔定理。
 
 \textcolor{blue}{定理（分割定理）}\quad 设$A \in \mathbb{R}^{n \times n}$是对称矩阵，$B=Q^TAQ$，其中$Q\in \mathbb{R}4^{n \times (n-1)}$满足$Q^TQ=I_{n-1}$。再设$A$和$B$的特征值分别为$$
-\lambda_{1} \geq \lambda_{2} \geq \cdots \geq \lambda_{n} \quad \textbf{和}  \quad \tilde{\lambda}_{1} \geq \tilde{\lambda}_{2} \geq \cdots \geq \tilde{\lambda}_{n-1}
+\lambda_{1} \geq \lambda_{2} \geq \cdots \geq \lambda_{n} \quad \text{和}  \quad \tilde{\lambda}_{1} \geq \tilde{\lambda}_{2} \geq \cdots \geq \tilde{\lambda}_{n-1}
 $$则有$$
 \lambda_{1} \geq \tilde{\lambda}_{1} \geq \lambda_{2} \geq \tilde{\lambda}_{2} \cdots \geq \tilde{\lambda}_{n-1} \geq \lambda_{n}
 $$。
@@ -754,7 +755,7 @@ $$。
 特别地，在上述定理中，取$Q=\left[e_{1}, \ldots, e_{i-1}, e_{i+1}, \dots, e_{n}\right]$，则可以得到下面的结论。
 
 \textcolor{blue}{推论}\quad 设$A \in \mathbb{R}^{n \times n}$是对称矩阵，$\tilde{A}$是$A$的一个$n-1$阶主子矩阵，$A$和$\tilde{A}$的特征值分别为$$
-\lambda_{1} \geq \lambda_{2} \geq \cdots \geq \lambda_{n} \quad \textbf{和}  \quad \tilde{\lambda}_{1} \geq \tilde{\lambda}_{2} \geq \cdots \geq \tilde{\lambda}_{n-1}
+\lambda_{1} \geq \lambda_{2} \geq \cdots \geq \lambda_{n} \quad \text{和}  \quad \tilde{\lambda}_{1} \geq \tilde{\lambda}_{2} \geq \cdots \geq \tilde{\lambda}_{n-1}
 $$则有$$
 \lambda_{1} \geq \tilde{\lambda}_{1} \geq \lambda_{2} \geq \tilde{\lambda}_{2} \cdots \geq \tilde{\lambda}_{n-1} \geq \lambda_{n}
 $$。
@@ -762,7 +763,7 @@ $$。
 反复应用上面的推论，即可得到下面的结论。
 
 \textcolor{blue}{推论}\quad 设$A \in \mathbb{R}^{n \times n}$是对称矩阵，$\tilde{A}$是$A$的一个$k$阶主子矩阵$(1 \leq k \leq n-1)$，$A$和$\tilde{A}$的特征值分别为$$
-\lambda_{1} \geq \lambda_{2} \geq \cdots \geq \lambda_{n} \quad \textbf{和}  \quad \tilde{\lambda}_{1} \geq \tilde{\lambda}_{2} \geq \cdots \geq \tilde{\lambda}_{n-1}
+\lambda_{1} \geq \lambda_{2} \geq \cdots \geq \lambda_{n} \quad \text{和}  \quad \tilde{\lambda}_{1} \geq \tilde{\lambda}_{2} \geq \cdots \geq \tilde{\lambda}_{n-1}
 $$则有$$
 \lambda_{i} \geq \tilde{\lambda}_{i} \geq \lambda_{n-k+i}, \quad i=1,2, \ldots, k
 $$。
@@ -772,7 +773,7 @@ $$。
 由极小极大定理，我们可以证明下面的性质。
 
 \textcolor{blue}{定理}\quad 设$A \in \mathbb{R}^{n \times n}$和$B=A+E \in \mathbb{R}^{n \times n}$都是对称矩阵，其特征值分别为$$
-\lambda_{1} \geq \lambda_{2} \geq \cdots \geq \lambda_{n} \quad \textbf{和}  \quad \tilde{\lambda}_{1} \geq \tilde{\lambda}_{2} \geq \cdots \geq \tilde{\lambda}_{n-1}
+\lambda_{1} \geq \lambda_{2} \geq \cdots \geq \lambda_{n} \quad \text{和}  \quad \tilde{\lambda}_{1} \geq \tilde{\lambda}_{2} \geq \cdots \geq \tilde{\lambda}_{n-1}
 $$假定$E$的最大特征值和最小特征值分别为$\mu_{1}$和$\mu_{n}$，则有$$
 \lambda_{i}+\mu_{1} \geq \tilde{\lambda}_{i} \geq \lambda_{i}+\mu_{n}, \quad i=1,2, \ldots, n
 $$
@@ -782,7 +783,7 @@ Weyl定理
 根据这个定理，我们可以得到下面的Weyl定理。
 
 \textcolor{blue}{定理（Weyl）}\quad 设$A \in \mathbb{R}^{n \times n}$和$B=A+E \in \mathbb{R}^{n \times n}$都是对称矩阵，其特征值分别为$
-\lambda_{1} \geq \lambda_{2} \geq \cdots \geq \lambda_{n} \quad \textbf{和}  \quad \tilde{\lambda}_{1} \geq \tilde{\lambda}_{2} \geq \cdots \geq \tilde{\lambda}_{n-1}
+\lambda_{1} \geq \lambda_{2} \geq \cdots \geq \lambda_{n} \quad \text{和}  \quad \tilde{\lambda}_{1} \geq \tilde{\lambda}_{2} \geq \cdots \geq \tilde{\lambda}_{n-1}
 $，则$$
 \left|\tilde{\lambda}_{j}-\lambda_{j}\right| \leq\|E\|_{2}, \quad j=1,2, \ldots, n
 $$。
@@ -792,7 +793,8 @@ $$。
 我们首先给出下面的引理。
 
 \textcolor{blue}{引理}\quad 设$A \in \mathbb{R}^{m \times n}(m \geq n)$的奇异值分解为$A=U\sum V$，其中$U=[u_1,...,u_n]\in \mathbb{R}^{m \times n}$为列正交矩阵，$V=[v_1,...v_n]\in \mathbb{R}^{n \times n}$为正交矩阵，$\sum =diag(\sigma_{1}, \ldots, \sigma_{n})$。将$U$扩展成$n\times n$的正交矩阵$[U, \check{U}]=\left[u_{1}, \dots, u_{n}, \tilde{u}_{1}, \ldots, \tilde{u}_{m-n}\right]$，令$$
-H=\left[\begin{array}{cc}{0} & {A^{\top}} \\ {A} & {0}\end{array}\right] \in \mathbb{R}^{(m+n) \times(m+n)}4
+H=\left[\begin{array}{cc}{0} & {A^{\top}} \\ {A} & {0}\end{array}\right] \in \mathbb{R}^{(m+n) \times(m+n)}
+4
 $$则$H$对称，且特征值为$\pm \sigma_{i}$和$0$(其中$0$至少为$m-n$重特征值)，对应的特征向量分别为$\frac{\sqrt{2}}{2}\left[\begin{array}{c}{v_{i}} \\ { \pm u_{i}}\end{array}\right]$，$i=1,2, \dots, n$，$\left[\begin{array}{c}{0} \\ {\tilde{u}_{j}}\end{array}\right], j=1,2, \ldots, m-n$。
 
 由上面的引理和Weyl定理立即可得
@@ -841,7 +843,8 @@ $$。
 	\label{equation5.15}
 	\end{equation}
 	\item 给定非零向量$x \in \mathbb{R}^{n}$，当$\beta=\rho(x)$时，$\|A x-\beta x\|_{2}$达到最小，即\begin{equation}
-	\min _{\beta \in \mathbb{R}}\|A x-\beta x\|_{2}=\|A x-\rho(x) x\|_{2}\label{equation5.16}
+	\min _{\beta \in \mathbb{R}}\|A x-\beta x\|_{2}=\|A x-\rho(x) x\|_{2}
+\label{equation5.16}
 	\end{equation}
 	\item 令$r=A x-\rho(x) x$，设$\lambda_{i}$是离$\rho(x)$最近的特征值，$\operatorname{gap}^{\prime}=\min _{j \neq i} | \lambda_{j}-\rho(x) |$，$\theta$是$x$和$q_i$之间的锐角，其中$q_i$是$\lambda_{i}$对应的单位特征向量，则\begin{equation}
 	\sin \theta \leq \frac{\|r\|_{2}}{g a p^{\prime}} \quad \mathbb{H} \quad\left|\lambda_{i}-\rho(x)\right| \leq \frac{\|r\|_{2}^{2}}{g a p^{\prime}}
@@ -857,12 +860,13 @@ $$。
 
 \textcolor{blue}{定理(相对Weyl定理)}\quad 设对称矩阵$A$和$X^TAX$的特征值分别为$\lambda_{1} \geq \lambda_{2} \geq \cdots \geq \lambda_{n}$和$\tilde{\lambda}_{1} \geq \tilde{\lambda}_{2} \geq \cdots \geq \tilde{\lambda}_{n}$，令$\varepsilon=\left\|X^{\top} X-I\right\|_{2}$，则$$
 \left|\tilde{\lambda}_{i}-\lambda_{i}\right| \leq \varepsilon\left|\lambda_{i}\right|
-\textbf{或}\frac{\left|\tilde{\lambda}_{i}-\lambda_{i}\right|}{\left|\lambda_{i}\right|} \leq \varepsilon \quad\left(\text { if } \lambda_{i} \neq 0\right)$$
+\text{或}\frac{\left|\tilde{\lambda}_{i}-\lambda_{i}\right|}{\left|\lambda_{i}\right|} \leq \varepsilon \quad\left(\text { if } \lambda_{i} \neq 0\right)$$
 
 当$X$正交时，$\varepsilon=0$，故$X^TAX$与$A$有相同的特征值。当$X$几乎正交时，$\varepsilon$很小，此时$X^TAX$与$A$的特征值几乎相同。
 
 \textcolor{blue}{推论}\quad 设$G$和$Y^TGX$的奇异值分别为$\sigma_{1} \geq \sigma_{2} \geq \cdots \geq \sigma_{n}$和$\tilde{\sigma}_{1} \geq \tilde{\sigma}_{2} \geq \cdots \geq \tilde{\sigma}_{n}$，令$\varepsilon=\max \left\{\left\|X^{\top} X-I\right\|_{2},\left\|Y^{\top} Y-I\right\|_{2}\right\}$，则$$
-\left|\tilde{\sigma}_{i}-\sigma_{i}\right| \leq \varepsilon\left|\sigma_{i}\right|\textbf{或}\frac{\left|\tilde{\sigma}_{i}-\sigma_{i}\right|}{\left|\sigma_{i}\right|} \leq \varepsilon \quad\left(\text { if } \sigma_{i} \neq 0\right)
+\left|\tilde{\sigma}_{i}-\sigma_{i}\right| \leq \varepsilon\left|\sigma_{i}\right|
+\text{或}\frac{\left|\tilde{\sigma}_{i}-\sigma_{i}\right|}{\left|\sigma_{i}\right|} \leq \varepsilon \quad\left(\text { if } \sigma_{i} \neq 0\right)
 $$
 
 下面给出特征向量的相对扰动性质。

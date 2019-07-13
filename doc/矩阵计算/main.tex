@@ -6,7 +6,7 @@
 \begin{document}
 \textcolor{blue}{第三步：}\quad 令$Q_{3}=\operatorname{diag}\left(I_{3 \times 3}, H_{3}\right)$，其中$H_3$是对应于向量$A_2(4:5,3)$的Householder矩阵，则有$$
 Q_{3} A_{2}=\left[\begin{array}{ccccc}{*} & {*} &{*} &{*} & {*} \\ {*} & {*} &{*} &{*} & {*} \\ {0} & {*} &{*} & {*} &{*} \\ {0} & {0} & {*} &{*} & {*} \\ {0} & {0} & {0} & {*} &{*}\end{array}\right]
-\textbf{和} A_{3} \triangleq Q_{3} A_{2} Q_{3}^{\top}=\left[\begin{array}{ccccc}{*} & {*} &{*} &{*} & {*} \\ {*} & {*} &{*} &{*} & {*} \\ {0} & {*} &{*} &{*} & {*} \\  {0} & {0} & {*} &{*} & {*} \\ {0} & {0} & {0} &{*} & {*}\end{array}\right]
+\text{和} A_{3} \triangleq Q_{3} A_{2} Q_{3}^{\top}=\left[\begin{array}{ccccc}{*} & {*} &{*} &{*} & {*} \\ {*} & {*} &{*} &{*} & {*} \\ {0} & {*} &{*} &{*} & {*} \\  {0} & {0} & {*} &{*} & {*} \\ {0} & {0} & {0} &{*} & {*}\end{array}\right]
 $$
 这时，我们就将$A$转化成一个上Hessenberg矩阵，即$QAQ^T=A_3$，其中$Q=Q_3Q_2Q_1$是正交矩阵，$A_3$是上Hessenberg矩阵。
 
@@ -61,52 +61,245 @@ $$。
 
 由于$A$是上Hessenberg矩阵，因此在实际计算中，我们只需Givens变换。
 
+下面我们举一个例子，具体说明如何利用隐式Q定理，由$A_1$得到$A_2$。
 
+设$A \in \mathbb{R}^{5 \times 5}$是一个不可约上Hessenberg矩阵，即$$
+A_{1}=A=\left[\begin{array}{ccccc}{*} & {*} & {*}& {*}& {*} \\ {*} & {*} & {*}& {*}& {*} \\ {0} & {*} & {*}& {*}& {*} \\ {0} & {0} & {*} & {*}& {*} \\ {0} & {0} & {0} & {*}& {*}\end{array}\right]
+$$
+\textcolor{blue}{第一步：}\quad 构造一个Givens变换
+$$
+G_{1}^{\top} \triangleq G\left(1,2, \theta_{1}\right)=\left[\begin{array}{ccc}{c_{1}} & {s_{1}}& \\ {-s_{1}} & {c_{1}} &\\ {} && {I_{3}}\end{array}\right]
+\qquad (c_1,s_1\text{待定})
+$$
+于是有$$
+G_{1}^{\top} A=\left[\begin{array}{ccccc}{*}  & {*} & {*}& {*}& {*}\\ {*} & {*} & {*} & {*}& {*}\\ {0} & {*} & {*}& {*}& {*} \\ {0} & {0} & {*} & {*}& {*}\\ {0} & {0} & {0} & { *}& {*}\end{array}\right] \text{和}A^{(1)} \triangleq G_{1}^{\top} A G_{1}=\left[\begin{array}{ccccc}{*}  & {*} & {*}& {*} & {*} \\ {*}  & {*} & {*}& {*} & {*} \\ {+} & {*} & {*}  & {*} & {*}\\ {0} & {0} & {*} & {*}  & {*}\\ {0} & {0} & {0} & {*} & {*}\end{array}\right]
+$$
+与$A_1$相比较，$A^{(1)}$在$(3,1)$位置上多出一个非零元，我们把它记为“+”，并称之为\textcolor{blue}{bulge}。在下面的计算过程中，我们的目标就是将其“赶”出矩阵，从而得到一个新的上Hessenberg矩阵，即$A_2$。
 
+\textcolor{blue}{第二步：}\quad 为了消去这个bulge，我们可以构造Givens变换$$
+G_{2}^{\top} \triangleq G\left(2,3, \theta_{2}\right)=\left[\begin{array}{cccc}{1} & {} & {} &\\ {} & {c_{2}} & {s_{2}}& \\ {} & {-s_{2}} & {c_{2}} &\\ {} & {} && {I_{2}}\end{array}\right]
+\text{使得}G_{2}^{\top} A^{(1)}=\left[\begin{array}{ccccc}{*} & {*} & {*} & {*}& {*}\\ {*} & {*} & {*} & {*} & {*}\\ {0} & {*} & {*} & {*}& {*} \\ {0} & {0} & {*} & {*}& {*} \\ {0} & {0} & {0} & {*}& {*}\end{array}\right]$$
 
+为了保持与原矩阵的相似性，需要再右乘$G_2$，所以$$
+A^{(2)} \triangleq G_{2}^{\top} A^{(1)} G_{2}=\left[\begin{array}{ccccc}{*} & {*} & {*} & {*}& {*}\\ {*} & {*} & {*} & {*}& {*}\\ {0} & {*} & {*}& {*}& {*} \\ {0} & {+} & {*} & {*}& {*}\\ {0} & {0} & {0} & {*}& {*}\end{array}\right]
+$$
+此时，bugle从$(3,1)$位置被“赶”到$(4,2)$位置。
 
+\textcolor{blue}{第三步：}\quad 与第二步类似，构造Givens变换$$
+G_{3}^{\top} \triangleq G\left(3,4, \theta_{3}\right)=\left[\begin{array}{cccc}{I_{2}} & {} & {}& {} \\ {} & {c_{3}} & {s_{3}} & {}\\ {} & {-s_{3}}& { c_{3}} & {}\\ {} & {}& {} & {1}\end{array}\right]
+\text{使得}G_{3}^{\top} A^{(2)}=\left[\begin{array}{ccccc}{*} & {*} & {*} & {*}& {*}\\ {*} & {*} & {*} & {*} & {*}\\ {0} & {*} & {*} & {*}& {*} \\ {0} & {0} & {*} & {*}& {*} \\ {0} & {0} & {0} & {*}& {*}\end{array}\right]
+$$这时$$
+A^{(3)} \triangleq G_{3}^{\top} A^{(2)} G_{3}=\left[\begin{array}{ccccc}{*} & {*} & {*} & {*}& {*}\\ {*} & {*} & {*} & {*}& {*}\\ {0} & {*} & {*}& {*}& {*} \\ {0} & {0} & {*} & {*}& {*}\\ {0} & {0} & {+} & {*}& {*}\end{array}\right]
+$$
+于是，bugle又从$(4,2)$位置被“赶”到$(5,3)$位置。
 
+\textcolor{blue}{第四步：}\quad 再次构造Givens变换$$
+G_{4}^{\top} \triangleq G\left(4,5, \theta_{4}\right)=\left[\begin{array}{ccccc}{1} & {} & {}& {} &\\ {} & {1} & {} & {}&\\ {} & {}& {1} & {}&\\ {} & {}& {} & {c_4}&s_4\\{} & {}& {} & {-s_4}&c_4\end{array}\right]
+\text{使得}G_{4}^{\top} A^{(3)}=\left[\begin{array}{ccccc}{*} & {*} & {*} & {*}& {*}\\ {*} & {*} & {*} & {*} & {*}\\ {0} & {*} & {*} & {*}& {*} \\ {0} & {0} & {*} & {*}& {*} \\ {0} & {0} & {0} & {*}& {*}\end{array}\right]
+$$这时$$
+A^{(4)} \triangleq G_{4}^{\top} A^{(3)} G_{4}=\left[\begin{array}{ccccc}{*} & {*} & {*} & {*}& {*}\\ {*} & {*} & {*} & {*}& {*}\\ {0} & {*} & {*}& {*}& {*} \\ {0} & {0} & {*} & {*}& {*}\\ {0} & {0} & {0} & {*}& {*}\end{array}\right]
+$$
+现在，bulge被“赶”出矩阵，$A{(4)}$就是我们所要的矩阵！\\
+\textbf{算法分析，以及$c_1,s_1$的取值}
 
+常规QR迭代：$A_{1}=Q_{1} R_{1}, A_{2}=R_{1} Q_{1} \Longrightarrow A_{2}=Q_{1}^{\top} A_{1} Q_{1}$
 
+根据前面的计算过程，有$$
+A^{(4)}=G_{4}^{\top} G_{3}^{\top} G_{2}^{\top} G_{1}^{\top} A_{1} G_{1} G_{2} G_{3} G_{4}=\tilde{Q}_{1}^{\top} A_{1} \tilde{Q}_{1}
+$$，其中$\tilde{Q}_{1}=G_{1} G_{2} G_{3} G_{4} \Longrightarrow A^{(4)}=\tilde{Q}_{1}^{\top} A_{1} \tilde{Q}_{1}$
 
+通过直接计算可知，$\tilde{Q}_{1}$的第一列为$$
+\left[c_{1}, s_{1}, 0,0,0\right]^{\top}
+$$
 
+如果将其取为$A_1$的第一列$\left[a_{11}, a_{21}, 0, \ldots, 0\right]^{\top}$单位化后的向量，\textcolor{blue}{则$\tilde{Q}_{1}$的第一列与$Q_{1}$的第一列相同！$\Longrightarrow A^{(4)}=W^{\top} A_{2} W$}
 
+针对带位移的QR方法，我们取$A_{1}-\sigma_{1} I$的第一列$$
+\left[a_{11}-\sigma_{1}, a_{21}, 0, \ldots, 0\right]^{\top}
+$$单位化后的向量作为$G_1$的第一列即可。\\
+\textcolor{blue}{运算量：}
 
+如果$A \in \mathbb{R}^{n \times n}$是上Hessenberg矩阵,则使用上面的算法，带位移QR迭代中每一步的运算量为$6 n^{2}+O(n)$。
 
+\subsubsection{位移的选取}
+通常，位移越离某个特征值越近，则收敛速度就越快。
 
+由习题4.10可知，如果位移$\sigma$与某个特征值非常接近，则$A_{k}(n, n)-\sigma$就非常接近于0。
 
+这说明\textcolor{blue}{$A_k(n,n)$通常会首先收敛到$A$的一个特征值。}所以\textcolor{blue}{$\sigma=A_{k}(n, n)$是一个不错的选择。}但是，如果这个特征值是复数，这种唯一选取方法就可能失效。
 
+\textbf{双位移策略}
 
+设$\sigma \in \mathbb{C}$是$A$的某个复特征值$\lambda$的一个很好的近似，则其共轭$\overline{\sigma}$也应该是$\overline{\lambda}$的一个很好的近似。因此我们可以考虑\textcolor{blue}{双位移}策略，即先以$\lambda$为位移迭代一次，然后再以$\overline{\sigma}$为位移迭代一次，如此不断交替进行迭代。
 
+这样就有$$
+\begin{aligned} A_{1}-\sigma I &=Q_{1} R_{1} \\ A_{2} &=R_{1} Q_{1}+\sigma I \\ A_{2}-\overline{\sigma} I &=Q_{2} R_{2} \\ A_{3} &=R_{2} Q_{2}+\overline{\sigma} I \end{aligned}
+$$容易验证$$
+A_{3}=Q_{2}^{\top} A_{2} Q_{2}=Q_{2}^{*} Q_{1}^{*} A_{1} Q_{1} Q_{2}=Q^{*} A_{1} Q
+$$其中$Q=Q_1Q_2$
 
+我们注意到$\sigma$可能是复的，所以$Q_1$和$Q_2$都可能是复矩阵。但我们却可以选取适当的$Q_1$和$Q_2$，使得$Q=Q_1Q_2$是实矩阵。
 
+\textbf{双位移策略的实现}
 
+由前面的结论可知，存在$Q_1$和$Q_2$，使得$Q=Q_1Q_2$是实矩阵，从而$$
+A_{3}=Q^{\top} A_{1} Q
+$$也是实矩阵。因此我们希望\textcolor{blue}{不计算$A_2$，而是直接从$A_1$得到$A_3$}\\
+\textcolor{blue}{实现方式：}
 
+根据隐式Q定理：只要找到一个实正交矩阵$Q$，使得其第一列与$$
+A_{1}^{2}-2 \operatorname{Re}(\sigma) A_{1}+|\sigma|^{2} I
+$$的第一列平行，并且$A_{3}=Q^{\top} A_{1} Q$是上Hessenberg矩阵即可。
 
+易知，$A_{1}^{2}-2 \operatorname{Re}(\sigma) A_{1}+|\sigma|^{2} I$的第一列为\begin{equation}
+\left[\begin{array}{c}{a_{11}^{2}+a_{12} a_{21}-2 \operatorname{Re}(\sigma) a_{11}+|\sigma|^{2}} \\ {a_{21}\left(a_{11}+a_{22}-2 \operatorname{Re}(\sigma)\right)} \\ {a_{21} a_{32}} \\ {0} \\ {\vdots}\end{array}\right]
+\end{equation}
+所以$Q$的第一列是上述向量的单位化。
 
+其他过程可以通过隐式QR迭代来实现。但此时的“bulge"是一个$2\times 2$的小矩阵。因此，在双位移隐式R迭代过程中，\textcolor{blue}{需要使用Householder变换。}
 
+需要指出的是，\textcolor{blue}{双位移QR迭代算法中的运算都是实数运算。}
 
+下面通过一个例子来说明如何在实数运算下实现双位移隐式QR迭代。
 
+设$A \in \mathbb{R}^{6 \times 6}$是一个不可约上Hessenberg矩阵,即$$
+A_{1}=A=\left[\begin{array}{cccccc}{*} & {*} & {*}  & {*} & {*} & {*}\\ {*} & {*} & {*} & {*} & {*} & {*} \\ {0} & {*} & {*} & {*}  & {*} & {*}\\ {0} & {0} & {*} & {*} & {*} & {*} \\ {0}& {0}  & {0} & {*} & {*}  & {*} \\ {0} & {0} & {0} & {0} & {*} & {*}\end{array}\right]
+$$
 
+\textcolor{blue}{第一步：}\quad 构造一个正交矩阵$H_{1}=\left[\begin{array}{cc}{\tilde{H}_{1}^{\top}} & {0} \\ {0} & {I_{3}}\end{array}\right]$，其中$\tilde{H}_{1} \in \mathbb{R}^{3 \times 3}$，使得第一列与$A_{1}^{2}-2 \operatorname{Re}(\sigma) A_{1}+|\sigma|^{2} I$的第一列平行。于是有$$
+H_{1}^{\top} A=\left[\begin{array}{cccccc}{*} & {*} & {*} & {*} & {*}& {*}\\ {*} & {*} & {*} & {*}& {*}& {*} \\ {+} & {*} & {*} & {*}& {*}& {*} \\ {0} & {0} & {*} & {*}& {*}& {*} \\ {0} & {0} & {0} & {*} & {*}& {*}\\ {0} & {0} & {0} & {0} & {*}& {*}\end{array}\right]\text{和}A^{(1)} \triangleq H_{1}^{\top} A H_{1}=\left[\begin{array}{cccccc}{*} & {*} & {*} & {*}& {*}& {*} \\ {*} & {*} & {*} & {*}& {*}& {*} \\ {+} & {*} & {*} & {*}& {*}& {*} \\ {+} & {+} & {*}& {*} & {*} & {*}  \\ {0} & {0} & {0} & {*} & {*}& {*} \\ {0} & {0} & {0} & {0 }& {*}& {*}\end{array}\right]
+$$
+与$A_1$相比较，$A^{(1)}$在$(3,1),(4,1)$和$(4,2)$位置上出现bulge。在下面的计算过程中，我们的目标就是把它们”赶“出矩阵，从而得到一个新的上Hessenberg矩阵。
 
+\textcolor{blue}{第二步：}\quad 令$H_{2}=\left[\begin{array}{ccc}{1} & {0} & {0} \\ {0} & {\tilde{H}_{2}^{\top}} & {0} \\ {0} & {0} & {I_{2}}\end{array}\right]$，其中$\tilde{H}_{2} \in \mathbb{R}^{3 \times 3}$是对应于$A(2 : 4,1)$的Householder变换,使得$$
+H_{2}^{\top} A^{(1)}=\left[\begin{array}{cccccc}{*} & {*} & {*}& {*}& {*}& {*} \\ {*} & {*} & {*} & {*}& {*}& {*}\\ {0} & {*} & {*} & {*} & {*}& {*}\\ {0} & {+} & {*} & {*}& {*}& {*}\\ {0} & {0} & {0} & {*}& {*}& {*}\\ {0} & {0} & {0} & {0}& {*}& {*}\end{array}\right]\text{和}A^{(2)} \triangleq H_{2}^{\top} A^{(1)} H_{2}=\left[\begin{array}{cccccc}{*} & {*} & {*}& {*}& {*}& {*} \\ {*} & {*} & {*} & {*}& {*}& {*}\\ {0} & {*} & {*} & {*} & {*}& {*}\\ {0} & {+} & {*} & {*}& {*}& {*}\\ {0} & {+} & {+} & {*}& {*}& {*}\\ {0} & {0} & {0} & {0}& {*}& {*}\end{array}\right]
+$$
+这时，我们将bugle向右下角方向”赶“了一个位置。
 
+\textcolor{blue}{第三步}\quad 与第二步类似，令$H_{3}=\left[\begin{array}{ccc}{I_2} & {0} & {0} \\ {0} & {\tilde{H}_{3}^{\top}} & {0} \\ {0} & {0} & {1}\end{array}\right]$，其中$\tilde{H}_{3} \in \mathbb{R}^{3 \times 3}$是对应于$A(3 : 5,2)$的Householder变换,使得$$
+H_{3}^{\top} A^{(2)}=\left[\begin{array}{cccccc}{*} & {*} & {*}& {*}& {*}& {*} \\ {*} & {*} & {*} & {*}& {*}& {*}\\ {0} & {*} & {*} & {*} & {*}& {*}\\ {0} & {0} & {*} & {*}& {*}& {*}\\ {0} & {0} & {+} & {*}& {*}& {*}\\ {0} & {0} & {0} & {0}& {*}& {*}\end{array}\right]\text{和}A^{(3)} \triangleq H_{3}^{\top} A^{(2)} H_{3}=\left[\begin{array}{cccccc}{*} & {*} & {*}& {*}& {*}& {*} \\ {*} & {*} & {*} & {*}& {*}& {*}\\ {0} & {*} & {*} & {*} & {*}& {*}\\ {0} & {0} & {*} & {*}& {*}& {*}\\ {0} & {0} & {+} & {*}& {*}& {*}\\ {0} & {0} & {+} & {+}& {*}& {*}\end{array}\right]
+$$
+这时，bugle又被向右下角方向”赶“了一个位置。
 
+\textcolor{blue}{第四步}\quad 令$H_{4}=\left[\begin{array}{cc}{I_3} & {0} \\ {0} & {\tilde{H}_{4}^{\top}}  \end{array}\right]$，其中$\tilde{H}_{4} \in \mathbb{R}^{3 \times 3}$是对应于$A(4: 6,3)$的Householder变换,使得$$
+H_{4}^{\top} A^{(3)}=\left[\begin{array}{cccccc}{*} & {*} & {*}& {*}& {*}& {*} \\ {*} & {*} & {*} & {*}& {*}& {*}\\ {0} & {*} & {*} & {*} & {*}& {*}\\ {0} & {0} & {*} & {*}& {*}& {*}\\ {0} & {0} & {0} & {*}& {*}& {*}\\ {0} & {0} & {0} & {+}& {*}& {*}\end{array}\right]\text{和}A^{(4)} \triangleq H_{4}^{\top} A^{(3)} H_{4}=\left[\begin{array}{cccccc}{*} & {*} & {*}& {*}& {*}& {*} \\ {*} & {*} & {*} & {*}& {*}& {*}\\ {0} & {*} & {*} & {*} & {*}& {*}\\ {0} & {0} & {*} & {*}& {*}& {*}\\ {0} & {0} & {0} & {*}& {*}& {*}\\ {0} & {0} & {0} & {+}& {*}& {*}\end{array}\right]
+$$
 
+\textcolor{blue}{第五步}\quad 只需构造一个Givens变换$G_{5}=\left[\begin{array}{cc}{I_4} & {0} \\ {0} & {G(4,5,\theta)^{\top}}  \end{array}\right]$，使得$$
+G_{}5^{\top} A^{(4)}=\left[\begin{array}{cccccc}{*} & {*} & {*}& {*}& {*}& {*} \\ {*} & {*} & {*} & {*}& {*}& {*}\\ {0} & {*} & {*} & {*} & {*}& {*}\\ {0} & {0} & {*} & {*}& {*}& {*}\\ {0} & {0} & {0} & {*}& {*}& {*}\\ {0} & {0} & {0} & {0}& {*}& {*}\end{array}\right]\text{和}A^{(5)} \triangleq G_{5}^{\top} A^{(4)} G_{5}=\left[\begin{array}{cccccc}{*} & {*} & {*}& {*}& {*}& {*} \\ {*} & {*} & {*} & {*}& {*}& {*}\\ {0} & {*} & {*} & {*} & {*}& {*}\\ {0} & {0} & {*} & {*}& {*}& {*}\\ {0} & {0} & {0} & {*}& {*}& {*}\\ {0} & {0} & {0} & {0}& {*}& {*}\end{array}\right]
+$$
 
+现在，bulge已经被全部消除，且$$A^{(5)}=Q^{\top} A Q$$，其中$Q=H_{1} H_{2} H_{3} H_{4} G_{5}$。通过直接计算可知，$Q$的第一列即为$H_1$的第一列。根据隐式Q定理，可以直接令$A_{3} \triangleq A^{(5)}=Q^{\top} A Q$。
 
+\textbf{位移的具体选取}
 
+在单位移QR迭代算法中,若$A$的特征值都是实的,则取$\sigma_{k}=A_{k}(n, n)$.推广到复共轭特征值上，我们可以取$A_k$的右下角矩阵$$
+\left[\begin{array}{cc}{A_{k}(n-1, n-1)} & {A_{k}(n-1, n)} \\ {A_{k}(n, n-1)} & {A_{k}(n, n)}\end{array}\right]
+$$的复共轭特征值作为双位移。这样选取的位移就是\textcolor{blue}{Francis位移}。
 
+如果上述矩阵的两个特征值都是实的，则选取其中模较小的特征值做单位移。
 
+采用Francis位移的QR迭代会使得$A_k$的右下角收敛到一个上三角矩阵(两个实特征值)或一个2阶的矩阵(一对复共轭特征值)，而且通常会有二次收敛性。在实际计算中，一个特征值一般平均只需迭代两步。\\
+\textcolor{blue}{收敛性判断：}
 
+判断收敛性主要是看$A_{k}(n-1, n-2)$（或$A_{k}(n, n-1)$）是否趋向于$0$。
 
+需要指出的是，QR迭代并不是对所有的矩阵都收敛。例如：$$A=\left[\begin{array}{lll}{0} & {0} & {1} \\ {1} & {0} & {0} \\ {0} & {1} & {0}\end{array}\right]$$
+对于上面的矩阵，采用Francis位移的QR迭代算法无效。另外，也可以考虑多重位移策略，参见\textcolor{blue}{[Watkins 2007]}。
+\subsubsection{收缩Deflation}
+收缩(deflation)技术是实用QR迭代中的一个非常重要概念。
 
+隐式QR迭代过程中，当矩阵$A_{k+1}$的某个下次对角线元素$a_{i+1}$，$i$很小时，我们可以将其设为$0$。
 
+由于$A_{k+1}$是上Hessenberg矩阵，这时$A_{k+1}$就可以写成分块上三角形式，其中两个对角块都是上Hessenberg矩阵。
 
+因此我们可以将隐式QR迭代作用在这两个规模相对较小的矩阵上，从而可以大大节约运算量。
+\subsection{特征向量的计算}
+设$A$的特征值都是实的，$R=Q^TAQ$是其Schur标准型。若$Ax=\lambda x$，则 $Ry=\lambda y$，其中$y=Q^Tx$或$x=Qy$。故只需计算R的特征向量$y$即可。
 
+因为$R$的对角线元素即为$A$的特征值，不妨设$\lambda=R(i,i)$。
 
+假定$\lambda$是单重特征值，则方程$(R-\lambda I)y=0$即为$$
+\left[\begin{array}{ccc}{R_{11}-\lambda I R_{12}} & {R_{13}} \\ {0} & {0} & {R_{23}} \\ {0} & {0} & {R_{33}-\lambda I}\end{array}\right]\left[\begin{array}{l}{y_{1}} \\ {y_{2}} \\ {y_{3}}\end{array}\right]=0
+$$即\begin{equation}
+\left(R_{11}-\lambda I\right) y_{1}+R_{12} y_{2}+R_{13} y_{3}=0
+\end{equation}\begin{equation}
+R_{23} y_{3}=0
+\end{equation}\begin{equation}
+\left(R_{33}-\lambda I\right) y_{3}=0
+\end{equation}其中$R_{11} \in \mathbb{R}^{(i-1) \times(i-1)}, R_{33} \in \mathbb{R}^{(n-i) \times(n-i)}$。由于$\lambda$是单重特征值，故
+$R_{33}-\lambda I$非奇异，因此$y_3=0$。令$y_2=1$，则可得$$
+y_{1}=\left(R_{11}-\lambda I\right)^{-1} R_{12}
+$$
 
+因此计算特征向量$y$只需求解一个上三角线性方程组。
 
+若$\lambda$是多重特征值，则据算方法类似。但如果$A$有负特征值，则需要利用实Schur标准型，计算较复杂。
+\subsection{广义特征值问题}
+设$A, B \in \mathbb{R}^{n \times n}$，若存在$\lambda \in \mathbb{C}$和非零向量$x \in \mathbb{C}^{n}$使得$$
+A x=\lambda B x
+$$则称$\lambda$为矩阵对$(A,B)$的特征值，$x$为对应的特征向量。
 
+计算矩阵对$(A,B)$的特征值和特征向量就是\textcolor{blue}{广义特征值问题}
 
+当$B$非奇异时，广义特征值问题就等价于标准特征值问题$$
+B^{-1} A x=\lambda x \text{或}A B^{-1} y=\lambda y
+$$其中$y=Bx$。
 
+容易看出，$\lambda$是$(A,B)$的一个特征值当且仅当\begin{equation}
+\operatorname{det}(A-\lambda B)=0
+\label{equation4.9}
+\end{equation}
+
+若\ref{equation4.9}对所有$\lambda \in \mathbb{C}$都成立，则称矩阵对$(A,B)$是\textcolor{blue}{奇异矩阵对}，否则称为\textcolor{blue}{正则矩阵对}。
+
+当$B$非奇异时，特征方程\ref{equation4.9}是一个$n$次多项式，因此恰好有$n$个特好找呢个字。当$B$奇异时，特征方程\ref{equation4.9}的次数低于$n$，因此方程的解的个数小于$n$。但是，注意带$\lambda \neq 0$是$(A,B)$的t特征值当且仅当$\mu=\frac{1}{\lambda}$是$(B, A)$的特征值。因此，当$B$奇异时，$\mu=0$是$(B, A)$的特征值，于是我们自然的把$\lambda=\frac{1}{u}=\infty$当作是$(A,B)$的特征值。所以广义特征值不是分布在$\mathbb{C}$上，而是分布在$\mathbb{C} \cup\{\infty\}$上。
+
+容易验证，若$U,V$非奇异，则矩阵对$\left(U^{*} A V, U^{*} B V\right)$的特征值与$(A,B)$是一样的。因此我们称这种变换为\textcolor{blue}{矩阵对的等价变换}。如果$U,V$是酉矩阵，则称为\textcolor{blue}{酉等价变换}。
+\subsubsection{广义Schur分解}
+\textcolor{blue}{广义Schur分解}是矩阵对在酉等价变换下的最简形式。
+
+\textcolor{blue}{定理(广义Schur分解)}\quad 设$A, B \in \mathbb{C}^{n \times n}$，则存在酉矩阵$Q, Z \in \mathbb{C}^{n \times n}$，使得\begin{equation}
+Q^{*} A Z=R_{A}, \quad Q^{*} B Z=R_{B}
+\end{equation}其中$R_{A}, R_{B} \in \mathbb{C}^{n \times n}$都是上三角矩阵。此时矩阵对$(A,B)$的特征值为$R_A$和$R_B$的对角线元素的比值，即$$
+\lambda_{i}=\frac{R_{A}(i, i)}{R_{B}(i, i)}, \quad i=1,2, \ldots, n
+$$当$R_{B}(i, i)=0$时，对应的特征值$\lambda_{i}=\infty$。
+
+\textcolor{blue}{证明}参见\textcolor{blue}{[Xu-Qian 2011]}。
+
+与实Schur分解类似,当$A,B$都是实矩阵时，我们有相应的\textcolor{blue}{广义实Schur分解}。
+
+\textcolor{blue}{定理(广义Schur分解)}\quad 设$A, B \in \mathbb{R}^{n \times n}$，则存在酉矩阵$Q, Z \in \mathbb{R}^{n \times n}$，使得\begin{equation}
+Q^{T} A Z=T_{A}, \quad Q^{T} B Z=T_{B}
+\end{equation}其中$T_{A}, T_{B} \in \mathbb{R}^{n \times n}$都是拟上三角矩阵。
+
+\textcolor{blue}{证明}参见\textcolor{blue}{[Xu-Qian 2011]}。
+
+\subsubsection{QZ迭代}
+QZ迭代是用于计算$(A,B)$的广义Schur分解的算法,是QR算法的自然推广，实质上可以看作是将QR算法作用到矩阵$AB^{-1}$上。
+
+详细算法可参见\textcolor{blue}{[Kressner 2005, Xu-Qian 2011]}。
+\subsection{应用：多项式求根}
+考虑$n$次多项式$$
+q_{n}(x)=x^{n}+c_{n-1} x^{n-1}+\cdots+c_{1} x+c_{0}, \quad c_{i} \in \mathbb{R}
+$$
+\begin{itemize}
+	\item 由代数学基本定理可知，$p_n(x)$在复数域中有且仅有$n$的零点
+	\item $n\geq 5$时，不存在求根公式
+	\item 非线性迭代方法求解
+	\item MATLAB中的\textcolor{blue}{roots}命令:通过特征值计算方法求出所有零点
+\end{itemize}
+\textbf{友矩阵}
+$$
+A=\left[\begin{array}{cccc}{0} & {} & {-c_{0}} \\ {1} & {0} & {} & {-c_{1}} \\ {\ddots} & {\ddots} & {\vdots} \\ {} & {} & {1} & {-c_{n-1}}\end{array}\right]
+$$
+\textcolor{blue}{$$
+\text{多项式}q_n(x) \text{的零点}\Longleftrightarrow A\text{的特征值}
+$$}
+\begin{itemize}
+	\item 无需上Hessenberg化
+	\item $A$非常稀疏，但经过一步QR迭代后，上三角部分的零元素会消失，总运算量仍是$O\left(n^{3}\right)$
+	\item \textcolor{blue}{快速QR方法}：利用$A$的特殊结构，运算量$O\left(n^{2}\right)$
+\end{itemize}
+将$A$写成一个酉矩阵与秩一矩阵之差,具体实现参见相关文献
 \end{document}
