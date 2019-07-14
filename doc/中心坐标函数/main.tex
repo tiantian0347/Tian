@@ -15,6 +15,7 @@ f_i(x_j)=\begin{cases}1 \quad i=j
 \\ 0\quad i\neq j\end{cases}\qquad i,j=0,1
 \label{eqaution1}
 \end{equation}
+\subsection{方法一}
 此时我们假设\begin{equation}
 f_i(x)=a_ix+b_i
 \label{eqaution2}
@@ -24,46 +25,110 @@ f_i(x)=a_ix+b_i
 \end{cases}
 \begin{cases}\begin{aligned}a_1&=\cfrac{1}{x_1-x_0}\\  b_1&=-\cfrac{x_0}{x_1-x_0}\end{aligned}\end{cases}$$
 此时就得到了两个基函数，且它们的梯度分别为$$\nabla f_0=a_0,\quad \nabla f_1=a_1$$
+\subsection{方法二}
+利用长度法取一点$M:x$，这时我们可以得到基函数
+\begin{equation}
+f_0(x)=\left| \cfrac{x-x_1}{x_0-x_1}\right|
+\end{equation}
+\begin{equation}
+f_1(x)=\left| \cfrac{x-x_0}{x_0-x_1}\right|
+\end{equation}
+同时在$AB$上运动时函数变化最快，因此得到他们的梯度为$$\nabla f_0=\cfrac{1}{x_0-x_1},\quad \nabla f_1=\cfrac{1}{x_1-x_0}$$
 \section{二维重心坐标函数}
 在二维情况下，我们选取三个点$A:(x_0,y_0),B(x_1,y_1),C(x_2,y_2)(A,B,C$不共线)。设它们满足方程\begin{equation}
 f_i(x_j,y_j)=\begin{cases}1 \quad i=j
 \\ 0\quad i\neq j\end{cases}\qquad i,j=0,1,2
 \end{equation}
+\subsection{方法一}
 我们假设\begin{equation}
 f_i(x,y)=a_ix+b_iy+c_i
 \end{equation}
 求解可得$$\begin{cases}\begin{aligned}a_0&=\cfrac{y_2-y_1}{(y_0-y_1)(x_1-x_2)-(y_1-y_2)(x_0-x_1)}\\ b_0&=\cfrac{x_1-x_2}{(y_0-y_1)(x_1-x_2)-(y_1-y_2)(x_0-x_1)}\\
 c_0&=\cfrac{x_2y_1-x_1y_2}{(y_0-y_1)(x_1-x_2)-(y_1-y_2)(x_0-x_1)}
 \end{aligned}\end{cases}$$
-$$\begin{cases}\begin{aligned}a_1&=\cfrac{y_2-y_0}{(y_1-y_2)(x_0-x_2)-(y_0-y_2)(x_1-x_2)}\\ b_0&=\cfrac{x_0-x_2}{(y_1-y_2)(x_0-x_2)-(y_0-y_2)(x_1-x_2)}\\
-c_0&=\cfrac{x_0y_2-x_2y_0}{(y_1-y_2)(x_0-x_2)-(y_0-y_2)(x_1-x_2)}
+$$\begin{cases}\begin{aligned}a_1&=\cfrac{y_2-y_0}{(y_1-y_2)(x_0-x_2)-(y_0-y_2)(x_1-x_2)}\\ b_1&=\cfrac{x_0-x_2}{(y_1-y_2)(x_0-x_2)-(y_0-y_2)(x_1-x_2)}\\
+c_1&=\cfrac{x_0y_2-x_2y_0}{(y_1-y_2)(x_0-x_2)-(y_0-y_2)(x_1-x_2)}
 \end{aligned}\end{cases}$$
-$$\begin{cases}\begin{aligned}a_1&=\cfrac{y_1-y_0}{(y_2-y_1)(x_0-x_1)-(y_0-y_1)(x_2-x_1)}\\ b_0&=\cfrac{x_0-x_1}{(y_2-y_1)(x_0-x_1)-(y_0-y_1)(x_2-x_1)}\\
-c_0&=\cfrac{x_0y_1-x_1y_0}{(y_2-y_1)(x_0-x_1)-(y_0-y_1)(x_2-x_1)}
+$$\begin{cases}\begin{aligned}a_2&=\cfrac{y_1-y_0}{(y_2-y_1)(x_0-x_1)-(y_0-y_1)(x_2-x_1)}\\ b_2&=\cfrac{x_0-x_1}{(y_2-y_1)(x_0-x_1)-(y_0-y_1)(x_2-x_1)}\\
+c_2&=\cfrac{x_0y_1-x_1y_0}{(y_2-y_1)(x_0-x_1)-(y_0-y_1)(x_2-x_1)}
 \end{aligned}\end{cases}$$
 此时就得到了三个基函数，且它们的梯度分别为$$\nabla f_0=(a_0,b_0),\quad \nabla f_1=(a_1,b_1),\quad \nabla f_2=(a_2,b_2)$$
+\subsection{方法二}
+利用面积法，我们取点$M:(x,y)$，且设$\triangle ABC$为逆时针顺序排列，此时计算$\triangle ABC,\triangle BCM,\triangle AMC,\triangle ABM$的面积$S,S_0,S_1,S_2$有：
+\begin{equation*}\begin{aligned}
+S&=\left| \frac{1}{2} \begin{vmatrix}
+x_0&y_0&1\\x_1&y_1&1\\x_2&y_2&1\end{vmatrix}\right|,S_0&=\left| \frac{1}{2} \begin{vmatrix}
+x&y&1\\x_1&y_1&1\\x_2&y_2&1\end{vmatrix}\right|\\
+S_1&=\left| \frac{1}{2} \begin{vmatrix}
+x_0&y_0&1\\x&y&1\\x_2&y_2&1\end{vmatrix}\right|,S_2&=\left| \frac{1}{2} \begin{vmatrix}
+x_0&y_0&1\\x_1&y_1&1\\x&y&1\end{vmatrix}\right|
+\end{aligned}
+\end{equation*}
+这时可以得到三个基函数为
+\begin{equation}
+f_i(x,y)=\frac{s_i}{s},\quad i=0,1,2
+\end{equation}
+
+此时基函数$f_i(x,y)$的梯度方向即为$S_i$变化最快的方向，因此基函数$f_0(x,y)$的梯度方向为向$BC$边作垂线，且箭头指向点$A$的方向。即$\overrightarrow {B C}$向左旋转$90^\circ$的方向，得到$$\nabla f_0=\frac{1}{2S}(y_2-y_1,x_1-x_2)$$
+同理，得到$f_1(x,y),f_2(x,y)$的梯度为$$\nabla f_1=\frac{1}{2S}(y_2-y_0,x_0-x_2),\nabla f_2=\frac{1}{2S}(y_1-y_0,x_0-x_1)$$
 \section{三维重心坐标函数}
-在二维情况下，我们选取三个点$A:(x_0,y_0，z_0),B(x_1,y_1,z_1),C(x_2,y_2,z_2),D(x_3,y_3,z_3)(A,B,C,D$不共面)。设它们满足方程\begin{equation}
+\subsection{方法一}
+在三维情况下，我们选取四个点$A:(x_0,y_0,z_0),B(x_1,y_1,z_1),C(x_2,y_2,z_2),D(x_3,y_3,z_3)(A,B,C,D$不共面)。设它们满足方程\begin{equation}
 f_i(x_j,y_j,z_j)=\begin{cases}1 \quad i=j
 \\ 0\quad i\neq j\end{cases}\qquad i,j=0,1,2,3
+\label{equation3.1}
 \end{equation}
 我们假设\begin{equation}
-f_i(x,y)=a_ix+b_iy+c_iz+d_i
+f_i(x,y,z)=a_ix+b_iy+c_iz+d_i
+\label{equation3.2}
 \end{equation}
-此时就得到了三个基函数，且它们的梯度分别为$$\nabla f_0=(a_0,b_0),\quad \nabla f_1=(a_1,b_1),\quad \nabla f_2=(a_2,b_2)$$
+此时通过求解公式\ref{equation3.1},\ref{equation3.2}就得到了三个基函数，且得出它们的梯度分别为$$\nabla f_0=(a_0,b_0,c_0),\quad \nabla f_1=(a_1,b_1,c_1),\quad \nabla f_2=(a_2,b_2,c_2)$$
+\subsection{方法二}
+利用体积法，我们选取点$M(x,y,z)$，此时计算五个四面体$ABCD,MBCD,AMCD,ABMD,ABCM$的体积$V,V_0,V_1,V_2,V_3,V_4$：
+$$V=\left| \frac{1}{6}\begin{vmatrix}
+x_0&y_0&z_0&1\\x_1&y_1&z_1&1\\x_2&y_2&z_2&1\\x_3&y_3&z_3&1
+\end{vmatrix}\right| $$
+$$\begin{aligned}V_0&=\left| \frac{1}{6}\begin{vmatrix}
+x&y&z&1\\x_1&y_1&z_1&1\\x_2&y_2&z_2&1\\x_3&y_3&z_3&1
+\end{vmatrix}\right|,V_1&=\left| \frac{1}{6}\begin{vmatrix}
+x_0&y_0&z_0&1\\x&y&z&1\\x_2&y_2&z_2&1\\x_3&y_3&z_3&1
+\end{vmatrix}\right|  \\
+V_2&=\left| \frac{1}{6}\begin{vmatrix}
+x_0&y_0&z_0&1\\x_1&y_1&z_1&1\\x&y&z&1\\x_3&y_3&z_3&1
+\end{vmatrix}\right|,V_3&=\left| \frac{1}{6}\begin{vmatrix}
+x_0&y_0&z_0&1\\x_1&y_1&z_1&1\\x_2&y_2&z_2&1\\x&y&z&1
+\end{vmatrix}\right|   \\
+\end{aligned}$$
+这时我们得到四个基函数为\begin{equation}
+f_i(x,y,z)=\cfrac{V_i}{V},i=0,1,2,3
+\label{equation3.3}
+\end{equation}
 
+以$f_0(x,y,z)$进行梯度的求解，首先确定梯度方向，过$A$垂直于$\triangle BCD$的垂线，垂足为$P$，此时$\overrightarrow {P A}$的方向即为梯度方向。设$\overrightarrow {P A}=(a,b,c)$则$$\begin{cases}\overrightarrow {P A} \cdot \overrightarrow {B C}=0\\ \overrightarrow {P A} \cdot \overrightarrow {C D}=0\\ \overrightarrow {P A} \cdot \overrightarrow {D B}=0
+\end{cases}$$
+即\begin{equation}
+\begin{pmatrix}
+x_2-x_1&y_2-y_1&z_2-z_1\\
+x_3-x_2&y_3-y_2&z_3-z_2\\
+x_1-x_3&y_1-y_3&z_1-z_3
+\end{pmatrix}
+\begin{pmatrix}
+a\\b\\c
+\end{pmatrix}=0
+\end{equation}
 
+由假设知$(a,b,c)$有唯一解，将其单位化后得到$\overrightarrow {n_0}=\cfrac {1}{\sqrt {a^2+b^2+c^2}}(a,b,c)$
 
+现在已经确定梯度的方向，结合函数$\ref{equation3.3}$我们可以得出$f_0(x,y,z)$的梯度：$$\nabla f_0(x,y,z)=(\cfrac {a}{\sqrt {a^2+b^2+c^2}} \cfrac{\left|\begin{vmatrix}
+	y_1&z_1&1\\y_2&z_2&1\\y_3&z_3&1
+	\end{vmatrix}\right|}{6V},
+\cfrac {b}{\sqrt {a^2+b^2+c^2}} \cfrac{\left|\begin{vmatrix}
+	x_1&z_1&1\\x_2&z_2&1\\x_3&z_3&1
+	\end{vmatrix}\right|}{6V},\cfrac {c}{\sqrt {a^2+b^2+c^2}} \cfrac{\left|\begin{vmatrix}
+	x_1&y_1&1\\x_2&y_2&1\\x_3&y_3&1
+	\end{vmatrix}\right|}{6V})$$
 
-
-
-
-
-
-
-
-
-
+同理，我们可以得到$\nabla f_1(x,y,z),\nabla f_2(x,y,z)$。
 
 
 
