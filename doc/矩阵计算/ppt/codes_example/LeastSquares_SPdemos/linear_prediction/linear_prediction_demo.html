@@ -1,0 +1,315 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Linear prediction by least squares</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2013-03-06">
+      <meta name="m-file" content="linear_prediction_demo"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Linear prediction by least squares</h1>
+         <!--introduction-->
+         <p>The example illustrates the prediction of data using a linear predictor. The coefficients of the linear predictor are obtained
+            by least squares.
+         </p><pre>Ivan Selesnick
+selesi@poly.edu</pre>
+         <!--/introduction--><h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#1">Start</a></li>
+               <li><a href="#2">Load data</a></li>
+               <li><a href="#3">Display data</a></li>
+               <li><a href="#4">Linear predictor coefficients (2)</a></li>
+               <li><a href="#6">Linear predictor coefficients (3)</a></li>
+               <li><a href="#8">Linear predictor coefficients (4)</a></li>
+               <li><a href="#10">Linear predictor coefficients (6)</a></li>
+            </ul>
+         </div>
+         <h2>Start<a name="1"></a></h2><pre class="codeinput">clear
+close <span class="string">all</span>
+</pre><h2>Load data<a name="2"></a></h2><pre class="codeinput">load <span class="string">data.txt</span>;
+whos
+
+y = data;         <span class="comment">% data value</span>
+</pre><pre class="codeoutput">  Name        Size            Bytes  Class     Attributes
+
+  data      100x1               800  double              
+
+</pre><h2>Display data<a name="3"></a></h2><pre class="codeinput">figure(1)
+clf
+plot(y)
+title(<span class="string">'Data'</span>)
+</pre><img vspace="5" hspace="5" src="linear_prediction_demo_01.png" alt=""> <h2>Linear predictor coefficients (2)<a name="4"></a></h2><pre class="codeinput">N = length(y);
+H = [y(2:N-1) y(1:N-2)];        <span class="comment">% H : rectangular matrix</span>
+b = y(3:N);                     <span class="comment">% b : right-hand side of linear system of equations</span>
+a = (H' * H) \ (H' * b)         <span class="comment">% a : coefficients of linear predictor</span>
+</pre><pre class="codeoutput">
+a =
+
+    0.5648
+   -0.5623
+
+</pre><pre class="codeinput">L = 100;                        <span class="comment">% L : number of values to predict</span>
+g = [y; zeros(L, 1)];           <span class="comment">% g : extended array (use first N samples to predict later samples)</span>
+<span class="keyword">for</span> i = N+1:N+L
+    g(i) = a(1) * g(i-1) + a(2) * g(i-2);    <span class="comment">% linear prediction</span>
+<span class="keyword">end</span>
+
+figure(1)
+clf
+plot(g)
+line([N N], [-2 2], <span class="string">'linestyle'</span>, <span class="string">'--'</span>)
+title(<span class="string">'Data and predicted values'</span>)
+</pre><img vspace="5" hspace="5" src="linear_prediction_demo_02.png" alt=""> <h2>Linear predictor coefficients (3)<a name="6"></a></h2><pre class="codeinput">N = length(y);
+H = [y(3:N-1) y(2:N-2) y(1:N-3)];
+b = y(4:N);
+a = (H' * H) \ (H' * b)         <span class="comment">% a : coefficients of linear predictor</span>
+</pre><pre class="codeoutput">
+a =
+
+    0.8777
+   -0.8764
+    0.5654
+
+</pre><pre class="codeinput">g = [y; zeros(L, 1)];
+<span class="keyword">for</span> i = N+1:N+L
+    g(i) = a(1) * g(i-1) + a(2) * g(i-2) + a(3) * g(i-3);
+<span class="keyword">end</span>
+
+figure(1)
+clf
+plot(g)
+line([N N], [-2 2], <span class="string">'linestyle'</span>, <span class="string">'--'</span>)
+title(<span class="string">'Data and predicted values'</span>)
+</pre><img vspace="5" hspace="5" src="linear_prediction_demo_03.png" alt=""> <h2>Linear predictor coefficients (4)<a name="8"></a></h2><pre class="codeinput">N = length(y);
+H = [y(4:N-1) y(3:N-2) y(2:N-3) y(1:N-4)];
+b = y(5:N);
+a = (H' * H) \ (H' * b)
+</pre><pre class="codeoutput">
+a =
+
+    1.4150
+   -1.6741
+    1.3634
+   -0.8999
+
+</pre><pre class="codeinput">g = [y; zeros(L, 1)];
+<span class="keyword">for</span> i = N+1:N+L
+    g(i) = a(1) * g(i-1) + a(2) * g(i-2) + a(3) * g(i-3) + a(4) * g(i-4);
+<span class="keyword">end</span>
+
+figure(1)
+clf
+plot(g)
+line([N N], [-2 2], <span class="string">'linestyle'</span>, <span class="string">'--'</span>)
+title(<span class="string">'Data and predicted values'</span>)
+</pre><img vspace="5" hspace="5" src="linear_prediction_demo_04.png" alt=""> <h2>Linear predictor coefficients (6)<a name="10"></a></h2><pre class="codeinput">N = length(y);
+H = toeplitz(y(6:N-1), y(6:-1:1));    <span class="comment">% Create H as a Toeplitz matrix (equivalent to above)</span>
+b = y(7:N);
+a = (H' * H) \ (H' * b)
+
+g = [y; zeros(L, 1)];
+<span class="keyword">for</span> i = N+1:N+L
+    g(i) = a(1) * g(i-1) + a(2) * g(i-2) + a(3) * g(i-3) + a(4) * g(i-4) + a(5) * g(i-5) + a(6) * g(i-6);
+<span class="keyword">end</span>
+
+figure(1)
+clf
+plot(g)
+line([N N], [-2 2], <span class="string">'linestyle'</span>, <span class="string">'--'</span>)
+title(<span class="string">'Data and predicted values'</span>)
+</pre><pre class="codeoutput">
+a =
+
+    0.0213
+   -0.2861
+   -0.1054
+   -0.0536
+   -0.4080
+   -0.6518
+
+</pre><img vspace="5" hspace="5" src="linear_prediction_demo_05.png" alt=""> <p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Linear prediction by least squares
+% The example illustrates the prediction of data using a linear predictor.
+% The coefficients of the linear predictor are obtained by least squares.
+%
+%  Ivan Selesnick
+% selesi@poly.edu
+
+%% Start
+
+clear
+close all
+
+%% Load data
+
+load data.txt;
+whos
+
+y = data;         % data value
+
+%% Display data
+
+figure(1)
+clf
+plot(y)
+title('Data')
+
+%% Linear predictor coefficients (2)
+
+N = length(y);
+H = [y(2:N-1) y(1:N-2)];        % H : rectangular matrix
+b = y(3:N);                     % b : right-hand side of linear system of equations
+a = (H' * H) \ (H' * b)         % a : coefficients of linear predictor
+
+%%
+
+L = 100;                        % L : number of values to predict
+g = [y; zeros(L, 1)];           % g : extended array (use first N samples to predict later samples)
+for i = N+1:N+L   
+    g(i) = a(1) * g(i-1) + a(2) * g(i-2);    % linear prediction
+end
+
+figure(1)
+clf
+plot(g)
+line([N N], [-2 2], 'linestyle', 'REPLACE_WITH_DASH_DASH')
+title('Data and predicted values')
+
+
+%% Linear predictor coefficients (3)
+
+N = length(y);
+H = [y(3:N-1) y(2:N-2) y(1:N-3)];
+b = y(4:N);
+a = (H' * H) \ (H' * b)         % a : coefficients of linear predictor
+
+%%
+
+g = [y; zeros(L, 1)];
+for i = N+1:N+L
+    g(i) = a(1) * g(i-1) + a(2) * g(i-2) + a(3) * g(i-3);
+end
+
+figure(1)
+clf
+plot(g)
+line([N N], [-2 2], 'linestyle', 'REPLACE_WITH_DASH_DASH')
+title('Data and predicted values')
+
+
+%% Linear predictor coefficients (4)
+
+N = length(y);
+H = [y(4:N-1) y(3:N-2) y(2:N-3) y(1:N-4)];
+b = y(5:N);
+a = (H' * H) \ (H' * b)
+
+%%
+
+g = [y; zeros(L, 1)];
+for i = N+1:N+L
+    g(i) = a(1) * g(i-1) + a(2) * g(i-2) + a(3) * g(i-3) + a(4) * g(i-4);
+end
+
+figure(1)
+clf
+plot(g)
+line([N N], [-2 2], 'linestyle', 'REPLACE_WITH_DASH_DASH')
+title('Data and predicted values')
+
+
+%% Linear predictor coefficients (6)
+
+N = length(y);
+H = toeplitz(y(6:N-1), y(6:-1:1));    % Create H as a Toeplitz matrix (equivalent to above)
+b = y(7:N);
+a = (H' * H) \ (H' * b)
+
+g = [y; zeros(L, 1)];
+for i = N+1:N+L
+    g(i) = a(1) * g(i-1) + a(2) * g(i-2) + a(3) * g(i-3) + a(4) * g(i-4) + a(5) * g(i-5) + a(6) * g(i-6);
+end
+
+figure(1)
+clf
+plot(g)
+line([N N], [-2 2], 'linestyle', 'REPLACE_WITH_DASH_DASH')
+title('Data and predicted values')
+
+
+
+
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

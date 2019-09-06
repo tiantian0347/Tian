@@ -1,0 +1,436 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Least square deconvolution</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2013-03-06">
+      <meta name="m-file" content="deconv_demo"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Least square deconvolution</h1>
+         <!--introduction-->
+         <p>This example illustrates devonvolution using least squares</p><pre>Ivan Selesnick
+selesi@poly.edu</pre>
+         <!--/introduction--><h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#1">Start</a></li>
+               <li><a href="#2">Create data</a></li>
+               <li><a href="#3">Output data</a></li>
+               <li><a href="#4">Convolution matrix H</a></li>
+               <li><a href="#5">Direct solve (fails)</a></li>
+               <li><a href="#7">Diagonal loading (noise-free)</a></li>
+               <li><a href="#8">Diagonal loading (noisy)</a></li>
+               <li><a href="#10">Derivative regularization (noisy)</a></li>
+            </ul>
+         </div>
+         <h2>Start<a name="1"></a></h2><pre class="codeinput">clear
+close <span class="string">all</span>
+</pre><h2>Create data<a name="2"></a></h2><pre class="codeinput">N = 300;
+n = (0:N-1)';                               <span class="comment">% n : discrete-time index</span>
+
+w = 5;
+n1 = 70;
+n2 = 130;
+x = 2.1 * exp(-0.5*((n-n1)/w).^2) - 0.5*exp(-0.5*((n-n2)/w).^2).*(n2 - n);    <span class="comment">% x : input signal</span>
+
+h = n .* (0.9 .^n) .* sin(0.2*pi*n);        <span class="comment">% h : impulse response</span>
+
+
+figure(1)
+clf
+subplot(2, 1, 1)
+plot(x)
+title(<span class="string">'Input signal'</span>);
+YL1 = [-2 3];
+ylim(YL1);
+
+subplot(2, 1, 2)
+plot(h)
+title(<span class="string">'Impulse response'</span>);
+</pre><img vspace="5" hspace="5" src="deconv_demo_01.png" alt=""> <h2>Output data<a name="3"></a></h2><pre class="codeinput">randn(<span class="string">'state'</span>, 0);                          <span class="comment">% Set state for reproducibility</span>
+
+y = conv(h, x);
+y = y(1:N);                                 <span class="comment">% y : output signal (noise-free)</span>
+
+yn = y + 0.2 * randn(N, 1);                 <span class="comment">% yn : output signal (noisy)</span>
+
+figure(2)
+clf
+subplot(2, 1, 1)
+plot(y);
+YL2 = [-7 13];
+ylim(YL2);
+title(<span class="string">'Output signal'</span>);
+
+subplot(2, 1, 2)
+plot(yn);
+title(<span class="string">'Output signal (noisy)'</span>);
+ylim(YL2);
+</pre><img vspace="5" hspace="5" src="deconv_demo_02.png" alt=""> <h2>Convolution matrix H<a name="4"></a></h2>
+         <p>Create convolution matrix H and verify that H*x is the same as y</p><pre class="codeinput">H = convmtx(h, N);
+H = H(1:N, :);                              <span class="comment">% H : convolution matrix</span>
+
+<span class="comment">% Verify that H*x is the same as y</span>
+e = y - H * x;   <span class="comment">% should be zero</span>
+max(abs(e))
+</pre><pre class="codeoutput">
+ans =
+
+     0
+
+</pre><h2>Direct solve (fails)<a name="5"></a></h2>
+         <p>Attempting to solve H*x = y leads to a solution of all NaN's (not a number)</p><pre class="codeinput">g = H \ y;
+
+<span class="comment">%  H is singular</span>
+</pre><pre class="codeoutput">Warning: Matrix is singular to working precision. 
+</pre><pre class="codeinput">g(1:10)
+</pre><pre class="codeoutput">
+ans =
+
+   NaN
+   NaN
+   NaN
+   NaN
+   NaN
+   NaN
+   NaN
+   NaN
+   NaN
+   NaN
+
+</pre><h2>Diagonal loading (noise-free)<a name="7"></a></h2>
+         <p>Diagonal overcomes the singularity of H.</p><pre class="codeinput">lam = 0.1;
+g = (H'*H + lam * eye(N)) \ (H' * y);
+
+figure(1)
+clf
+subplot(2, 1, 1)
+plot(y);
+YL2 = [-7 13];
+ylim(YL2);
+title(<span class="string">'Output signal (noise-free)'</span>);
+
+subplot(2, 1, 2)
+plot(g)
+ylim(YL1);
+title(sprintf(<span class="string">'Deconvolution (diagonal loading, \\lambda = %.2f)'</span>, lam));
+</pre><img vspace="5" hspace="5" src="deconv_demo_03.png" alt=""> <h2>Diagonal loading (noisy)<a name="8"></a></h2><pre class="codeinput">lam = 0.1;
+g = (H'*H + lam * eye(N)) \ (H' * yn);
+
+figure(1)
+clf
+subplot(2, 1, 1)
+plot(yn);
+title(<span class="string">'Output signal (noisy)'</span>);
+ylim(YL2);
+
+subplot(2, 1, 2)
+plot(g)
+title(sprintf(<span class="string">'Deconvolution (diagonal loading, \\lambda = %.2f)'</span>, lam));
+</pre><img vspace="5" hspace="5" src="deconv_demo_04.png" alt=""> <pre class="codeinput">lam = 1.0;
+g = (H'*H + lam * eye(N)) \ (H' * yn);
+
+figure(2)
+clf
+subplot(2, 1, 1)
+plot(g)
+ylim(YL1)
+title(sprintf(<span class="string">'Deconvolution (diagonal loading, \\lambda = %.2f)'</span>, lam));
+
+lam = 5.0;
+g = (H'*H + lam * eye(N)) \ (H' * yn);
+
+subplot(2, 1, 2)
+plot(g)
+ylim(YL1)
+title(sprintf(<span class="string">'Deconvolution (diagonal loading, \\lambda = %.2f)'</span>, lam));
+</pre><img vspace="5" hspace="5" src="deconv_demo_05.png" alt=""> <h2>Derivative regularization (noisy)<a name="10"></a></h2><pre class="codeinput">e = ones(N, 1);
+D = spdiags([e -2*e e], 0:2, N-2, N);       <span class="comment">% second-order difference</span>
+</pre><p>First corner of D</p><pre class="codeinput">full(D(1:5, 1:5))
+</pre><pre class="codeoutput">
+ans =
+
+     1    -2     1     0     0
+     0     1    -2     1     0
+     0     0     1    -2     1
+     0     0     0     1    -2
+     0     0     0     0     1
+
+</pre><p>Last corner of D</p><pre class="codeinput">full(D(end-4:end, end-4:end))
+</pre><pre class="codeoutput">
+ans =
+
+     1     0     0     0     0
+    -2     1     0     0     0
+     1    -2     1     0     0
+     0     1    -2     1     0
+     0     0     1    -2     1
+
+</pre><p>Solve least squares problem</p><pre class="codeinput">lam = 2.0;
+g = (H'*H + lam * (D'*D)) \ (H' * yn);
+
+figure(1)
+clf
+subplot(2, 1, 1)
+plot(yn);
+title(<span class="string">'Output signal (noisy)'</span>);
+ylim(YL2);
+
+subplot(2, 1, 2)
+plot(g)
+title(sprintf(<span class="string">'Deconvolution (derivative regularization, \\lambda = %.2f)'</span>, lam));
+</pre><img vspace="5" hspace="5" src="deconv_demo_06.png" alt=""> <p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Least square deconvolution
+% This example illustrates devonvolution using least squares
+%
+%  Ivan Selesnick
+% selesi@poly.edu
+
+
+%% Start
+
+clear
+close all
+
+
+%% Create data
+
+N = 300;
+n = (0:N-1)';                               % n : discrete-time index
+
+w = 5;
+n1 = 70;
+n2 = 130;
+x = 2.1 * exp(-0.5*((n-n1)/w).^2) - 0.5*exp(-0.5*((n-n2)/w).^2).*(n2 - n);    % x : input signal
+
+h = n .* (0.9 .^n) .* sin(0.2*pi*n);        % h : impulse response
+
+
+figure(1)
+clf
+subplot(2, 1, 1)
+plot(x)
+title('Input signal');
+YL1 = [-2 3];
+ylim(YL1);
+
+subplot(2, 1, 2)
+plot(h)
+title('Impulse response');
+
+
+%% Output data
+
+randn('state', 0);                          % Set state for reproducibility
+
+y = conv(h, x);
+y = y(1:N);                                 % y : output signal (noise-free)
+
+yn = y + 0.2 * randn(N, 1);                 % yn : output signal (noisy)
+
+figure(2)
+clf
+subplot(2, 1, 1)
+plot(y);
+YL2 = [-7 13];
+ylim(YL2);
+title('Output signal');
+
+subplot(2, 1, 2)
+plot(yn);
+title('Output signal (noisy)');
+ylim(YL2);
+
+
+%% Convolution matrix H
+% Create convolution matrix H and 
+% verify that H*x is the same as y
+
+H = convmtx(h, N);
+H = H(1:N, :);                              % H : convolution matrix
+
+% Verify that H*x is the same as y
+e = y - H * x;   % should be zero
+max(abs(e))
+
+%% Direct solve (fails)
+% Attempting to solve H*x = y leads to a solution
+% of all NaN's (not a number)
+
+g = H \ y;
+
+%  H is singular
+
+%%
+
+g(1:10)
+
+
+%% Diagonal loading (noise-free)
+% Diagonal overcomes the singularity of H.
+
+lam = 0.1;
+g = (H'*H + lam * eye(N)) \ (H' * y);
+
+figure(1)
+clf
+subplot(2, 1, 1)
+plot(y);
+YL2 = [-7 13];
+ylim(YL2);
+title('Output signal (noise-free)');
+
+subplot(2, 1, 2)
+plot(g)
+ylim(YL1);
+title(sprintf('Deconvolution (diagonal loading, \\lambda = %.2f)', lam));
+
+
+%% Diagonal loading (noisy)
+
+lam = 0.1;
+g = (H'*H + lam * eye(N)) \ (H' * yn);
+
+figure(1)
+clf
+subplot(2, 1, 1)
+plot(yn);
+title('Output signal (noisy)');
+ylim(YL2);
+
+subplot(2, 1, 2)
+plot(g)
+title(sprintf('Deconvolution (diagonal loading, \\lambda = %.2f)', lam));
+
+
+%%
+
+lam = 1.0;
+g = (H'*H + lam * eye(N)) \ (H' * yn);
+
+figure(2)
+clf
+subplot(2, 1, 1)
+plot(g)
+ylim(YL1)
+title(sprintf('Deconvolution (diagonal loading, \\lambda = %.2f)', lam));
+
+lam = 5.0;
+g = (H'*H + lam * eye(N)) \ (H' * yn);
+
+subplot(2, 1, 2)
+plot(g)
+ylim(YL1)
+title(sprintf('Deconvolution (diagonal loading, \\lambda = %.2f)', lam));
+
+
+%% Derivative regularization (noisy)
+
+e = ones(N, 1);
+D = spdiags([e -2*e e], 0:2, N-2, N);       % second-order difference
+
+%% 
+% First corner of D
+
+full(D(1:5, 1:5))
+
+%% 
+% Last corner of D
+
+full(D(end-4:end, end-4:end))
+
+%% 
+% Solve least squares problem
+
+lam = 2.0;
+g = (H'*H + lam * (D'*D)) \ (H' * yn);
+
+figure(1)
+clf
+subplot(2, 1, 1)
+plot(yn);
+title('Output signal (noisy)');
+ylim(YL2);
+
+subplot(2, 1, 2)
+plot(g)
+title(sprintf('Deconvolution (derivative regularization, \\lambda = %.2f)', lam));
+
+
+%%
+
+
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

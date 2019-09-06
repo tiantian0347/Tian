@@ -1,0 +1,220 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Least square polynomial approximation</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2013-03-06">
+      <meta name="m-file" content="poly_approx_demo"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Least square polynomial approximation</h1>
+         <!--introduction-->
+         <p>This example illustrates the fitting of a low-order polynomial to data by least squares.</p><pre>Ivan Selesnick
+selesi@poly.edu</pre>
+         <!--/introduction--><h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#1">Start</a></li>
+               <li><a href="#2">Load data</a></li>
+               <li><a href="#3">Display data</a></li>
+               <li><a href="#4">Polynomial approximation (degree = 2)</a></li>
+               <li><a href="#8">Polynomial approximation (degree = 3)</a></li>
+               <li><a href="#9">Polynomial approximation (degree = 4)</a></li>
+            </ul>
+         </div>
+         <h2>Start<a name="1"></a></h2><pre class="codeinput">clear
+close <span class="string">all</span>
+</pre><h2>Load data<a name="2"></a></h2><pre class="codeinput">load <span class="string">data.txt</span>;
+whos
+
+t = data(:, 1);         <span class="comment">% time index</span>
+y = data(:, 2);         <span class="comment">% data value</span>
+</pre><pre class="codeoutput">  Name        Size            Bytes  Class     Attributes
+
+  data      100x2              1600  double              
+
+</pre><h2>Display data<a name="3"></a></h2><pre class="codeinput">figure(1)
+clf
+plot(t, y, <span class="string">'.'</span>)
+title(<span class="string">'Data'</span>)
+</pre><img vspace="5" hspace="5" src="poly_approx_demo_01.png" alt=""> <h2>Polynomial approximation (degree = 2)<a name="4"></a></h2>
+         <p>A is a matrix of size 100 rows, 3 columns</p><pre class="codeinput">A = bsxfun(@power, t, [2 1 0]);       <span class="comment">% Raise t to powers 2, 1, 0</span>
+size(A)
+</pre><pre class="codeoutput">
+ans =
+
+   100     3
+
+</pre><p>A'*A is a matrix of size 3 by 3</p><pre class="codeinput">A'*A
+</pre><pre class="codeoutput">
+ans =
+
+  312.0533  196.0200  131.3400
+  196.0200  131.3400   99.0000
+  131.3400   99.0000  100.0000
+
+</pre><p>Solve the system A'*A*p = A'*y for p using the backslash. p is a vector of length 3.</p><pre class="codeinput">p = (A'*A) \ (A'*y)
+</pre><pre class="codeoutput">
+p =
+
+    1.0620
+   -1.1989
+   -0.2236
+
+</pre><p>Display polynomial approximation</p><pre class="codeinput">plot(t, polyval(p, t), t, y, <span class="string">'.'</span>)
+title(<span class="string">'Polynomial approximation (degree = 2)'</span>)
+</pre><img vspace="5" hspace="5" src="poly_approx_demo_02.png" alt=""> <h2>Polynomial approximation (degree = 3)<a name="8"></a></h2><pre class="codeinput">A = bsxfun(@power, t, [3 2 1 0]);
+p = (A'*A) \ (A'*y);
+
+plot(t, polyval(p, t), t, y, <span class="string">'.'</span>)
+title(<span class="string">'Polynomial approximation (degree = 3)'</span>)
+</pre><img vspace="5" hspace="5" src="poly_approx_demo_03.png" alt=""> <h2>Polynomial approximation (degree = 4)<a name="9"></a></h2><pre class="codeinput">A = bsxfun(@power, t, [4 3 2 1 0]);
+p = (A'*A) \ (A'*y);
+
+plot(t, polyval(p, t), t, y, <span class="string">'.'</span>)
+title(<span class="string">'Polynomial approximation (degree = 4)'</span>)
+</pre><img vspace="5" hspace="5" src="poly_approx_demo_04.png" alt=""> <p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Least square polynomial approximation
+% This example illustrates the fitting of a low-order polynomial to data by
+% least squares.
+%
+%  Ivan Selesnick
+% selesi@poly.edu
+
+%% Start
+
+clear
+close all
+
+%% Load data
+
+load data.txt;
+whos
+
+t = data(:, 1);         % time index
+y = data(:, 2);         % data value
+
+%% Display data
+
+figure(1)
+clf
+plot(t, y, '.')
+title('Data')
+
+%% Polynomial approximation (degree = 2)
+% A is a matrix of size 100 rows, 3 columns
+
+A = bsxfun(@power, t, [2 1 0]);       % Raise t to powers 2, 1, 0
+size(A)
+
+%%
+% A'*A is a matrix of size 3 by 3
+
+A'*A 
+
+%% 
+% Solve the system A'*A*p = A'*y for p
+% using the backslash.
+% p is a vector of length 3.
+
+p = (A'*A) \ (A'*y)
+
+%%
+% Display polynomial approximation
+
+plot(t, polyval(p, t), t, y, '.')
+title('Polynomial approximation (degree = 2)')
+
+%% Polynomial approximation (degree = 3)
+
+A = bsxfun(@power, t, [3 2 1 0]);
+p = (A'*A) \ (A'*y);
+
+plot(t, polyval(p, t), t, y, '.')
+title('Polynomial approximation (degree = 3)')
+
+%% Polynomial approximation (degree = 4)
+
+A = bsxfun(@power, t, [4 3 2 1 0]);
+p = (A'*A) \ (A'*y);
+
+plot(t, polyval(p, t), t, y, '.')
+title('Polynomial approximation (degree = 4)')
+
+
+
+
+
+
+##### SOURCE END #####
+-->
+   </body>
+</html>
