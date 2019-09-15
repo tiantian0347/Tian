@@ -1,0 +1,82 @@
+% !Mode:: "TeX:UTF-8"
+\documentclass[12pt,a4paper]{article}
+\input{en_preamble.tex}
+\input{xecjk_preamble.tex}
+
+\title{有限差分}
+\author{作者:田甜}
+\date{\chntoday}
+\begin{document}
+\maketitle
+\newpage
+\section{什么是有限差分法}
+有限差分法：数值求解常微分方程或偏微分方程的方法。
+
+有限差分法以变量离散取值后对应的函数值来近似微分方程中独立变量的连续取值。
+
+在有限差分方法中，放弃了微分方程中独立变量可以取连续值的特征，而关注独立变量离
+散取值后对应的函数值。但是从原则上说，这种方法仍然可以达到任意满意的计算精度。因为方程的连续数值解可以通过减小独立变量离散取值的间格，或者通过离散点上的函数值插值计算来近似得到。这种方法是随着计算机的诞生和应用而发展起来的。
+
+有限差分法的具体操作：
+\begin{enumerate}[(1)]
+	\item 用差分代替微分方程中的微分，将连续变化的变量离散化，从而得到差分方程组的数学形式；
+	\item 求解差分方程组。
+\end{enumerate}
+
+\section{有限差分法的差分格式}
+
+一个函数在$x$点上的一阶和二阶微商，可以近似地用它所临近的两点上的函数值的差分来表示。如对一个单变量函数 $f(x)$，$x$为定义在区间$[a,b]$的连续变量。以步长$h=\bigtriangleup x$将$[a,b]$区间离散化，我们得到一系列节点$x_1=a$,$x_2=x_1+h$,$x_3=x_2+h=a+2\bigtriangleup x$,$\cdots$ ,$x_{n+1}=x_n+h=b$，然后求出$f(x)$在这些点上的近似值，显然步长$h$越小，近似解的精度就越好。与节点$x_i$相邻的节点$x_i-h$和$x_i+h$，因此在$x_i$点可以构造如下形式的差值：
+
+$f(x_i+h)-f(x_i)$ $\qquad \qquad \qquad$节点$x_i$的一阶向前差分
+
+$f(x_i)-f(x_i-h)$ $\qquad \qquad \qquad$节点$x_i$的一阶向后差分
+
+$f(x_i+h)-f(x_i-h)$ $\qquad \qquad $节点$x_i$的一阶中心差分
+
+一阶微分的中心差商：
+\begin{equation}
+f'(x_i)\thickapprox \cfrac {f(x_i+h)-f(x_i-h)}{2h}
+\end{equation}
+
+一阶微分的向前差商：
+\begin{equation}
+f'(x_i)\thickapprox \cfrac {f(x_i+h)-f(x_i)}{h}
+\end{equation}
+
+一阶微分的向后差商：
+\begin{equation}
+f'(x_i)\thickapprox \cfrac {f(x_i)-f(x_i-h)}{h}
+\end{equation}
+
+同样的，我们有二阶微分的中心差商：
+\begin{equation}
+f"(x_i)\thickapprox \cfrac {f(x_i+h)-2f(x_i)+f(x_i-h)}{h^2}
+\end{equation}
+
+上述差分步骤应用于偏微分：
+
+例如，对于$f=f(x,y)$的情况，拉普拉斯算符在0点作用在此函数上的值$\left(\nabla^{2} f=\left(\frac{\partial^{2} f}{\partial x^{2}}+\frac{\partial^{2} f}{\partial y^{2}}\right)\right)$，也可以用邻近的点上的函数值来表示出来。见下图：
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.5]{./figures/figure-1.png}
+\caption{节点0及临近节点}
+\end{figure}
+
+
+\begin{equation}
+\nabla^2 f(x) \thickapprox \cfrac{f_1+f_2+f_3+f_4-4f_0}{h^2}-\frac{2 h^{2}}{4 !}\left(\frac{\partial^{4} f}{\partial x^{4}}+\frac{\partial^{4} f}{\partial y^{4}}\right)
+\end{equation}
+
+对微分方程数值求解的误差的来源：
+\begin{enumerate}[(1)]
+	\item 方法误差（或截断误差）。这是由于采用的计算方法所引起的误差。例如上面我们介绍的差商表示中，采用的泰勒展开式展开到第$n+1$项时的截断误差阶数为$\boldsymbol{O}\left(\boldsymbol{h}^{n+1}\right)$。具体方法的误差阶数取决于在离散化时的近似阶数。因此若改进算法就可以减小截断误差。
+	\item 舍入误差（或计算误差）。这是由于计算机的有限字长而造成数据在计算机中的表示出现误差。
+	在计算机运算的过程中，随着运算次数的增加舍入误差会积累得很大。如果在多次运算后，舍入误差
+	的精度影响是有限的，那么这个算法是稳定的，否则是不稳定的。不稳定的算法是不能用的。 
+\end{enumerate}
+
+
+
+
+
+\end{document}
