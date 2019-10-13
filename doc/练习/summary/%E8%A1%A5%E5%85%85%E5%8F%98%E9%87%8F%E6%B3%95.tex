@@ -1,0 +1,893 @@
+%  ----------------------------------------------------------------
+% AMS-LaTeX Paper ************************************************
+% **** -----------------------------------------------------------
+\documentclass[12pt,reqno]{book}
+%\usepackage[ams]{pdfslide}
+%\usepackage[pdftex]{hyperref}
+%\usepackage[notref,notcite]{showkeys}
+\usepackage{CJK}
+\usepackage{graphicx}
+\usepackage{cchead, amsmath, amsthm, graphicx,amsfonts, amssymb,color}
+\numberwithin{equation}{section}
+\pagestyle{myheadings}
+\setlength{\topmargin}{-2cm} \setlength{\oddsidemargin}{0cm} \setlength{\evensidemargin}{0cm}
+\setlength{\textwidth}{16truecm} \setlength{\textheight}{24truecm}
+% ----------------------------------------------------------------
+\vfuzz2pt % Don't report over-full v-boxes if over-edge is small
+\hfuzz2pt % Don't report over-full h-boxes if over-edge is small
+% THEOREMS -------------------------------------------------------
+%\newtheorem{thm}{Theorem}[section]
+%\newtheorem{cor}[thm]{Corollary}
+%\newtheorem{lem}[thm]{Lemma}
+%\newtheorem{prop}[thm]{Proposition}
+%\theoremstyle{definition}
+%\newtheorem{defn}[thm]{Definition}
+%\theoremstyle{remark}
+%\newtheorem{rem}[thm]{Remark}
+%\theoremstyle{example}
+%\newtheorem{exm}[thm]{Example}
+%\numberwithin{equation}{section}
+
+
+
+
+% MATH -----------------------------------------------------------
+\usepackage{mathrsfs}
+\newcommand{\scr}[1]{\mathscr #1}
+
+\newcommand{\norm}[2]{\left\|{#1}\right\|_{#2}}
+\newcommand{\abs}[1]{\left\vert#1\right\vert}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\A}{\scr{A}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\D}{\scr{D}}
+\def\F{\scr F}
+\def\K{\mathbb K}
+\def\N{\mathbb N}
+\renewcommand{\P}{\mathbb P}
+\def\R{\mathbb R}
+\def\Z{\mathbb Z}
+%newcommand-------------------------------------------------
+\def\bg{\begin}
+\def\be{\bg{equation}}
+\def\de{\end{equation}}
+\def\bgar{\bg{eqnarray}}
+\def\edar{\end{eqnarray}}
+\newcommand{\nnb}{\nonumber}
+\def\lb{\label}
+\def\ct{\cite}
+\def\l{\left}\def\r{\right}
+%abbreviation-------------------------------
+\def\fr{\frac}
+\def\alp{\alpha}
+\def\bt{\beta}
+\def\gm{\gamma}
+\def\Gm{\Gamma}
+\def\dlt{\delta}
+\def\Dlt{\Delta}
+\def\eps{\epsilon}
+\def\veps{\varepsilon}
+\def\tht{\theta}
+\def\Tht{\Theta}
+\def\kp{\kappa}
+\def\lmd{\lambda}
+\def\Lmd{\Lambda}
+\def\vro{\varrho}
+\def\sgm{\sigma}
+\def\Sgm{\Sigma}
+\def\vph{\varphi}
+\def\omg{\omega}
+\def\Omg{\Omega}
+\def\fa{\forall}
+\def\emp{\emptyset}
+\def\ex{\exists}
+\def\nbl{\nabla}
+\def\pat{\partial}
+\def\ift{\infty}
+\def\bca{\bigcap}
+\def\bcu{\bigcup}
+\def\lar{\leftarrow}
+\def\Lar{\Leftarrow}
+\def\rar{\rightarrow}
+\def\Rar{\Rightarrow}
+\def\lla{\longleftarrow}
+\def\Lla{\Longleftarrow}
+\def\to{\longrightarrow}
+\def\To{\Longrightarrow}
+\def\lra{\leftrightarrow}
+\def\Lra{\Leftrightarrow}
+\def\llra{\longleftrightarrow}
+\def\Llra{\Longleftrightarrow}
+
+\def\q{\quad}
+\def\mpb{\vskip6pt}
+\def\gap{\text {\rm gap}}
+\def\var{\text {\rm Var}}
+\def\ess{{\rm ess}}
+\def\hess{{\rm Hess}}
+\def\ric{{\rm Ric}}
+\def\tr{{\rm tr}}
+
+\def\[{\l[} \def\]{\r]}
+\def\({\l(} \def\){\r)}
+\def\|{\bigg|}
+
+\def\hat{\widehat}
+\def\bar{\overline}
+\def\tld{\widetilde}
+
+
+%%forthispaper
+\renewcommand{\aa}[3]{{#1}_{#2}({#3})}
+\newcommand{\p}[2]{p_{#1}({#2})}
+\newcommand{\h}[2]{h_{#1}({#2})}
+\newcommand{\m}[2]{m_{#1}^{(#2)}}
+\newcommand{\mb}[1]{\fr{1}{\mu_{#1}b_{#1}}}
+\newcommand{\qq}[1]{q_{#1}}
+\renewcommand{\d}[2]{d_{#1}^{(#2)}}
+\newcommand{\he}[2]{\sum_{#1}^{#2}}
+\newcommand{\x}[2]{x_{#1}^{(#2)}}
+\newcommand{\rf}[1]{(\ref{#1})}
+
+\def\tld{\tilde}
+\def\pt{P(t,x,\cdot)}
+\def\var{{\rm{Var }}}
+\def\tx{\text}
+\def\P{\mathbb P}
+\def\BE{\mathbb E^{x_1,x_2}}
+\def\ric{\tx{Ric}}
+%\def\R{\Bbb R}
+\def\lip{{\tx{Lip}}}
+
+\newcommand{\jff}[2]{\int_{#1}^{#2}}
+\newcommand{\jf}[1]{\int_{#1}}
+
+\def\dist{{\rm dist}}
+\def\supp{{\rm supp\,}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\pfthm}[1]{\vskip.5cm \noindent\emph{Proof of Theorem \ref{#1}}}
+\newcommand{\pfcor}[1]{\vskip.5cm \noindent\emph{Proof of Corollary \ref{#1}}}
+\newcommand{\pfprop}[1]{\vskip.5cm \noindent\emph{Proof of Proposition \ref{#1}}}
+\renewcommand{\baselinestretch}{1.2}
+
+%%%colors
+\newcommand{\red}[1]{{\color{red} #1}}
+\newcommand{\yel}[1]{{\color{yellow} #1}}
+\newcommand{\blu}[1]{{\color{blue} #1}}
+\newcommand{\grn}[1]{{\color{green} #1}}
+\renewcommand{\theequation}{\arabic{equation}}
+
+ \def\beqlb{\begin{eqnarray}}\def\eeqlb{\end{eqnarray}}
+ \def\beqnn{\begin{eqnarray*}}\def\eeqnn{\end{eqnarray*}}
+\def\d{{\mbox{\rm d}}}\def\e{{\mbox{\rm e}}}
+ \def\supp{{\mbox{\rm supp}}}
+\def\dsum{\displaystyle\sum}
+\def\dsup{\displaystyle\sup}
+\def\dlim{\displaystyle\lim}
+\def\dlimsup{\displaystyle\limsup}
+
+\def\dinf{\displaystyle\inf}
+ \def\bfE{\mbox{\boldmath $E$}}\def\bfP{\mbox{\boldmath $P$}}
+ \def\bfQ{\mbox{\boldmath $Q$}}
+
+% ----------------------------------------------------------------
+
+\begin{document}
+\begin{CJK}{GBK}{song}
+\title{}
+\author{}
+\date{}
+\maketitle
+\chapter{补充变量法}
+\section{如何用补充变量描述排队}
+~ ~ 如果控制排队模型动态变化的变量是指数分布的, 那么我们可以用一个连续时间马尔可夫链来描述这个模型. 反之, 我们要用不同的技巧来研究这样的过程。当然, 我们不一定需要一个马尔可夫特征才能得到这些过程的一些性质. 例如, 第七章提出了再生的概念, 证明了极限分布的存在性和连续性. 但是, 如果我们必须计算极限分布或预极限分布, 马氏性质在实现对应关系时几乎是唯一的.
+
+在第8章中, 我们使用嵌入马尔可夫链的方法来导出这种关系. 在应用此方法时, 我们将马尔可夫链嵌入到研究的过程中, 试图揭露这一过程的特点.
+
+在第九章中, 我们考虑了一种相反的方法. 也就是说, 当随机变量服从Erlang分布, Hyper-Erlang分布或PH-分布, 我们都将初始过程嵌入到一个包含离散补充变量的连续时间马尔可夫链中.
+
+在这里, 我们把这个想法推广到任意分布函数. 所以这个想法本身是相当简单的, 更不用说原始的. 也就是说, 我们分配给每个"非指数"分布的随机变量一个补充变量, 用于修复与此随机变量相关的逝去时间或剩余时间. 它将所有必要的信息纳入补充变量中, 使过程变为马尔科夫过程, 以便于在只知道其当前状态的情况下, 预测过程的"未来". 现在让我们通过关于这个方法的一些例子消除挥之不去的疑虑.
+
+例1 在$M_{\lambda}/GI/1$模型中, 选择逝去的时间作为补充变量.
+
+记$Q(t)$表示时刻$t$时系统中的顾客数(队列+服务), 我们知道$Q(. )$是一个非马尔可夫过程. 添加一个补充坐标, 将其嵌入到一个马尔可夫过程中. 即当$Q(t)=0$ 时, 这些信息足够预测$Q(u), u>t$. 实际上, $Q(u), u>t$仅依赖于未来的到达和服务时间而不依赖过去的状态$Q(s), s\leq{t}$. 请注意, 这里使用的事实是由于到达形成泊松流, 在时刻$t$ 剩余的到达间隔时间有相同的参数为$\lambda$的指数分布, 而不依赖于过去. 对于其他类型的输入流, 这种说法一般是错误的. 如果$Q(t)>0$,  那么我们引入变量$E_s(t)$, 表示在时刻$t$ 正在服务的顾客剩余的服务时间. 定义过程
+
+\begin{equation}
+Z(t)=
+\left\{
+\begin{array}{ll}
+Q(t), &\quad\mbox{如果}~ Q(t)=0,  \\
+(Q(t), E_s(t)), &\quad\mbox{如果}~  Q(t)>0.
+\end{array}
+\right.
+\end{equation}
+
+图10.1展示了这个过程可能路径, 状态空间为
+
+$$Z(t)=\{0\} \cup {\{1, 2, \cdots\}} \times[0, \infty), $$
+图10.1(b)阴影部分表示空闲期, 在这里，$E_s(. )$未定义. $E_s(. )$的跳跃发生在离开时刻.
+
+如果我们知道在时刻t时$Z(t)$的值(当$Q(t)>0$时, 则未来行为$Z(u), u>t$仅取决于剩余和未来到达间隔和服务时间. 在这些变量中, 只有剩余的服务时间"可疑", 因为它依赖于过去. 用$R_s(t)$ 表示剩余时间. 我们知道服务在时刻$t-E_s(t)$ 已经开始了, 并且正在服务的服务时间$S(t)$比$E_s(t)$大, $R_s(t)=s(t)-E_s(t)$.  显然, $R_s(t)$既不取决于"到达过程", 也不取决于"服务过程". 记$s$为一个一般服务时间, 则
+
+\begin{equation}
+\begin{split}
+P(R_s(t)\leq{y})
+&=P\(R_s(t)\leq{y}\mid{s}>{E_s(t)}\)\\
+&=\frac{P(E_s(t)<{s}\leq{E_s(t)+y})}{P(s>E_s(t)}\\
+&=\frac{B(E_s(t)+y)-B(E_s(t)}{1-B(E_s(t))}.
+\end{split}
+\end{equation}
+
+因此, 我们将$Q(. )$嵌入到具有分段线性路径和可选维数的马尔可夫过程$Z(. )$中.
+
+例2 在$GI/M_mu/1$, 选择剩余时间作为补充变量.
+
+现在我们将过程$Q(. )$嵌入到马尔科夫过程
+
+\begin{equation}
+Z(t)=(Q(t), R_e(t)), \quad t>0,
+\end{equation}
+其中$R_e(t)$表示在时刻$t$剩余的到达间隔. 图10.2中描绘了$Z(. )$ 的路径，分量$R_e(t)$的每个跳跃是随机的，其值具有分布$A(x)=P(e_1\leq{x})$. 这些跳跃的位置"标记"了到达时间.
+
+在例1和例2中, 到达间隔时间和服务时间都是指数分布的, 因此, 我们不需要引入一个补充变量去"记住"相应的时间. 下面的例子说明在必要时如何做.
+
+例3 $GI/GI/1/{\infty}$模型
+
+为了将$Q(. )$嵌入到马尔科夫过程中, 引入两个指标：$R_e(t)$表示在时刻$t$剩余的到达时间间隔;$R_s(t)$ 表示在给定的条件$Q(t)>0$ 下, 时刻$t$剩余的服务时间.
+
+定义马尔科夫过程
+
+$$
+Z(t)=
+\left\{
+\begin{array}{ll}
+(Q(t), R_e(t)), &\quad\mbox{如果}~ Q(t)=0 \\
+(Q(t), R_e(t), R_s(t)), &\quad\mbox{如果}~  Q(t)>0,
+\end{array}
+\right.
+$$
+图10.3描述了此过程的路径. 因为结果是明显的, 我们省略了对这个例子的进一步解.
+
+许多所需的补充变量不仅取决于模型，但取决于要研究的特征。
+
+例4 $GI/GI/1/{\infty}$
+
+再次考虑上例中的模型. 但是现在我们要研究的不是队列长度, 而是虚拟等待时间过程程$V(t), t\geq0$, 定义如下(对照第1.3.1节)：$V(t)$等于(从时间$t$)服务台忙于服务到达不迟于$t$的顾客的时间. 因此,$V(t)$ 可以被视为在时刻$t$到达顾客的等待时间. 过程$V(t)$ 在到达时刻点具有随机跳跃(其值服从分布函数$B(x)$),  并且在$V(t)=0$ 以外, 随着它们之间单位斜率减少而减少. 在$V(t)=0$的情况下, 零值一直保持到下一个到达时间, 如图10.4. 由于输入流的非马尔可夫特征(一般情况下), 过程$V(t)$不是马尔可夫过程. 为了将它嵌入到马尔可夫过程中, 只添加一个补充变量就足够了, 例如考虑这个过程
+
+$$Z(t)=(Q(t), R_e(t)), \quad t>0, $$
+见图10.4.
+
+引入补充变量的目的至少是双重的.  首先, 它可以写下Kolmogorov方程并求解它们.  其次, 它允许使用此描述来模拟排队过程.  为此, 我们应该使用马尔可夫过程描述, 因为任何模拟软件都会逐步生成模型路径:了解当前状态, 用以计算模型的未来状态.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{$M_\lambda/GI/1/{\infty}$模型}
+~ ~ 补充变量法有时能够分析推断出排队模型的主要特征.
+
+考虑在示例1.1中引入的马尔可夫过程$Z(. )$,  记
+
+\begin{equation*}
+\begin{aligned}
+P_0(t)&=P(Q(t)=0), \\
+P_k(x, t)dx&=P(Q(t)=k, x<E_s(t)\leq{x+dx}). \quad x>0\\
+\end{aligned}
+\end{equation*}
+
+假设密度$P_k(x, t)$存在，记
+
+\begin{equation}
+r_s(t)={(1-B(x)^{-1}}\times{\frac{dB(x)}{d(x)}},
+\end{equation}
+为分布函数$B(x)$的失败率, 并且假设它对任意的$x>0$是有限的.
+为了导出相关的概率和密度方程，我们考虑了区间$(t, t+\Delta)$ 上可能的状态转移. 在$Q(t)=k, E_s(t)=x>0$的条件下，服务在时间$(t, t+\Delta)$之间结束的概率等于
+
+\begin{equation}
+\frac{B(x+\Delta)-B(x)}{1-B(x)}=r_s(t)\Delta+o(\Delta),
+\end{equation}
+使用全概率公式，我们得到
+
+\begin{align}
+P_0(t+\Delta)&=P_0(t)(1-{\lambda}{\Delta})+\int_0^\infty P_1(u, t)r_s(u)\Delta du+o(\Delta), \\
+P_1(x+\Delta, t+\Delta)&=P_1(x, t)(1-\lambda\Delta)(1-r_s(x)\Delta)+o(\Delta), \quad x>0, \\
+P_k(x+\Delta, t+\Delta)&=P_k(x, t)(1-\lambda\Delta)(1-r_s(x)\Delta), \nonumber\\
+&+P_{k-1}(x, t)\lambda\Delta+o(\Delta), \quad x>0, k>1.
+\end{align}
+在$sup_xr_s(x)<\infty$的条件下，这些方程是相当正确的。令$\Delta\rightarrow\infty$, 假设相应的导数存在，我们从(3)-(5)可以得到：
+
+\begin{align}
+&\frac{dP_0(t)}{dt}+\lambda{P_0(t)}=\int_0^\infty P_1(u, t)r_s(u)du, \\
+&\frac{\partial{P_1(x, t)}}{\partial{t}}+\frac{\partial{P_1(x, t)}}{\partial{x}}+(\lambda+r_s(x))P_1(x, t)=0, \quad x>0, \\
+&\frac{\partial{P_k(x, t)}}{\partial{t}}+\frac{\partial{P_k(x, t)}}{\partial{x}}+(\lambda+r_s(x))P_k(x, t)=\lambda{P_k-1(x, t)}, \quad x>0, k>1.
+\end{align}
+为了得到方程(6)-(8)的边界条件, 利用全概率公式, 我们注意到
+
+\begin{eqnarray*}
+\begin{split}
+P(Q(t)=1, E_s(t)\leq\Delta)
+&=\int_{0}^{\Delta}P_1(u, t)du\\
+&=\int_{0}^{\infty}P_2(u, t)R_s(u)\Delta{du}+P_0(t)\lambda\Delta+o(\Delta),
+\end{split}
+\end{eqnarray*}
+从而
+\begin{equation}
+P_1(0, t)=\int_{0}^{\infty}P_2(u, t)r_s(u)du+\lambda{P_0(t)},
+\end{equation}
+相似地，
+\begin{equation}
+P_k(0, t)=\int_{0}^{\infty}P_{k+1}(u, t)r_s(u)du, \quad k>1.
+\end{equation}
+假设系统在$t=0$时处于空闲状态(这为预平稳情况的求解提供了简化的可能性), 即可根据以下初始条件来解决上述方程：
+\begin{equation}
+P_0(0)=1;P_k(x, 0)=0, \quad k\geq1, x\geq0.
+\end{equation}
+引入生成函数
+\begin{equation}
+p(x, zt)=\sum_{k\geq1}z^kP_k(x, t), \quad \left|z\right|\geq1.
+\end{equation}
+从(7), (8)和(12)中得出结论:
+\begin{equation}
+\frac{\partial{p(z, x, t)}}{\partial{t}}+\frac{\partial{p(z, x, t)}}{\partial{x}}+(\lambda+r_s(x))p(z, x, t)=\lambda{zp(z, x, t)}.
+\end{equation}
+“边界”方程(9)和(10)意味着
+\begin{equation}
+zp(z, 0, t)=\int_{0}^{\infty}(p(z, u, t)-zP_1(u, t))r_s(u)du+\lambda{z^2P_0(t)}.
+\end{equation}
+因此, 我们将问题简化为在初始条件(11)和边界条件(14)下求解方程(6)和(13).
+
+为了求解(13), 让我们通过下列等式引入函数$q(z, x, t)$.
+\begin{equation}
+p(z, x, t)=q(z, x, t)(1-B(x))\equiv{q(z, x, t)exp(-\int_{0}^{x}r_s(u)du)}.
+\end{equation}
+由此得出结论
+\begin{equation}
+\frac{\partial{p(z, x, t)}}{\partial{x}}=(\frac{\partial{q(z, x, t)}}{\partial{x}}-r_s(x)q(z, x, t))exp(-\int_0^{x}r_s(u)du)
+\end{equation}
+和
+\begin{equation}
+\frac{\partial{p(z, x, t)}}{\partial{t}}=\frac{\partial{q(z, x, t)}}{\partial{t}}exp(-\int_0^{x}r_s(u)du).
+\end{equation}
+将表达式(15)-(17)代入(13)中, 导出具有常系数的线性偏微分方程:
+\begin{equation}
+\frac{\partial{q(z, x, t)}}{\partial{t}}+\frac{\partial{q(z, x, t)}}{\partial{x}}+\lambda(1-z)q(z, x, t)=0.
+\end{equation}
+我们知道（18）通解具有形式
+\begin{equation}
+q(z, x, t)=q_0(z, t-x)exp(-\lambda{x(1-z)}).
+\end{equation}
+我们使用初始条件和边界条件定义函数$q_0$, 可以重写为:
+\begin{align}
+q_0(z, -x)&=0, \quad x>0\\
+zq_0(z, t)&=\int_{0}^{\infty}q_0(z, t-u)e^{-\lambda(1-z)u}dB(u)\\
+ &-z\int_{0}^{\infty}P_1(u, t)r_s(u)du+\lambda{z^2P_0(t)}\nonumber.
+\end{align}
+总结等式(6)和(21), 并使用(20)我们得出
+\begin{equation}
+z\frac{dP_0(t)}{dt}+\lambda z(1-z)P_0(t)+zP_0(t)=\int_{0}^{t}e^{-\lambda(1-z)u}q_0(z, t-u)dB(u).
+\end{equation}
+引入变换
+
+\begin{equation}
+\begin{aligned}
+p_0(s)&=\int_{0}^{\infty}e^{-st}dp_0(t), \\
+q_0(z, s)&=\int_{0}^{\infty}e^{-st}d_tq_0(z, t), \\
+b(s)&=\int_{0}^{\infty}e^{-st}dB(t). \\
+\end{aligned}
+\end{equation}
+那么我们从（22）可以得到（因为$P_0(0)=1$)
+$$zsp_0(s)-zs+\lambda z(1-z)p_0(s)+zq_0(z, s)=q(z, s)b(\lambda(1-z)+s), $$
+或
+\begin{equation}
+q_0(z, s)=z\frac{(\lambda(1-z)+s)p_0(s)-s}{b(\lambda(1-z)+s)-z}.
+\end{equation}
+从构造上可以看出, 函数$q_0(z, s)$在$\left|z\right|<1, Re s>0$ 上没有极点, 但是(23)的分母在单位圆上有唯一的根$z_s^{\ast}$, 即$\left|z_s^{\ast}\right|<1$, 它的存在性和唯一性在第2.2.1节中已证明. 因此, (23)的分子在点$z=z_s^{\ast}$时应该等于零, 即
+\begin{equation}
+p_0(s)=\frac{s}{\lambda(1-(z_s^\ast)^2)+s},
+\end{equation}
+等式(23)和(24)实际上是我们的最终步骤, 因为它们给出了成功导出$P_0(t), q_0(t), q(z, x, t), \\p(z, x, t)$的可能性. 不幸的是, 在现实中要做到这一点几乎是不可能的. 我们只能依靠一些数值反演方法来获得上述函数.
+
+然而, 我们可以使用推导出的公式来找到极限分布(正如我们所知的), 并且只有当$\lambda{b_1}<1$时, 极限分布存在. 通过Tauber's定理(参见第2. 6节),
+
+\begin{eqnarray*}
+\begin{aligned}
+\lim_{t\to+\infty} P_0(t)
+&=\lim_{s\to0}p_0(s)\\
+&=\lim_{s\to0}(1-\lambda(z_s^{\ast}))^{-1}, \\
+&=1-\lambda b_1. \\
+\end{aligned}
+\end{eqnarray*}
+相似地（根据(23)和(25)）,
+\begin{equation}
+\lim_{t\to\infty}q_0((z, t)=\lim_{s\to0}q_0(z, s)=\frac{\lambda z(1-\lambda)b_1)(1-z)}{b(\lambda(1-z))-z}
+\end{equation}
+并且根据(15)和(19),
+\begin{eqnarray}
+\begin{aligned}
+p(z, x)
+&\equiv \lim_{t\to\infty}p(z, x, t)\\
+&=(1-B(x)exp(-\lambda(1-z)x))\frac{\lambda z(1-\lambda b_1)(1-z)}{b(\lambda(1-z))-z}. \\
+\end{aligned}
+\end{eqnarray}
+记极限概率为
+\begin{equation}
+p_k=\lim_{t\to\infty}P(Q(t)=k), \quad k\geq0.
+\end{equation}
+因为$p_0=1-\lambda b_1$, 可以得到
+\begin{equation}
+\lim_{t\to\infty}P(Q(t)>0)=\lambda b_1.
+\end{equation}
+也可以从等式(27)得到等式(29), 因为
+$$\lim_{t\to\infty}P(Q(t)>0)=\int_{0}^{\infty}p(1, x)dx. $$
+因此, 在系统不空的条件下, 则逝去服务时间的条件极限分布等于
+\begin{eqnarray}
+\begin{aligned}
+\lim_{t\to\infty}P(E_s(t)\leq x\mid Q(t)>0)
+&=\lim_{t\to\infty}\frac{P(E_s(t)\leq x, Q(t)>0)}{P(Q(t)>0)}, \\
+&=\frac{1}{\lambda{b_1}}\int_{0}^{x}p(1, u)du, \\
+&=\frac{1}{b_1}\int_{0}^{x}(1-B(u))du, \\
+\end{aligned}
+\end{eqnarray}
+
+这是一个著名的平稳分布的公式. 一般来说，对于任何固定的$k>0$
+\begin{equation}
+\lim_{t\to\infty}P(E_s(t)\leq x\mid Q(t)=k)\neq\frac{1}{b_1}\int_0^{x}(1-B(u))du.
+\end{equation}
+进一步, 给出了极限概率$p_k$的生成函数
+\begin{eqnarray}
+\begin{aligned}
+\pi(z)
+&=\sum_{k=0}^{\infty}p_k z^k\\
+&=p_0+\int_{0}^{\infty}p(z, x)dx\\
+&=\frac{(1-\rho)(1-z)b(\lambda-\lambda z)}{b(\lambda-\lambda z)-z}. \\
+\end{aligned}
+\end{eqnarray}
+当然, 这是Pollaczek-Khinchine公式. 因此, 我们证明了对于$M_\lambda/GI/1/{\infty}$模型, 当$t\to\infty$时, 极限概率与离开时刻嵌入马尔可夫链的极限概率是一致的.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{$GI/M_\mu/1/{\infty}$模型}
+~ ~ 考虑例1.2中对模型的描述, 参见(1.3节). 记$A(x)$为到达间隔时间的分布函数, $a_1=\int_0^{\infty}xdA(x)<\infty$. 假设存在有限密度
+$$a(x)=\frac{dA(x)}{dx}. $$
+另外，令
+$$p_k(x, t)dx=P(Q(t)=k, x<R_e(t)\leq x+dx). $$
+为了得到这些量的微分差分方程(实际上是前向Kolmogorov方程)，我们把系统在时间$t$的状态与时间$t+\Delta$的状态联系起来:
+\begin{align*}
+P_0(x-\Delta, t+\Delta)&=P_0(x, t)+P_1(x, t)\mu\Delta+o(\Delta), \\
+P_k(x-\Delta, t+\Delta)&=p_k(x, t)(1-\mu\Delta)+P_k+1(x, t)\mu\Delta\\
+& +a(x)\int_0^{\Delta}P_k-1(u, t)du+o(\Delta), \quad x>\Delta, k\geq1.
+\end{align*}
+
+令$\Delta\to0$, 得到
+
+\begin{align}
+-\frac{\partial{P_0(x, t)}}{\partial x}+\frac{\partial{P_0(x, t)}}{\partial{t}}=&\mu{P_1(x, t)}, \quad x>0, \\
+-\frac{\partial{P_k(x, t)}}{\partial x}+\frac{\partial{P_k(x, t)}}{\partial{t}}=&-\mu{P_k(x, t)}+\mu{P_k+1(x, t)}\\
+&+a(x)P_k-1(0, t), \quad x>0, k\geq1\nonumber.
+\end{align}
+
+
+在这里, 我们不寻找非平稳分布, 但是假设
+\begin{equation}
+a_1\mu>1,
+\end{equation}
+我们要找到极限值
+\begin{equation}
+P_k(x)=\lim_{t\to\infty}P_k(x, t).
+\end{equation}
+即我们将得到不依赖$t$的(1)和(2)的"概率"解. 该解是通过更新过程的关键遍历定理得到的极限解.
+
+如果(1)和(2)的解${P_k(. )}_{k\geq0}$不依赖于$t$，则满足方程
+\begin{align}
+-\frac{\partial{P_0(x)}}{\partial x}&=\mu{P_1(x)}, \quad x>0, \\
+-\frac{\partial{P_k(x)}}{\partial x}&=-\mu{P_k(x)}+\mu{P_k+1(x)+a(x)P_k-1(0)}, \quad x>0, k\geq1.
+\end{align}
+
+引入生成函数
+$$p(z, x)=\sum_{k=0}^{\infty}z^k{P_k(x)}, $$
+我们可以从(5)和(6)得到
+\begin{equation}
+-\frac{\partial p(z, x)}{\partial x}=\frac{\mu(1-z)}{z}(p(z, x)-P_0(x))+za(x)p(z, 0), \quad x>0.
+\end{equation}
+考虑Laplace变换
+
+\begin{equation*}
+\begin{aligned}
+\hat p(z, x)&=\int_{0}^{\infty}e^{-sx}p(z, x)dx, \\
+\hat P_0(s)&=\int_{0}^{\infty}P_0(x)dx\equiv \hat p(0, s), \\
+\hat a(s)&=\int_{0}^{\infty}e^{-sx}a(x)dx=\int_{0}^{\infty}e^{-sx}dA(x). \\
+\end{aligned}
+\end{equation*}
+在这些条件下, 方程(7)可以转换为
+$$-s\hat p(z, x)+p(z, 0)=\frac{\mu(1-z)}{z}(\hat p(z, s)-\hat P_0(s))+z\hat a(s)p(z, 0). $$
+
+从这里可得
+\begin{equation}
+\hat p(z, x)=\frac{(1-z\hat a(s))p(z, 0)+\frac{\mu(1-z)}{z}\hat P_0(s)}{z+\frac{\mu(1-z)}{z}}.
+\end{equation}
+注意, (8)的右边包含两个未知函数$p(z, 0)$)和$\hat P_0(s)$. 我们可以用不同的方法得到这些未知量. 最常见的方法是求出方程(1)和(2) 的边界条件和初始条件, 正如我们在前一节中所做的那样. 然而, 事实证明我们可以找到这些包含其他参数的未知函数. 回想一下
+
+$$P_k(0)=\lim_{t\to\infty}P_k(0, t). $$
+但是, 补充变量的坐标值等于零意味着, 这个等式的右边的极限是取决于到达时间. 因此, 极限值$p_k(0)$与第8.1.3节考虑的嵌入马尔可夫链的平稳概率成正比. 根据（8.1.23）得出
+
+\begin{equation}
+P_k(0)=\gamma(1-\rho){\rho}^k, \quad k\geq0,
+\end{equation}
+其中, $\gamma$是一个合适的系数, $\rho$是方程式$\rho=a(\mu-\mu\rho)$, 在单位圆上的唯一根. 因此, 我们消除了一个模糊的根源. 确切地说，当常数$\gamma$有定义时, 我们可以证明（见(9)）
+
+\begin{equation}
+p(z, 0)=\frac{\gamma(1-\rho)}{1-\rho z},
+\end{equation}
+因此
+
+\begin{equation}
+\hat p(z, s)=\frac{(1-z\hat a(s))\frac{\gamma(1-\rho)}{1-\rho z}+\frac{\mu(1-z)}{z}\hat P_0(s)}{z+\frac{\mu(1-z)}{z}}.
+\end{equation}
+函数$\hat{P}_0(s)$可以通过解析的方法来计算. 即当$Re s>0, \left|z\right|<1$时, 函数$\hat p(z, s)$ 是解析的. 但是(11)中的分母有一个根$Z_s^{\ast}=\mu/(\mu-s)$, 并且至少当$Res>2\mu$时，$\left|z_s^{\ast}\right|<1$,  因此当$z=z_s^{\ast}$时，(11)中的分子为零. 所以对于$Res>2\mu$
+
+\begin{equation}
+\hat P_0(s)=\frac{\gamma(1-\rho)(\mu(1-\hat a(s))-s)}{s(\mu(1-\rho)-s)}\equiv f(s).
+\end{equation}
+当$Re s>0$时，检验$f(s)$是否为解析函数并不困难，因为$s=\mu(1-\rho)$不是函数f的奇点. 另外, 当$Re s>0$和$\hat{P}_0(s)=f(s)$时, $\hat P_0(s)$是一个解析函数. 根据解析延拓性质(见第2. 6. 1节), 当$Re s>0$时, 这两个函数重合, 并且等式(12)也是正确的.
+
+这个等式可以找到极限概率
+\begin{equation}
+p_0=\lim_{t\to\infty}P(Q(t)=0)=\int_{0}^{\infty}P_(x)dx=\hat P_0(0)=\frac{\gamma(a_1\mu-1)}{\mu}.
+\end{equation}
+同样, 在(11)和(13)的帮助下, 极限概率的生成函数等于
+
+\begin{eqnarray*}
+\begin{aligned}
+p(z)&=\sum_{k=0}^{\infty}p_{k}z^k=\int_{0}^{\infty}p(z, x)dx=\hat{p}(z, 0)\\
+&=\frac{\gamma}{\rho}(z\frac{1-\rho}{1-\rho z}+a_1\mu-1)=\frac{\gamma}{\mu}(a_1\mu-\frac{1-z}{1-\rho z})\\
+\end{aligned}
+\end{eqnarray*}
+我们可以用下列等式来确定常数$\gamma$
+$$\sum_{k=0}^{\infty}p_k=p(1)=1, $$
+由此得出$\gamma=1/a_1$. 因此,
+
+\begin{equation}
+p(z)=1-\frac{1-z}{a_1\mu(1-\rho z)}.
+\end{equation}
+扩展$P(z)$, 我们得到了
+
+\begin{align}
+p_0&=1-\frac{1}{a_1\mu}, \\
+p_k&=\frac{(1-\rho)}{a_1\mu}{\rho}^{k-1}, \quad k\geq0.
+\end{align}
+可以看出, 这些极限概率与8. 1. 3节中获得的平稳概率$\pi_k$ 不同. 这意味着对于$GI/M_{\mu}/1/\infty$模型, 沿所有$t\to\infty$的极限和沿到达时间的极限是不同的.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{聚合模型}
+\subsection{分段线性聚合}
+~ ~ 在这里, 我们回顾一些使用一般得到的排队理论中相关结果, 这些方案是由补充变量法产生的, 被称为聚合模型. 这个方案由N.  Buslenko提出, 并作为一个数学对象被广泛研究. 此外, 聚合模型可以作为离散模拟软件的基础. 在这种情况下, 相应的数学结果可以支持复杂的模拟实验.
+
+聚合模型可以看作是所谓的相互作用的聚合元素的集合. 每个聚合元素都是一个在时间$t\in\[0, \infty\)$上的函数, 接收属于一个确定的集合$\mathcal{X}$发出的信号$x$, 发出输出信号$y\in\mathcal{Y}$，并在每一时间$t$时占据状态空间$\mathcal{Z}$ 的一些状态$z$. 我们要求集合$\mathcal{X, Y}$和$\mathcal{Z}$具有类似的结构. 即每个输入信号$x$表示成对$x＝(\kappa, x_{\kappa})$ 的形式，其中$\kappa$ 属于有限或可数集$K$, $x_{\kappa}$是关于维度$\Vert\kappa\Vert$ 的正向量, $\Vert\kappa\Vert$ 为$\kappa$的秩. 相似地, $z=(\nu, z_\nu)$, 其中$\nu$属于有限或可数集$\mathcal{N}$, $z_\nu$ 是维度$\Vert\nu\Vert$ 的向量;$y=(\mu, y_\mu)$, 其中$\mu$属于有限或可数集$\mathcal{M}$, $y_\mu$是维度$\Vert\mu\Vert$ 的向量. 实际上, 我们已经描述了集合$\mathcal{X, Y}$ 和$\mathcal{Z}$. 记$\mathcal{Z}^\ast$为$z_\mu$可能值的边界集. 这是$\mathcal{Z}$的这样一个子集, 其中补充变量$z_\nu$的分量至少一个等于0.
+
+聚合动力学可以根据一些事件来定义, 这些事件有两种类型:内部和外部. 当聚合的路径到达$\mathcal{Z}^\ast$的子集时发生内部事件，当输入信号进入聚合时发生外部事件. 一般情况下, 到达时间形成一个点过程, 即我们消除信号在时间上连续的情况. 同样, 我们也要求内部事件发生的时间形成一个点过程. 假设路径$z(. )$在事件之间是确定性和线性的. 因此, 对每一个$\nu$, 定义关于维数$\Vert\nu\Vert$的向量$v_\nu$，其分量是$z_\nu$的分量变化的速度. 然后, 对于每一个$z\in\mathcal{Z}$, 我们可以定义经过时间
+$$\tau=\tau(z)=\inf\{t:z(t)\in\mathcal{Z}^\ast\}, z(0)=z, $$
+这实际上是内部事件的虚拟发生时间, 根据我们的假设
+$$\tau(\nu, z_\nu)=\min\{\frac{z_\nu(i)}{v_\nu(i)}:v_\nu(i)>0, 1\leq i\leq\Vert\nu\Vert\}, $$
+其中, $z_\nu(i)$和$v_\nu(i)$是$z_\nu$和$v_\nu$的第$i$个分量.
+
+如果$t^\ast$是内部事件的真实发生时间, 则
+$$z^\ast=\lim_{t\uparrow t^\ast}z(t)\in\mathcal{Z}^\ast, $$
+那么状态$z(t^\ast)$是一个随机变量, 只与$z^\ast$有关, 并不属于$\mathcal{Z}^\ast$. 此时输出信号$y^\ast$，其内容仅取决于$z^\ast$. 特别地，$y^\ast$ 可以是空的, 即不发. 在这个转换之后, 我们需要定义一个新的经过时间的值.
+
+令$t^{\ast\ast}$是某个输入信号$x$的到达时间并且
+$$z^{\ast\ast}=\lim_{t\uparrow t^{\ast\ast}}z(t)\in\mathcal{Z}^\ast$$
+
+则状态$z(t^{\ast\ast})$是随机的, 仅依赖于$x$和$z^{\ast\ast}$, 而不属于$\mathcal{Z}^\ast$. 在时间$t^{\ast\ast}$处, 可以发出输出信号$y^\ast$, 这个信号只依赖于$x$和$z^{\ast\ast}$.
+
+我们要求, 如果某些内部事件和外部事件的发生时间重合, 则根据外部事件实现转换. 这完全定义了这完全定义了聚合的动态.
+
+由于路径的分段线性特性, 我们将上述定义的方案称为分段线性聚合. 应用到排队中，变量$\kappa, \nu$和$\mu$通常包含关于顾客类型(优先级、非优先级等), 队列长度, 繁忙服务器数量等信息. 补充变量$x_\kappa, z_\nu$和$y_\mu$通常包含剩余服务时间、各种资源的数量、剩余到达时间等信息.
+
+有时，将聚合定义为具有$m$个输入端和$n$个输出端的元素是有用的. 它的结构与我们已经做过的相当相似, 不再讨论它.
+
+\subsection{规范聚合}
+~ ~ 假设我们有一个接收输入信号$x$的集合, 发出输出信号$y$, 并且具有状态$z=(\nu, z_\nu)$.  记聚合中连续事件(内部和外部)发生时间为$0=T_0<T_1<T_2<\cdots$, $z^(i)=(\nu_{(i)}, z_\nu^{(i)})$ 为在时间$T_i$时的状态. 考虑一个内部事件在$z^(i)$状态下的虚拟出现时间$\tau_i=\tau(z^{(i)})$.  创建另一个聚合(我们称为规范)接收相同的输入信号$x$, 发出相同的输出信号$y$, 但具有其他状态. 这意味着规范聚合与初始聚合以相同的方式将输入信号转换为输出信号.
+
+描述规范聚合的状态和转换. 设它在时间$T_i\leq t<T_{i+1}$ 上的状态等于
+
+$$\bar{z}=(z^{(i)}, \tau_{(i)}, \theta(t)), $$
+其中当唯一坐标$\theta(t)$随单位斜率减小时, $\theta(T_i)=\tau_i$.
+如果$t^\ast$使得
+$$\lim_{t\uparrow t^\ast}\theta(t)=0$$
+那么$\bar{z}(t^\ast)=(z^\ast, \tau^\ast, \tau^\ast)$,  其中在下列条件下，$z^\ast$的定义与初始集合的新状态相似, 是为响应于内部事件的出现而定义的,
+
+$$\lim_{t\uparrow t^\ast}z(t)=z^{(i)}+\tau_iv_\nu^{(i)}$$
+和
+$$\tau^\ast=\tau(z^\ast). $$
+令$t^{\ast\ast}$是某个输入信号$x$的到达时间, 那么
+
+$$\bar{z}(t^{\ast\ast})=(z^{\ast\ast}, \tau^{\ast\ast}, \tau^{\ast\ast}), $$
+其中$z^\ast$的定义相似响应于接收输入信号$x$的初始聚合的新状态, 在此之前, 它处于状态
+$$z^{(i)}+(\tau_i-\theta(t^{\ast\ast}))v_{\nu^(i)},$$
+和$\tau^{\ast\ast}=\tau(z^{\ast\ast})$
+
+因此, 在不丧失一般性的情况下, 我们可以考虑在连续事件发生之间只有一个补充坐标的集合体, 它随着单位斜率的减小而减小, 其他坐标保持不变.
+
+
+\subsection{聚合模型}
+~ ~ 如果我们有一组有限的集合, 那么就有可能将它们耦合起来, 从而形成一个聚合模型. 在没有任何扭曲的情况下, 我们要求每个输出信号从某个集合的特定输出端立即发出, 到达其他(或相同)聚合体的输入终端. 因此, 一般情况下, 它可以传递到多个地址. 当然, 当一个输入信号被一个聚合接收时, 它必须是"可以理解的". 这对引入聚合解码器的可能连接或要求施加了额外的限制. 所将所有输入终端(对于所有聚合体)的集合映射到所有输出终端集的映射称为耦合方案.
+
+聚合模型可以分层组织，也就是可以表示为包含不同层次的子系统. 在这种情况下, 耦合方案也以多级形式表示. 如果一个人试图评价一个聚合模型，那么可以这样说:
+
+(1)它是一种比较传统的模型, 它对事件发生的原因, 事件的调度, 模型的结构和元素的动态等提出了一些具体的假设.
+
+(2)一些著名的模型可以看作是集合模型的特殊情况. 这些网络包括:异步概率自动机网络排队网络、工业模型、柔性线路网络、可靠性模型、求解微分方程的数值方法等．
+
+(3)在一般情况下, 实际系统通常可以用不同的“聚合形式”来描述.  在选择聚合模型的结构, 每个聚合的状态空间，输入和输出信号等方面存在一些自由度. 这种自由提供了以最简单的方式选择聚合模型的最方便属性的机会.
+
+(4)如果一个分段线性聚合是自治的, 即如果它没有输入终端, 则过程$z(. )$是具有分段线性路径的Markov过程. 自治聚合模型也是如此. 即过程$z(. )=(z^{(1)}(. ), \cdots, z^{(N)}(. ))$是马尔可夫过程, 其中$z^i(. )$是第$i$个集合体的状态变化过程, $N$是模型中的聚集体的数量.
+
+\subsection{排队作为聚集模型}
+~ ~ 为了展示将排队模型描述为聚合模型的不同方法, 对具有FIFO(先来先服务）规则的$GI/GI/N/\infty$排队模型 我们给出了三种不同描述. 令$A(X)$和$B(X)$ 分别为到达间隔时间和服务时间的分布函数. 我们将使用以下符号:
+
+$R_e(t)-$在$t$时刻剩余到达间隔时间;
+
+$R_s^{(i)}(t)-$在$t$时刻, 第$i$个服务剩余的服务时间（假设服务台时繁忙的）;
+
+$s^{(i)}(t)-$在$t$时刻, 队列中第$(i-N)$个顾客的总服务时间;
+
+$Q(t)-$在$t$时刻, 系统中的顾客数.
+
+例1 $GI/GI/N/\infty$排队作为一个自治聚合.
+
+令
+
+\begin{eqnarray*}
+\begin{aligned}
+\nu(t):=Q(t),    &\Vert\nu(t)\Vert:=\min(\nu, N)+1;\\
+z_1(t):=R_e(t);  &z_k(t):=R_s^{k-1}(t), \quad 1<k\leq \Vert\nu\Vert.
+\end{aligned}
+\end{eqnarray*}
+将每个顾客离开标记为输出一个信号$y$, $y$取固定值, 例如$y=1$.
+
+然后, 模型的"结构"可以如图10. 5所示. 在每个状态$\nu$, ，序列$Z_1, \cdots, z_{\Vert\nu\Vert}$随着单位斜率而减小, 直到至少其中一个取零值. 这意味着$v_1=\cdots=v_{\Vert\nu\Vert}=-1$.
+
+我们现在描述由内部事件引起的模型的转换. $t^\ast$为内部事件的发生时间. 在这里和下面, 当两个或多个补充变量同时取零值时, 我们将忽略这些事件. 如果分布函数$A$ 或$B$有密度, 那么这些事件发生的概率为零. 如果
+$$\lim_{t\uparrow t^\ast}z(t)=(\nu, z_1, \cdots, z_{\Vert\nu\Vert})$$
+那么
+$$z(t^\ast)=(\nu', z_1', \cdots, z_{\Vert\nu'\Vert}')$$
+在上述公式中, 我们确定:
+
+(i)如果$z_1=0$((它对应于顾客的到达), 那么
+
+ $\quad\nu'=\nu+1$;
+
+ $\quad z_1'$是一个随机变量, 具有分布函数$A$;
+
+ $\quad z_k'=z_k, \quad1<k\leq\Vert\nu\Vert$;
+
+$\quad$在$\Vert\nu'\Vert>\Vert\nu\Vert$ 时，即$Q(t^\ast-0)<N$, $z'_{\Vert\nu\Vert}$ 是一个随机变量，具有分布函数$B$;
+
+(ii)如果$z_k=0, k>1$(它对应于顾客的离开)，那么
+\begin{align*}
+&\nu'=\nu-1;\\
+&z_i'=z_i, \quad i<k;\\
+&z_j'=z_{j+1}, \quad k<j\leq \Vert\nu\Vert-1;
+\end{align*}
+
+在$\Vert\nu'\Vert>N$条件下，$z_{N+1}'$是一个随机变量，具有分布函数$B$.
+
+$y=1$.
+
+例2 $GI/GI/N/\infty$模型作为聚合.
+
+现在, 将排队模型描述为由两个名称为生成器（GENERATOR）和服务器（SERVER）的聚合体组成的聚合模型.
+
+生成器是一个自主的聚合, "生成"输入流.
+
+服务器是一个非自主的聚合, "服务"输入流.
+
+模型的结构如图10.6所示. 我们考虑两种不同的模型.
+
+2.1在第一个模型中, 流程由同类型顾客组成, 即生成器的输出信号$y$ 只取一个值, 例如$y^{(1)}=1$. 定义生成器的状态及其转换:
+$\nu^{(1)}(t)=1$(即它有单一"离散"状态)；
+$\Vert\nu^{(1)}(t)\Vert=1$;
+$z_1^{(1)}=R_e(t)$;
+$v_1^{(1)}=-1$. (单个补充坐标随单位斜率减小, 直到它取零值).
+
+如果$t^\ast$使得$\lim_{t\uparrow t^\ast}z_1^{(1)}(t)=0$, 那么$z_1^{(1)}(t^\ast)$取任意值, 并且具有分布函数$B$. 此外, 我们设$y^{(1)}(t^\ast)$.
+
+现在, 我们转到服务器. 设
+$\quad y^{(2)}=x^{(2)}=1$;
+
+$\quad \nu^{(2)}(t)=Q(t)$;
+
+$\quad \Vert\nu^{(2)}(t)\Vert=\min(\nu^{(2)}(t), N)$;
+
+$\quad z_k^{(2)}=R_s^{(k)}(t), \quad 1\leq k\leq\Vert\nu^{(2)}(t)\Vert$.
+
+特别是, 如果$Q(t)=0$, 则不定义任何补充变量. 在每个状态$\nu^{(2)}>0$时, 所有补充变量都随单位斜率减小而减小, 直到其中至少有一个变量取零. 这就是说
+
+$$v_k^{(2)}=-1, \quad 1\leq k\leq\Vert\nu^{(2)}\Vert. $$
+
+现在, 在服务器中可以发生内部和外部事件. 如果$t^\ast$是内部事件的发生时间, 并且
+
+$$\lim_{t\uparrow t^\ast}z_k^{(2)}(t)=0, $$
+然后, 从补充变量的向量中删除坐标$z_k^{(2)}$, 并从$\nu^{(2)}$中减去1，根据下式得到状态$z^{(2)}(t^\ast)$。
+
+$$z^{(2)}=(\nu^{(2)}, z_1^{(2)}, \cdots, z_{\Vert\nu^{(2)}\Vert}^{(2)})=\lim_{t\uparrow t^\ast}z^{(2)}(t). $$
+此外, 在时间$t^\ast$处, 输出信号$y^{(2)}(t^\ast)=1$.
+
+如果$t^{\ast\ast}$是外部事件的发生时间，那么这意味着输入信号$x^{(2)}=1$进入服务器(它对应于顾客的到达). 在这种情况下, 当前"离散"坐标$\nu^{(2)}$从1开始增加, 补充变量的当前向量从另一个具有分布函数$B$的随机变量坐标上（在$\nu^{(2)}<N$的情况下）增加. 如果$\nu^{(2)}\geq N$, 则补充变量的向量不变. 在时间$t$没有发出输出信号.
+
+2.2 在第二个模型中, 输入流由非同类顾客组成, 每个顾客的特征在于其服务时间. 然后, GENERATOR的输出信号$y^{(1)}$表示发送客户的总服务时间. 上面给出的GENERATOR的描述几乎完全保留. 唯一的例外是$y^{(1)}$ 现在是具有分布函数$B$的随机变量.
+
+聚合SERVER有另一种描述(与前面的例子相比). 即现在$x^{(2)}$是代表传入客户的总服务时间的实数. 设$y^{(2)}=1$，即输出信号仅包含顾客离开的信息. 令
+\begin{align*}
+&\nu^{(2)}(t)=Q(t);\Vert\nu^{(2)}(t)\Vert=\nu^{(2)}(t);\\
+&z_k^{(2)}(t)=R_s^{(k)}(t), \quad 1\leq k\leq\min(\nu^{(2)}, N);z_k^{(2)}(t)=s^{(k)}(t), \quad k>N.
+\end{align*}
+在每个状态$\nu^{(2)}>0$时，补充变量$z_k^{(2)}, 1\leq k\leq\min(\nu^{(2)}, N)$随单位斜率减小而减小, 直到至少一个取零值, 即$v_k^{(2)}=-1, 1\leq k\leq\min(\nu^{(2)}, N)$. 其他补充坐标(如果有的话)保持不变.
+
+设$t^{\ast\ast}$为内部事件的发生时间.  然后（如前所述）通过从离散分量$y^{(2)}$中减去1 并删除"归零"的补充坐标, 可以从过去的状态(在$t^\ast$之前)获得新状态(在$t^\ast$之后);$y^{(2)}(t^\ast):=1$.
+
+如果$t^{\ast\ast}$是输入信号$x^\ast$进入SERVER的时间, 则新状态由旧的状态形成, 方法是将离散状态加1, 并通过新的分量$x^{(2)}$增加到补充变量的“旧”向量.
+
+\section{连续时间排队过程的再生}
+\subsection{前言}
+~ ~ 再生的概念在排队论中是非常重要的, 在第七章中我们对再生的概念进行了大量的研究. 在第7.5.3节中，我们描述了由递归方程生成的离散时间马尔可夫链再生周期（借助于更新事件）的构造. 本节的目的是为连续时间模型再生点的构造提供建议, 前提是它们存在于某些嵌入的离散时间过程中. 这种概括并非不言而喻.对于排队中出现的一类广泛的过程，我们提出了一种新的方法. 我们将从离散的情况开始一步一步地进行. 如果构建了再生时期, 则可以将已有的结果应用于再生过程(例如在第7章中讨论), 以便检查相应的排队模型.
+
+回顾7.5.3节递归方程生成的离散时间更新马尔可夫链的再生周期的构造. 设$X=\{X_n\}$是随机变量的序列, 在可测状态空间$\mathcal{X}$ 中取值, 并由递归关系
+\begin{equation}
+X_{n+1}=F(X_n, \xi_n), \quad n\geq0,
+\end{equation}
+定义, 其中$\xi_n$是从可测量空间$\Xi$取值的"控制序列"的元素, 并且映射$F:\mathcal{X}\times\Xi\rightarrow\mathcal{X}$ 也是可测量的. 给定$X_n=x$, 我们可以根据$F$的第$k$ 次迭代找到$k>0$的值$X_{n+k}$:
+$$X_{n+k}=F_k(x, \xi_n, \cdots, \xi_{n+k-1})$$.
+要求存在一个整数$m>0$, 一个可测量的子集$B(m)\subset\Xi^m\equiv\Xi\times\cdots\Xi$,  和$C\subset\Xi$使得对任意的$x_1, x_2\in C$ 和$(\xi_1, \cdots, \xi_m)\in B(m)$, 下列关系成立
+\begin{equation}
+F_m(x_1, \xi_1, \cdots, \xi_m)=F_m(x_2, \xi_1, \cdots, \xi_m).
+\end{equation}
+假设序列$\{\xi_n\}$由独立同分布的随机变量组成. 定义事件
+\begin{eqnarray}
+\begin{aligned}
+C_{n-m}&=\{X_{n-m}\in C\};\\
+B_n&=\{(\xi_{n-m}, \cdots, \xi_{n-1})\}\in B(m);\\
+A_n&=C_{n-m}\cap B_n.
+\end{aligned}
+\end{eqnarray}
+则$\{A_n$\}的发生时间序列$\{S_n\}$(更新时间)是一个更新过程. 对任意$k$, "漂移过程"的分布$X^{(k)}\equiv\{X_{n+S_k}\}_{n\geq 0}$不依赖于$(S_0, \cdots, S_k)$,  并且过程$X$ 都是广义再生的.
+
+为了使这种结构有用, 事件$\{An\}$将是正循环的.  这对子集$C$和$B(m)$的选择施加了一些限制, 见第7章.
+
+\subsection{主要构造}
+~ ~ 使用上述再生事件来研究连续时间过程是非常有吸引力的. 假设上面的序列$X$嵌入到具有可测状态空间$\zeta$的某个连续时间过程$Z=\{Z(. )\}$中, 并且$\{\xi_n\}$由独立同分布的随机变量组成, 从控制$Z$动态的空间$\Xi$中获取值, 让我们继续进行适当的定义.
+
+我们反复地构建过程$Z$并将其表示为半再生循环构成的循环. 考虑在概率空间上$(\Omega^\ast, \mathcal(A)^\ast, P^\ast)$定义的"半再生循环"
+\begin{equation}
+Z^\ast=Z^\ast(t, \omega^\ast, x, \xi), \quad 0\leq t<\theta(\omega^\ast, \xi), \quad \omega^\ast\in\Omega, \xi\in\Xi, x\in\mathcal{X},
+\end{equation}
+其中$\theta$是循环的长度, $Z^\ast$是循环上的随机过程, $\theta$ 依赖于参数$\xi\in\Xi$, $Z^\ast$依赖于$\xi\in\Xi$和$x\in\mathcal{X}$.
+
+定义循环的参数的意义如下:$\xi$是定义循环动态的控制序列的成员值; $x$是包含过去所有必要信息的值(实际上, $x$是嵌入离散时间的再生过程的值); $\omega^\ast$是使循环随机的元素. 如果作为$\omega^\ast$的函数处理的成对向量$(Z^\ast, \theta)$几乎处处是常数$P^\ast$,  那么只要$\xi$和$x$是固定的, 循环实际上$(Z^\ast, \theta)$是一个确定性对. 我们将这个案例称为条件确定性的. 这种情况对于排队模型来说是典型的. 在这种情况下, 所有"随机性"都包含在控制序列的值中. 然而, 当一个循环不仅依赖于一个控制序列而且作为一个马尔可夫过程在"控制时间"之间变化时, 可以想象一个非确定性的情况. 在$(\Omega^\ast, \mathcal(A)^\ast, P^\ast)$上定义控制变量$\xi=\xi(\omega^\ast)$. 另外, 设$X=X(\omega^\ast, Z^\ast, \xi)$是定义在上述循环上的泛函(一般是随机的, 依赖于$\xi\in\Xi)$.
+
+令$(\Omega, \mathcal(A), P)$为$(\Omega^\ast, \mathcal(A)^\ast, P^\ast)$上可数个数的笛卡尔积
+$$(\Omega, \mathcal A, P)=(\Omega^\ast, \mathcal A^\ast, P^\ast)\bigotimes(\Omega^\ast, \mathcal A^\ast, P^\ast)\bigotimes\cdots. $$
+
+记$\Omega$的一般元素为$\omega=(\omega_0, \omega_1, \cdots)$. 定义随机元素$X_0(\omega)=X_0(\omega_0)$. 随机变量$X_n(\omega), n\geq1$的定义是递归的. 对于$n\geq1$, 记
+\begin{align}
+&\xi_{n-1}=\xi_{n-1}(\omega)=\xi(\omega_n);\\
+&\theta_n=\theta_n(\omega)=\theta(\omega_n, \xi(\omega_n));\\
+&T_n=\theta_1+\cdots+\theta_n, \quad T_0=0;\\
+&Z_n=Z_n(t, \omega)=Z^\ast(t, \omega_n, X_{n-1}(\omega), \xi_{n-1}(\omega)), \quad 0\leq t<\theta_n.
+\end{align}
+令
+\begin{equation}
+Z(t, \omega)=
+\left\{
+\begin{array}{ll}
+Z_1(t, \omega), &\quad 0\leq t<T,  \\
+Z_{n+1}(t-T_n, \omega), &\quad T_n\leq t<T_{n+1}, n\geq1,
+\end{array}
+\right.
+\end{equation}
+和
+\begin{equation}
+X_{n+1}(\omega)=X(\omega_{n+1}, z_{n+1}, \xi_n), \quad n\geq0.
+\end{equation}
+关系(9)和(10)以及(5)-(8)完全定义了过程$Z$.
+
+我们将把序列$X$视为嵌入到过程$Z$中, 并将$\{T_n\}$视为嵌入点. 实际上, $X$是一个马尔可夫链, $\{\xi_n\}$由独立同分布的随机变量组成.  序列$X$满足下列随机递归方程
+\begin{equation}
+X_{n+1}=F(\omega_{n+1}, X_n, \xi_n).
+\end{equation}
+其中可以从关系(8)和(10)容易地恢复映射$F$.  等式(11)是关系式(1) 的一种推广. 也就是说, 在(1)中, $X_{n+1}$是完全由$X_n$和$\xi_n$ 决定的, (11)中, 在$X_n$ 和$\xi_n$是固定的的条件下，$X_{n+1}$是随机的. 如果$(Z^\ast, \theta)$是条件确定性的, 且泛函$X$ 不依赖第一个参数$\omega^\ast$, 则关系(11)可缩减为(1).
+当然，记$\xi_n'=(\omega_{n+1}, \xi_n)$, 一般情况下我们可以进行这种缩减, 但有时区分控制随机变量和"随机"元素是很重要的.
+
+在(1)中, 我们可以找到函数$F_k, k\geq1$, 用$X_n=x, \xi_n, \cdots, \xi_{n+k-1}, \omega_{n+1}, \cdots, \omega_{n+k}$ 来定义值$X_{n+k}$:
+\begin{equation}
+X_{n+k}=F_k(\omega_{n+1}, \cdots, \omega_{n+k}, x, \xi_n, \cdots, \xi_{n+k-1}).
+\end{equation}
+
+假设存在一个整数$m>0$, 一个可测集$\Gamma(m)\subset\Omega^\ast\times\cdots\times\Omega^\ast$($m$ 个相乘), 和$C\in\mathcal{X}$, 使得对任意$\omega_{n+1}, \cdots, \omega_{n+m}\in\Gamma, x_1\in C$和$x_2\in C$, 下面关系成立
+\begin{eqnarray}
+\begin{aligned}
+F_m(\omega_{n+1}, \cdots, \omega_{n+m}, x_1, \xi(\omega_{n+1}), \cdots, \xi(\omega_{n+m}))\\
+\quad =F_m(\omega_{n+1}, \cdots, \omega_{n+m}, x_2, \xi(\omega_{n+1}), \cdots, \xi(\omega_{n+m})).
+\end{aligned}
+\end{eqnarray}
+定义事件
+
+\begin{align}
+C_{n-m}&=\{X_{n-m}\in C\}, \\
+B_n(m)&=\{(\omega_{n+m-1}, \cdots, \omega_n)\in\Gamma(m)\}, \\
+A_n&=C_{n-m}\cup B_n(m).
+\end{align}
+那么$\{A_n\}$是嵌入过程$X$的广义再生事件序列.
+
+在排队理论中, 特别是当循环$(Z^\ast, \theta)$ 是条件确定性的情况下, 我们考虑了下列特殊情况. 在这种情况下, 我们如第7.5.3节通过集合$B(m)\subset\Xi^m$ 构造构造集合$\Gamma(m)$.  即存在一个集合$B(m)\subset\Xi^m$，使得对于
+\begin{equation}
+\Gamma(m)=\{(\omega_{n+1}, \cdots, \omega_{n+m}):(\xi(\omega_{n+1}), \cdots, \xi(\omega_{n+m}))\in B(m)\}.
+\end{equation}
+上述构造是7.5.3节构造的概括. 如果$(z^\ast, \theta)$是条件确定性的, 那么公式(14)-(16)与第7.5.3节(或第5.1节)完全相同.
+
+现在我们想用$\{A_n\}$来构建连续时间过程$Z$ 的再生事件. 设$R(k)$为$X$的第$k$个再生时期, $S(k)$为事件$\{C_n\}$的第$k$个出现时间, $R(k)$和$S(k)$都是整数. 记$\rho_k=T_{R(k)}, \sigma_k=T_{s(k)}$. 吸引人的是, $\{\rho_k\}$是$z$的再生点. 不幸的是, 它们可能没有"再生特性", 即使在广义上也是如此. 实际上, $Z(s), s>\rho_k$的值仅取决$X_{R(k)}$, 但是$X_{R(k)}$ 可以取决于值$\rho_k-\sigma_k^\ast$, 其中$\sigma_k^\ast=\max\{\sigma_j:\sigma_j<\rho_k\}$.  因此, $Z(s), s>\rho_k$的值可能取决于以前再生间隔时间的长度. 这与再生过程的定义相矛盾, 甚至在广义上也是如此.
+
+为了找到再生时间, 让我们修正一些常数$\lambda>0$, 并使用"离散时间结构"引入以下事件:
+\begin{align}
+B_n(\lambda, m)&=B_n(m)\cup\{\theta(\omega_{n-m+1}, \xi_{n-m})+\cdots+\theta(\omega_n, \xi_{n-1})<\lambda\}, \\
+A(n, \lambda)&=C_{n-m}\cup B_n(\lambda, m).
+\end{align}
+现在我们已经准备好定义再生时间的"候选者"时期:
+\begin{align}
+\tau_1&=\min\{\tau=T_k+\lambda:I(A(k+m, \lambda))=1\}, \\
+\tau_{n+1}&=\min\{\tau=T_k+\lambda:I(A(k+m, \lambda))=1, \quad \tau>\tau_n+\lambda\}, \quad n\geq1.
+\end{align}
+由于以下事实, 这些时间实际上是再生的.
+
+设$\tau=T_{\nu(n)}+\lambda$. 则序列$T_{\nu(n)}$是族$\{\mathcal{A}\}$的停时序列, 其中$\{\mathcal{A}\}$是由以下集合生成的$\sigma-$代数
+
+$$\{(X_0, \xi_0), (X_1, \xi_1, \theta_1), (X_2, \xi_2, \theta_2), \cdots, (X_n, \xi_n, \theta_n)\}$$
+生成的$\sigma-$代数. 设$\kappa$是从时间$T_{\nu(n)}$开始的半再生循环(过程$Z$)的序数. 再生间隔时间$\tau_{n+1}-\tau_n$和"漂移"过程$Z^{(n)}=Z(\cdot+\tau_n)$ 只取决于序列$(\omega_k, \omega_{k+1}, \cdots)$. 当然, 这个序列的初始$m$个元素并不是任意的, 而是属于集合$\Gamma(m)$的. 重要的是要注意, 在前一次再生间隔时间$\tau_{n+1}-\tau_n$不依赖于这$m$个元素, 因为$\tau-T_{\nu(n)}=\lambda$. 因此, 连续的再生间隔时间是独立的, 即使连续的"再生间隔循环"可能是依赖的, 对任何$n, Z^{(n)}$都不依赖于$(\tau_0, \cdots, \tau_n)$, 这意味着$\{\tau_n\}$是$Z$的广义再生点.
+
+从过程$Z$的定义来看, 构造的再生事件(19)是正常返的, 如果
+
+(i)集合$C$是马尔可夫链$X$的正常返集;
+
+(ii)常数$\lambda$和事件$B_n(\lambda, m)$使得$P(B_n(\lambda, m))$(此概率不依赖于$n$);
+
+(iii)$0<E\theta_n<\infty$.
+
+\subsection{连续时间的多服务器模型}
+~ ~ 考虑$GI/GI/N/\infty$排队模型. 第8.3节给出了利用Kiefer-Wolfowitz关系构造离散时间再生过程的方法. 为了描述具有连续时间再生过程的模型，我们引入了一些附加的符号. 设$Q(T)$ 为时间$t$的队长(系统中的顾客数), $r(t)=(r_1(t), \cdots, r_Q(t))$是维数$Q=Q(t)$的向量, 它由$t$时刻剩余服务时间构成. 结果表明, 如果$1\leq j\leq N$, 并且当$j>N$ 时, $r_j(t)$保持不变, 那么$R_j(t)$随单位速度减小而减小.
+
+假设在时间$t$之后有一段时间没有任何客户进入系统, 即我们只考虑服务流程。定义过程$V(u)=(Q(u), r(u)), u>t$具有下列路径
+
+(i)如果$Q(t)=0$, 那么对所有的$u>t, V(u)\equiv V(t)=0$:在这种情况下, 补充变量$r(u)$未定义.
+
+(ii)如果$0<Q(t)=Q\geq N$, 那么所有的$r_j(u), 1\leq j\leq Q$随单位速度减小而减小, 并且在区间$t\leq u<t+\chi$上, $Q(u)=Q$, 其中$\chi=\min\{r_j(t):1\leq j\leq Q\}$. 从向量$r(t+\chi-0)$中删除后一个"零"，从而定义$Q(t+\chi)=Q-1$ 和构造$r(t+\chi)$. $V(u)$ 的进一步动态是明显的(如果$Q(t+\chi)>0$, 那么如上面所描述的;如果$Q(t+\chi)=0$, 那么如(i)所说).
+
+(iii)如果$0<Q(t)=Q>N$, 那么所有的$r_j(u), 1\leq j\leq N$ 随单位速度减小而减小, $r_j(u)=r_j(t), j>N$, 并且在区间$t\leq u<t+\chi$上, $Q(u)=Q$, 其中$\chi=\min\{r_j(t):1\leq j\leq N\}$. 从向量$r(t+\chi-0)$ 中移除分量$r_{N+1}$到"零"分量的位置, 从而定义定义$Q(t+\chi)=Q-1$和构造$r(t+\chi)$(如果$r(t+\chi-0)$ 中有几个"零"分量, 那么从$j=N+1$开始, $r_j(t)$的几个分量移到新的位置). 在这些步骤之后, $V(u), u\geq t+\chi$的动态是明显的.
+
+因此, $Q(u)$是时间$u\geq t$的一个非增函数, 向量$r(u)$的维数也是不增的. 如果我们知道$V(t)$, 那么我们就可以以下列方式构造Kiefer-Wolfowitz等待时间向量$\omega(t)=(\omega_1(t), \cdots, \omega_N(t))$:
+$$\omega_j(t)=\min\{u:Q(t+u)\leq {N-j}\}$$
+
+我们使用过程$V(. )$来构建基础过程的再生循环. 为达到此目的, 我们设$n\geq0$
+
+\begin{align}
+\xi_n&=(e_n, s_n);\\
+\theta_{n+1}&=e_n;\\
+T_0&=0;T_{n+1}=e_0+\cdots+e_n;\\
+X_n&=(Q_n, r_n, \omega_n),
+\end{align}
+其中$Q_n=Q(t_n), r_n=r(T_n), \omega_n=\omega(T_n)$;
+\begin{equation}
+Z_{n+1}=V(u), \quad 0\leq u<Q_{n+1},
+\end{equation}
+其中$V(0)=(Q_n, r_n)$.
+
+上述构造(22)-(26)是(5)-(9)的特例, (26)所定义的循环是条件确定性的, 序列$X$是由类型(1)的递归关系定义的. 根据关系式(25)和第8.3 节的结果, 存在常数$K, \delta, \delta_1, \delta_2$ 和$m$, 使得由关系式(3)定义的事件$A_n$(8.5.3)) 是嵌入过程$X$的更新. 这意味着对于该过程关系(2)是正确的. 此外, 由于遍历性条件(8.3.2)成立, $\{A_n\}$是正常返事件. 因此, 为了根据关系(18)-(21)构造正常返再生期$\{\tau_n\}$, 我们必须另外假定存在常数$\varepsilon'$使得
+
+\begin{equation}
+P(e_0<\varepsilon')>0
+\end{equation}
+(我们需要这种关系，以保证事件$B_n(\lambda, m)$从(18)开始具有正概率). 然而, 对于任何非退化的随机变量$e_0$, 关系(27)都是正确的. 这意味着关系(8.3.2)保证由(18)-(21)构造的序列$\{\tau_n\}$对于初始过程$Z(. )=(Q(. ), r(. ))$是正常返广义再生时间序列, 初始过程$Z(. )=(Q(. ), r(. ))$定义了$GI/GI/N/\infty$排队模型的主要特征.
+
+
+\end{CJK}
+\end{document}
