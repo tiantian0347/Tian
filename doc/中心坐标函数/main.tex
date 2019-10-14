@@ -82,7 +82,7 @@ f_i(x_j,y_j,z_j)=\begin{cases}1 \quad i=j
 f_i(x,y,z)=a_ix+b_iy+c_iz+d_i
 \label{equation3.2}
 \end{equation}
-此时通过求解公式\ref{equation3.1},\ref{equation3.2}就得到了三个基函数，且得出它们的梯度分别为$$\nabla f_0=(a_0,b_0,c_0),\quad \nabla f_1=(a_1,b_1,c_1),\quad \nabla f_2=(a_2,b_2,c_2)$$
+此时通过求解公式\ref{equation3.1},\ref{equation3.2}就得到了三个基函数，且得出它们的梯度分别为$$\nabla f_0=(a_0,b_0,c_0),\quad \nabla f_1=(a_1,b_1,c_1),\quad \nabla f_2=(a_2,b_2,c_2),\quad \nabla f_3=(a_3,b_3,c_3)$$
 \subsection{方法二}
 利用体积法，我们选取点$M(x,y,z)$，此时计算五个四面体$ABCD,MBCD,AMCD,ABMD,ABCM$的体积$V,V_0,V_1,V_2,V_3,V_4$：
 $$V=\left| \frac{1}{6}\begin{vmatrix}
@@ -127,6 +127,6 @@ a\\b\\c
 	x_1&y_1&1\\x_2&y_2&1\\x_3&y_3&1
 	\end{vmatrix}\right|}{6V})$$
 
-同理，我们可以得到$\nabla f_1(x,y,z),\nabla f_2(x,y,z)$。
+同理，我们可以得到$\nabla f_1(x,y,z),\nabla f_2(x,y,z),\nabla f_3(x,y,z)$。
 
 \end{document}
